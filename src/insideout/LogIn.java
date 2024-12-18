@@ -39,6 +39,7 @@ public class LogIn {
                        Username=name;
                        isUser=true;
                        lbl=new Label("Welcome to InsideOut!");
+                       getName();
                        break found;
                 }
            }
@@ -51,5 +52,9 @@ public class LogIn {
            }
        
        return lbl;
+    }
+    
+    public String getName(){
+        return name;
     }
 }

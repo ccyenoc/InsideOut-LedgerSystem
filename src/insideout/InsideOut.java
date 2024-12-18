@@ -27,7 +27,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.Node;
-
+import javafx.fxml.FXMLLoader;
 
 // for time display 
 import java.time.LocalTime;
@@ -40,8 +40,14 @@ import java.util.regex.*;
 import javafx.animation.Timeline;
 import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.TabPane;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.DropShadow;
 
 import org.mindrot.jbcrypt.BCrypt;
@@ -299,15 +305,6 @@ public class InsideOut extends Application {
          coindebit.setFitHeight(60);
          
          
-         // to main page
-     
-         // to credit page
-         // to history page
-         // to saving page
-         // to credit loan page
-         // to predicted deposit page
-         // log out
-         
          debit.getChildren().addAll(confirmdebit,amountdebit,descriptiond,debittitle,amountinstruction,descriptioninstruction,piggybankdebit,coindebit);
       
          
@@ -352,16 +349,106 @@ public class InsideOut extends Application {
          credit.getChildren().addAll(amountcredit,descriptionc,credittitle,amountinstruction,descriptioninstruction,confirmcredit);
          
 // history page
+        
         AnchorPane history=new AnchorPane();
         Scene pagehistory=new Scene (history,700,400);
         history.setStyle("-fx-background-color: #a8c4f4;");
         whiterec(history);
         pagehistory.setFill(Color.web("#a8c4f4"));
-        Label historytitle=new Label();
+        Label historytitle=new Label("History");
         historytitle=header(historytitle,history);
+        historytitle.toFront();
+        historytitle.setVisible(true);
+        history.getChildren().add(historytitle);
         
+        
+        TableView<Transaction> tableView = new TableView<>();
+        
+  
+        TabPane tabPane = new TabPane();
+        tabPane.setPrefWidth(635);  
+        tabPane.setPrefHeight(258); 
+        AnchorPane.setTopAnchor(tabPane, 107.0);
+        AnchorPane.setLeftAnchor(tabPane, 30.0);
+        tableView.setStyle("-fx-background-radius: 15; -fx-background-color: #a8c4f4;");
+
+        Tab overviewTab = new Tab("Overview");
+        overviewTab.setClosable(false); // Disables the close button
+        TableView<Transaction> tableViewOverview = new TableView<>();
+        TableColumn<Transaction, String> TransactionIDOverview = new TableColumn<>("TransactionID");
+        TransactionIDOverview.setCellValueFactory(new PropertyValueFactory<>("transactionID"));
+        TransactionIDOverview.setPrefWidth(113);  // Column width
+
+
+        TableColumn<Transaction, String> TimeOverview = new TableColumn<>("Time");
+        TimeOverview.setCellValueFactory(new PropertyValueFactory<>("time"));
+        TimeOverview.setPrefWidth(183);  // Column width
+        
+        TableColumn<Transaction, String> AmountOverview = new TableColumn<>("Amount");
+        AmountOverview.setCellValueFactory(new PropertyValueFactory<>("amount"));
+        AmountOverview.setPrefWidth(109);  // Column width
+        
+        TableColumn<Transaction, String> DescriptionOverview = new TableColumn<>("Description");
+        DescriptionOverview.setCellValueFactory(new PropertyValueFactory<>("description"));
+        DescriptionOverview.setPrefWidth(230); 
+        overviewTab.setContent(tableViewOverview);
+        
+        Tab debitTab = new Tab("Debit");
+        debitTab.setClosable(false); // Disables the close button
+        TableView<Transaction> tableViewDebit = new TableView<>();
+        TableColumn<Transaction, String> TransactionIDDebit = new TableColumn<>("TransactionID");
+        TransactionIDDebit.setCellValueFactory(new PropertyValueFactory<>("transactionID"));
+        TransactionIDDebit.setPrefWidth(113);
+
+        TableColumn<Transaction, String> TimeDebit = new TableColumn<>("Time");
+        TimeDebit.setCellValueFactory(new PropertyValueFactory<>("time"));
+        TimeDebit.setPrefWidth(183);
+        
+        TableColumn<Transaction, String> AmountDebit = new TableColumn<>("Amount");
+        AmountDebit.setCellValueFactory(new PropertyValueFactory<>("amount"));
+        AmountDebit.setPrefWidth(109); 
+        
+        TableColumn<Transaction, String> DescriptionDebit = new TableColumn<>("Description");
+        DescriptionDebit.setCellValueFactory(new PropertyValueFactory<>("description"));
+        DescriptionDebit.setPrefWidth(230); 
+        debitTab.setContent(tableViewDebit);
+        
+        Tab creditTab = new Tab("Credit");
+        creditTab.setClosable(false); // Disables the close button
+        TableView<Transaction> tableViewCredit = new TableView<>();
+        TableColumn<Transaction, String> TransactionIDCredit = new TableColumn<>("TransactionID");
+        TransactionIDCredit.setCellValueFactory(new PropertyValueFactory<>("transactionID"));
+        TransactionIDCredit.setPrefWidth(113);
+
+
+        TableColumn<Transaction, String> TimeCredit = new TableColumn<>("Time");
+        TimeCredit.setCellValueFactory(new PropertyValueFactory<>("time"));
+        TimeCredit.setPrefWidth(183);
+        
+        TableColumn<Transaction, String> AmountCredit = new TableColumn<>("Amount");
+        AmountCredit.setCellValueFactory(new PropertyValueFactory<>("amount"));
+        AmountCredit.setPrefWidth(109); 
+        
+        TableColumn<Transaction, String> DescriptionCredit = new TableColumn<>("Description");
+        DescriptionCredit.setCellValueFactory(new PropertyValueFactory<>("description"));
+        DescriptionCredit.setPrefWidth(230); 
+        creditTab.setContent(tableViewCredit);
+        
+
+        tableViewOverview.getColumns().addAll(TransactionIDOverview, TimeOverview, AmountOverview, DescriptionOverview);
+        tableViewDebit.getColumns().addAll(TransactionIDDebit, TimeDebit, AmountDebit, DescriptionDebit);
+        tableViewCredit.getColumns().addAll(TransactionIDCredit, TimeCredit, AmountCredit, DescriptionCredit);
+
+        Transaction data = new Transaction(); 
+        data.readFile();
+        tableViewDebit.setItems(data.getDebitData());
+        tableViewCredit.setItems(data.getCreditData());
+        tableViewOverview.setItems(data.getOverviewData());
+        tabPane.getTabs().addAll(overviewTab,debitTab,creditTab);
        
-        history.getChildren().addAll(historytitle);
+        history.getChildren().add(tabPane);
+        pagehistory.setFill(Color.web("#a8c4f4"));
+
         
 // saving page
         AnchorPane saving=new AnchorPane();
@@ -540,8 +627,8 @@ public class InsideOut extends Application {
     
     public Label header(Label label,AnchorPane pane){
         Label header=label;
-        label.setLayoutX(50);
-        label.setLayoutY(30);
+        AnchorPane.setTopAnchor(header, 30.0);
+        AnchorPane.setLeftAnchor(header, 50.0);
         label.setFont(Font.font("Anton", 45));
         return header;
     }
@@ -967,6 +1054,7 @@ public class InsideOut extends Application {
     public static void logIn(String name,String email,String password){
        LogIn userLogIn=new LogIn(name,email,password);
        Label lbl=userLogIn.login();
+       Username=userLogIn.getName();
        popupMessage(lbl);
        
     }  
