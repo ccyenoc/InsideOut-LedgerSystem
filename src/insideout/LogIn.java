@@ -3,7 +3,6 @@ package insideout;
 import static insideout.InsideOut.Username;
 import static insideout.InsideOut.isUser;
 import static insideout.InsideOut.popupMessage;
-import static insideout.InsideOut.userinfo;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -15,6 +14,7 @@ public class LogIn {
     private String email="";
     private String password="";
     private static String userinfo="/Users/cye/NewFolder/InsideOut/src/userinfo - Sheet1.csv";
+    private boolean UserFound=false;
     
     public LogIn(String name,String email,String password){
         this.name=name;

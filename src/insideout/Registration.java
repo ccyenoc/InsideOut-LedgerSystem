@@ -1,11 +1,7 @@
 package insideout;
 
-import static insideout.InsideOut.Username;
-import static insideout.InsideOut.isUser;
-import static insideout.InsideOut.popupMessage;
 import static insideout.InsideOut.registrationValid;
 import static insideout.InsideOut.store;
-import static insideout.InsideOut.userinfo;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -18,6 +14,7 @@ public class Registration{
     private static String username="";
     private static String email="";
     private static String password="";
+    private static String userinfo="/Users/cye/NewFolder/InsideOut/src/userinfo - Sheet1.csv";
     
     public Registration(String username,String email,String password){
         this.username=username;

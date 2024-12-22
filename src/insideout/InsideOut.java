@@ -28,6 +28,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.Node;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.ScrollPane;
 
 // for time display 
 import java.time.LocalTime;
@@ -42,6 +43,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
@@ -58,6 +60,14 @@ public class InsideOut extends Application {
     private static final double ASPECT_RATIO = 16.0 / 9.0;
     public static boolean isUser=false;
     public static String Username="";
+    public static double debitTotal=0.0;
+    public static double creditTotal=0.0;
+    private static boolean debitcategorySelected=false;
+    private static boolean creditcategorySelected=false;
+    
+    private static TableView<Transaction> tableViewOverview = new TableView<>();
+    private static TableView<Transaction> tableViewDebit = new TableView<>();
+    private static TableView<Transaction> tableViewCredit = new TableView<>();
     
     @Override
     public void start(Stage primaryStage) {
@@ -202,6 +212,7 @@ public class InsideOut extends Application {
         Scene pagelogin=new Scene(logIn,700,400);
         pagelogin.setFill(Color.web("#a8c4f4"));
 
+        
         String[] name = {""};
         loginusername.textProperty().addListener((observable, oldValue, newValue) -> {
              name[0] = newValue.trim();}); 
@@ -213,47 +224,70 @@ public class InsideOut extends Application {
         String[] userpassword={""};
         loginpassword.textProperty().addListener((observable, oldValue, newValue) -> {
               userpassword[0] = newValue.trim();});
+        
 
         logIn.getChildren().addAll(loginbtn,username,loginusername,loginpassword,password,loginemail,email,logintitle);
+       
         
 // main page
+        System.out.println("Username in MainPage :"+Username);
         AnchorPane mainPage=new AnchorPane();
         whiterec(mainPage);
         Scene pagemainPage= new Scene (mainPage,700,400);
         pagemainPage.setFill(Color.web("#a8c4f4"));
         mainPage.setStyle("-fx-background-color: #a8c4f4;");
+        
+        tologinpage.setOnAction(e->{
+                register(registername[0],registeremail[0],registerpassword[0]);
+                if(registrationValid==true){
+                primaryStage.setScene(pagelogin);
+                Savings endmonth=new Savings();
+                endmonth.isEndOfMonth();}
+        }); // registration to log in page
+        loginbtn.setOnAction(e-> {
+          Username=logIn(name[0], useremail[0], userpassword[0]);
+          if(isUser==true){
+            primaryStage.setScene(pagemainPage);}
+                }); //from login to mainpage
+        
+        
         currenttime(mainPage);
         Button debitbtn =new Button ("Debit");
         Button creditbtn=new Button("Credit");        
         Button savingbtn=new Button("Savings");       
         Button historybtn=new Button("History");       
         Button creditloanbtn=new Button("Credit Loan");       
-        Button interestpredictorbtn=new Button("Deposit Interest Predictor");       
+        Button interestpredictorbtn=new Button("Deposit Interest Predictor");
+        Button viewGraphsbtn=new Button("Graphs");
         Button logoutbtn=new Button("Log Out");
-        mainpagebtn(debitbtn,260,20,213,75);
-        mainpagebtn(creditbtn,260,20,213,365);
-        mainpagebtn(savingbtn,260,20,258,75);
-        mainpagebtn(historybtn,260,20,258,365);
-        mainpagebtn(creditloanbtn,260,20,303,75);
-        mainpagebtn(interestpredictorbtn,260,20,303,365);
+
+        mainpagebtn(debitbtn,260,20,183,75);
+        mainpagebtn(creditbtn,260,20,183,365);
+        mainpagebtn(savingbtn,260,20,223,75);
+        mainpagebtn(historybtn,260,20,223,365);
+        mainpagebtn(creditloanbtn,260,20,263,75);
+        mainpagebtn(interestpredictorbtn,260,20,263,365);
+        mainpagebtn(viewGraphsbtn,260,20,303,75);
+        mainpagebtn(logoutbtn,260,20,303,365);
         
-        Rectangle menu = new Rectangle(607,150);  // Width, Height
+        
+        Rectangle menu = new Rectangle(607,180);  // Width, Height
         menu.setFill(Color.web("#FEEBA8"));  // Fill the rectangle with blue color
         menu.setArcWidth(20);     // Horizontal radius of the corner
         menu.setArcHeight(20);    // Vertical radius of the corner
         menu.setLayoutX(45);
-        menu.setLayoutY(200);
+        menu.setLayoutY(170);
         
         Label welcome=new Label("Welcome ");// get username afterward
         welcome=header(welcome,mainPage);
         welcome.setFont(Font.font("Anton", 60));
-        mainPage.getChildren().addAll(menu,welcome,debitbtn,creditbtn,historybtn,creditloanbtn,interestpredictorbtn,logoutbtn,savingbtn); 
+        mainPage.getChildren().addAll(menu,welcome,debitbtn,creditbtn,historybtn,creditloanbtn,interestpredictorbtn,logoutbtn,savingbtn,viewGraphsbtn); 
         
 // debit page
          AnchorPane debit=new AnchorPane();
+         whiterec(debit);
          Scene pagedebit=new Scene(debit,700,400);
          debit.setStyle("-fx-background-color: #a8c4f4;");
-         whiterec(debit);
          pagedebit.setFill(Color.web("#a8c4f4"));
          Label debittitle= new Label("Debit");
          debittitle=header(debittitle,debit);
@@ -264,13 +298,27 @@ public class InsideOut extends Application {
         // Create the TextField for amount debit
         TextField amountdebit = input("Enter Debit Amount:", "Debit Amount", 100.0, 50.0);
         TextArea descriptiond = description("Enter Description:", "Description", 185.0, 50.0);
+        
 
         String[] descriptiondstr = {""};
         descriptiond.textProperty().addListener((observable, oldValue, newValue) -> {
         descriptiondstr[0] = newValue; // Update the description dynamically as user types
-        });
+        }); 
+        
+        Label select=new Label();
+        select.setText("Click on a button which best describe the transaction");
+        select.setFont(Font.font("Anton", 15));
+        select.setLayoutX(50);
+        select.setLayoutY(250);
 
-
+        Label categoryselected=new Label();
+        categoryselected.setText("Category Selected :");
+        categoryselected.setFont(Font.font("Anton", 15));
+        categoryselected.setLayoutX(50);
+        categoryselected.setLayoutY(280);
+        
+        selectCategory(debit);
+ 
         Button confirmdebit = new Button("Confirm");
         confirmdebit.setStyle("-fx-background-color:#FED760;-fx-text-fill:black;");
         confirmdebit.setFont(Font.font("Anton", 20)); 
@@ -278,10 +326,21 @@ public class InsideOut extends Application {
         confirmdebit.setLayoutY(300);
 
        confirmdebit.setOnAction(e -> {
-       final String input = amountdebit.getText(); // Get the text entered by the user in amountdebit TextField
+       final String input = amountdebit.getText(); // Get the text entered by the user in amountdebit TextField 
        try{
+           String category=getCat();
+           boolean descriptionword=false;
+           if(descriptiondstr[0].split(" ").length>200){
+               descriptionword=true;
+           }
+           
+          if(descriptionword==false){
           double debitamount =Double.parseDouble(input); 
-          Debit(debitamount, descriptiondstr[0], "Debit");
+          Debit(debitamount, descriptiondstr[0], "Debit",category);}
+          else{
+              Label wordcount=new Label("Description need to be less than 200 word!");
+              popupMessage(wordcount);
+          }
           
        }catch(Exception ex){
            Label wrongcashformat=new Label("Wrong Cash Format eg.1000");
@@ -305,7 +364,7 @@ public class InsideOut extends Application {
          coindebit.setFitHeight(60);
          
          
-         debit.getChildren().addAll(confirmdebit,amountdebit,descriptiond,debittitle,amountinstruction,descriptioninstruction,piggybankdebit,coindebit);
+         debit.getChildren().addAll(categoryselected,select,confirmdebit,amountdebit,descriptiond,debittitle,amountinstruction,descriptioninstruction,piggybankdebit,coindebit);
       
          
 // credit page
@@ -327,6 +386,20 @@ public class InsideOut extends Application {
         descriptionc.textProperty().addListener((observable, oldValue, newValue) -> {
         descriptioncstr[0] = newValue; // Update the description dynamically as user types
         });
+        
+        Label selectcredit=new Label();
+        selectcredit.setText("Click on a button which best describe the transaction");
+        selectcredit.setFont(Font.font("Anton", 15));
+        selectcredit.setLayoutX(50);
+        selectcredit.setLayoutY(250);
+
+        Label categoryselectedcredit=new Label();
+        categoryselectedcredit.setText("Category Selected :");
+        categoryselectedcredit.setFont(Font.font("Anton", 15));
+        categoryselectedcredit.setLayoutX(50);
+        categoryselectedcredit.setLayoutY(280);
+        
+        selectCategory(credit);
 
 
        Button confirmcredit = new Button("Confirm");
@@ -337,8 +410,19 @@ public class InsideOut extends Application {
        confirmcredit.setOnAction(e -> {
        final String input = amountcredit.getText(); // Get the text entered by the user in amountdebit TextField
        try{
-          double creditamount =Double.parseDouble(input); 
-          Credit(creditamount, descriptioncstr[0], "Credit");
+           String categoryCredit=getCat();
+           boolean descriptionword=false;
+           if(descriptiondstr[0].split(" ").length>200){
+               descriptionword=true;
+           }
+           if(descriptionword==false){
+              double creditamount =Double.parseDouble(input); 
+              Credit(creditamount, descriptioncstr[0], "Credit",categoryCredit);
+           }
+           else{
+              Label wordcount=new Label("Description need to be less than 200 word!");
+              popupMessage(wordcount);
+           }
           
        }catch(Exception ex){
            Label wrongcashformat=new Label("Wrong Cash Format eg.1000");
@@ -346,10 +430,11 @@ public class InsideOut extends Application {
            ex.printStackTrace();
        }
          });
-         credit.getChildren().addAll(amountcredit,descriptionc,credittitle,amountinstruction,descriptioninstruction,confirmcredit);
+         credit.getChildren().addAll(amountcredit,descriptionc,credittitle,amountinstruction,descriptioninstruction,confirmcredit,categoryselectedcredit,selectcredit);
          
-// history page
-        
+// history page     
+
+        StackPane stackPane = new StackPane();
         AnchorPane history=new AnchorPane();
         Scene pagehistory=new Scene (history,700,400);
         history.setStyle("-fx-background-color: #a8c4f4;");
@@ -361,24 +446,18 @@ public class InsideOut extends Application {
         historytitle.setVisible(true);
         history.getChildren().add(historytitle);
         
-        
-        TableView<Transaction> tableView = new TableView<>();
-        
-  
         TabPane tabPane = new TabPane();
         tabPane.setPrefWidth(635);  
         tabPane.setPrefHeight(258); 
         AnchorPane.setTopAnchor(tabPane, 107.0);
         AnchorPane.setLeftAnchor(tabPane, 30.0);
-        tableView.setStyle("-fx-background-radius: 15; -fx-background-color: #a8c4f4;");
 
         Tab overviewTab = new Tab("Overview");
         overviewTab.setClosable(false); // Disables the close button
-        TableView<Transaction> tableViewOverview = new TableView<>();
+        
         TableColumn<Transaction, String> TransactionIDOverview = new TableColumn<>("TransactionID");
         TransactionIDOverview.setCellValueFactory(new PropertyValueFactory<>("transactionID"));
         TransactionIDOverview.setPrefWidth(113);  // Column width
-
 
         TableColumn<Transaction, String> TimeOverview = new TableColumn<>("Time");
         TimeOverview.setCellValueFactory(new PropertyValueFactory<>("time"));
@@ -395,7 +474,6 @@ public class InsideOut extends Application {
         
         Tab debitTab = new Tab("Debit");
         debitTab.setClosable(false); // Disables the close button
-        TableView<Transaction> tableViewDebit = new TableView<>();
         TableColumn<Transaction, String> TransactionIDDebit = new TableColumn<>("TransactionID");
         TransactionIDDebit.setCellValueFactory(new PropertyValueFactory<>("transactionID"));
         TransactionIDDebit.setPrefWidth(113);
@@ -415,7 +493,6 @@ public class InsideOut extends Application {
         
         Tab creditTab = new Tab("Credit");
         creditTab.setClosable(false); // Disables the close button
-        TableView<Transaction> tableViewCredit = new TableView<>();
         TableColumn<Transaction, String> TransactionIDCredit = new TableColumn<>("TransactionID");
         TransactionIDCredit.setCellValueFactory(new PropertyValueFactory<>("transactionID"));
         TransactionIDCredit.setPrefWidth(113);
@@ -433,20 +510,17 @@ public class InsideOut extends Application {
         DescriptionCredit.setCellValueFactory(new PropertyValueFactory<>("description"));
         DescriptionCredit.setPrefWidth(230); 
         creditTab.setContent(tableViewCredit);
+
         
 
         tableViewOverview.getColumns().addAll(TransactionIDOverview, TimeOverview, AmountOverview, DescriptionOverview);
         tableViewDebit.getColumns().addAll(TransactionIDDebit, TimeDebit, AmountDebit, DescriptionDebit);
         tableViewCredit.getColumns().addAll(TransactionIDCredit, TimeCredit, AmountCredit, DescriptionCredit);
-
-        Transaction data = new Transaction(); 
-        data.readFile();
-        tableViewDebit.setItems(data.getDebitData());
-        tableViewCredit.setItems(data.getCreditData());
-        tableViewOverview.setItems(data.getOverviewData());
         tabPane.getTabs().addAll(overviewTab,debitTab,creditTab);
        
-        history.getChildren().add(tabPane);
+      
+        history.getChildren().addAll(tableViewOverview,tableViewDebit,tableViewCredit,tabPane);
+     
         pagehistory.setFill(Color.web("#a8c4f4"));
 
         
@@ -498,6 +572,8 @@ public class InsideOut extends Application {
         
 
         TextField enterPercentage=input("Enter the percentage(%) to be deducted from next debit :", "percentage(%)", 100.0, 50.0);
+
+        
         
         
         
@@ -513,7 +589,137 @@ public class InsideOut extends Application {
          Label creditloantitle=new Label("Credit Loan");
          creditloantitle=header(creditloantitle,creditloan);
          
-         creditloan.getChildren().addAll(creditloantitle);
+         Button applyLoanbtn=new Button("Apply");
+         Button repaybtn=new Button("Repay");
+         AnchorPane.setTopAnchor(applyLoanbtn, 150.0);
+         AnchorPane.setLeftAnchor(applyLoanbtn, 60.0);
+         AnchorPane.setTopAnchor(repaybtn, 150.0);
+         AnchorPane.setLeftAnchor(repaybtn, 150.0);
+         applyLoanbtn.setStyle("-fx-background-color:#FED760;-fx-text-fill:black;");
+         applyLoanbtn.setFont(Font.font("Anton", 20)); 
+         repaybtn.setStyle("-fx-background-color:#FED760;-fx-text-fill:black;");
+         repaybtn.setFont(Font.font("Anton", 20)); 
+         
+         
+         Label repayOrapply=new Label("Click Apply button to Apply Credit Loan or Repay button to Pay Credit Loan.");
+         AnchorPane.setTopAnchor(repayOrapply, 107.0);
+         AnchorPane.setLeftAnchor(repayOrapply, 50.0);
+         repayOrapply.setStyle("-fx-text-fill:black;");
+         repayOrapply.setFont(Font.font("Anton", 20));
+         
+         Rectangle orangerec = new Rectangle(590,130); 
+         orangerec.setFill(Color.web("#F37400"));
+         orangerec.setArcWidth(20);    
+         orangerec.setArcHeight(20);    
+         AnchorPane.setTopAnchor(orangerec,215.0);
+         AnchorPane.setLeftAnchor(orangerec,50.0);
+         
+         Label note=new Label("!! Note !!");
+         AnchorPane.setTopAnchor(note, 225.0);
+         AnchorPane.setLeftAnchor(note, 80.0);
+         note.setStyle("-fx-text-fill:white;");
+         note.setFont(Font.font("Anton", 30));
+         
+         Label reminder=new Label("* Debit and Credit action could not be conducted \n  if loan is not paid after due date");
+         AnchorPane.setTopAnchor(reminder, 265.0);
+         AnchorPane.setLeftAnchor(reminder, 80.0);
+         reminder.setStyle("-fx-text-fill:white;");
+         reminder.setFont(Font.font("Anton", 20));
+         
+          creditloan.getChildren().addAll(orangerec,creditloantitle,repaybtn,applyLoanbtn,repayOrapply,note,reminder);
+         
+          // apply loan page
+          AnchorPane applyLoan=new AnchorPane();
+          Scene pageapplyLoan=new Scene(applyLoan,700,400);
+          applyLoan.setStyle("-fx-background-color: #a8c4f4;");
+          whiterec(applyLoan);
+          pageapplyLoan.setFill(Color.web("#a8c4f4"));
+          Label loantitle=new Label("Credit Loan - Application");
+          loantitle=header(loantitle,applyLoan);
+          applyLoanbtn.setOnAction(e-> primaryStage.setScene(pageapplyLoan));
+          
+          Label principallbl=new Label("Principal Amount");
+          AnchorPane.setTopAnchor(principallbl, 100.0);
+          AnchorPane.setLeftAnchor(principallbl, 50.0);
+          principallbl.setStyle("-fx-text-fill:black;");
+          principallbl.setFont(Font.font("Anton", 20));
+          
+          TextField enterprincipal=new TextField();
+          enterprincipal.setPromptText("Enter Principal Amount(RM)...");
+          enterprincipal.setStyle("-fx-font-size: 14px;-fx-text-fill: black; -fx-border-radius: 5px;");
+          enterprincipal.setLayoutX(50);
+          enterprincipal.setLayoutY(140);
+          enterprincipal.setFont(Font.font("Anton", 15));
+          enterprincipal.setPrefWidth(180);
+          
+          
+          Label interestRatelbl=new Label("Interest Rate %");
+          AnchorPane.setTopAnchor(interestRatelbl, 180.0);
+          AnchorPane.setLeftAnchor(interestRatelbl, 50.0);
+          interestRatelbl.setStyle("-fx-text-fill:black;");
+          interestRatelbl.setFont(Font.font("Anton", 20));
+          
+          TextField enterrate=new TextField();
+          enterrate.setPromptText("Enter Interest Rate(%)...");
+          enterrate.setStyle("-fx-font-size: 14px;-fx-text-fill: black; -fx-border-radius: 5px;");
+          enterrate.setLayoutX(50);
+          enterrate.setLayoutY(220);
+          enterrate.setFont(Font.font("Anton"));
+          enterrate.setPrefWidth(180);
+          
+          Label periodlbl=new Label("Repayment Period (months)");
+          AnchorPane.setTopAnchor(periodlbl, 260.0);
+          AnchorPane.setLeftAnchor(periodlbl, 50.0);
+          periodlbl.setStyle("-fx-text-fill:black;");
+          periodlbl.setFont(Font.font("Anton", 20));
+          
+          TextField entermonth=new TextField();
+          entermonth.setPromptText("Enter month(s)...");
+          entermonth.setStyle("-fx-font-size: 14px;-fx-text-fill: black; -fx-border-radius: 5px;");
+          entermonth.setLayoutX(50);
+          entermonth.setLayoutY(300);
+          entermonth.setFont(Font.font("Anton"));
+          entermonth.setPrefWidth(180); 
+          
+          Button confirmapply=new Button("Confirm");
+          buttonfontsize(confirmapply);
+          confirmapply.setLayoutX(400);
+          confirmapply.setLayoutY(300);
+          confirmapply.setPrefSize(100,18);
+               
+         applyLoan.getChildren().addAll(loantitle,principallbl,interestRatelbl,periodlbl,enterprincipal,enterrate,entermonth,confirmapply);
+         
+         // repay page
+          AnchorPane repay=new AnchorPane();
+          Scene pagerepay=new Scene(repay,700,400);
+          repay.setStyle("-fx-background-color: #a8c4f4;");
+          whiterec(repay);
+          pageapplyLoan.setFill(Color.web("#a8c4f4"));
+          Label repaytitle=new Label("Credit Loan - Repay");
+          loantitle=header(repaytitle,repay);
+          repaybtn.setOnAction(e-> primaryStage.setScene(pagerepay));
+          
+          Label selectRepay=new Label("Select Loan to Repay ");
+          AnchorPane.setTopAnchor(selectRepay, 100.0);
+          AnchorPane.setLeftAnchor(selectRepay, 50.0);
+          selectRepay.setStyle("-fx-text-fill:black;");
+          selectRepay.setFont(Font.font("Anton", 20));
+          
+          Label amountRepay=new Label("Amount");
+          AnchorPane.setTopAnchor(amountRepay, 200.0);
+          AnchorPane.setLeftAnchor(amountRepay, 50.0);
+          amountRepay.setStyle("-fx-text-fill:black;");
+          amountRepay.setFont(Font.font("Anton", 20));
+       
+          
+          Button confirmrepay=new Button("Repay");
+          buttonfontsize(confirmrepay);
+          confirmrepay.setLayoutX(400);
+          confirmrepay.setLayoutY(300);
+          confirmrepay.setPrefSize(100,18);
+          
+                 
+        repay.getChildren().addAll(repaytitle,selectRepay,confirmrepay,amountRepay);
          
 // predited deposit page
         AnchorPane predicteddeposit=new AnchorPane();
@@ -545,37 +751,69 @@ public class InsideOut extends Application {
         displayDeposit.setPrefWidth(200);
         displayDeposit.setPrefHeight(100); // Adjust height as nee
         Button displayPredictedDepositbtn=new Button("Calculate Predicted Deposit");
-        
-           
-        
-        
+              
         predicteddeposit.getChildren().addAll(deposittitle,arrow,bank);
-       
+ // bar chart
+        AnchorPane viewGraph=new AnchorPane();
+        Scene pageViewGraph=new Scene(viewGraph,700,400);
+        viewGraph.setStyle("-fx-background-color: #a8c4f4;");
+        whiterec(viewGraph);
+        pageViewGraph.setFill(Color.web("#a8c4f4"));
+        Label ViewGraph=new Label("Graphs");
+        ViewGraph=header(ViewGraph,viewGraph);
+        
+        Button trend=new Button("Spending Trend");
+        buttonfontsize(trend);
+        AnchorPane.setTopAnchor(trend, 100.0);
+        AnchorPane.setLeftAnchor(trend, 50.0);
+        Button Saving=new Button("Saving Growth");
+        buttonfontsize(Saving);
+        AnchorPane.setTopAnchor(Saving, 100.0);
+        AnchorPane.setLeftAnchor(Saving, 100.0);
+        Button loan=new Button("Loan Repayment");
+        buttonfontsize(loan);
+        AnchorPane.setTopAnchor(loan, 100.0);
+        AnchorPane.setLeftAnchor(loan, 100.0);
+        
+        
+        viewGraph.getChildren().addAll(ViewGraph,trend,Saving,loan);
+
+// view account balance page
+        AnchorPane viewBalance=new AnchorPane();
+        Scene pageViewBalance=new Scene(viewBalance,700,400);
+        viewBalance.setStyle("-fx-background-color: #a8c4f4;");
+        whiterec(viewBalance);
+        pageViewBalance.setFill(Color.web("#a8c4f4"));
+        Label viewBalancelbl=new Label("Balance & Savings");
+        viewBalancelbl=header(viewBalancelbl,viewBalance);
+        
+        
+        
+        
         submenu(primaryStage,debit,pagehomepage,pagedebit,pagecredit,pagesaving,pagehistory,pagecreditloan,pagedeposit);
         submenu(primaryStage,credit,pagehomepage,pagedebit,pagecredit,pagesaving,pagehistory,pagecreditloan,pagedeposit);
         submenu(primaryStage,history,pagehomepage,pagedebit,pagecredit,pagesaving,pagehistory,pagecreditloan,pagedeposit);
         submenu(primaryStage,saving,pagehomepage,pagedebit,pagecredit,pagesaving,pagehistory,pagecreditloan,pagedeposit);
         submenu(primaryStage,creditloan,pagehomepage,pagedebit,pagecredit,pagesaving,pagehistory,pagecreditloan,pagedeposit);
         submenu(primaryStage,predicteddeposit,pagehomepage,pagedebit,pagecredit,pagesaving,pagehistory,pagecreditloan,pagedeposit);
-       
+        submenu(primaryStage,applyLoan,pagehomepage,pagedebit,pagecredit,pagesaving,pagehistory,pagecreditloan,pagedeposit);
+        submenu(primaryStage,repay,pagehomepage,pagedebit,pagecredit,pagesaving,pagehistory,pagecreditloan,pagedeposit);
+        submenu(primaryStage,viewBalance,pagehomepage,pagedebit,pagecredit,pagesaving,pagehistory,pagecreditloan,pagedeposit);
+        submenu(primaryStage,viewGraph,pagehomepage,pagedebit,pagecredit,pagesaving,pagehistory,pagecreditloan,pagedeposit);
+
+
+        
         
 // button action (navigation,setScene)
         primaryStage.setScene(pagehomepage);
         register.setOnAction(e-> primaryStage.setScene(pageregistration)); // to registration page
         login.setOnAction(e-> primaryStage.setScene(pagelogin)); // homepage to log in page
-        tologinpage.setOnAction(e->{
-                register(registername[0],registeremail[0],registerpassword[0]);
-                if(registrationValid==true){
-                primaryStage.setScene(pagelogin);}
-        }); // registration to log in page
-        loginbtn.setOnAction(e-> {
-          logIn(name[0], useremail[0], userpassword[0]);
-          if(isUser==true){
-            primaryStage.setScene(pagemainPage);}
-                }); //from login to mainpage
         debitbtn.setOnAction(e-> primaryStage.setScene(pagedebit));
         creditbtn.setOnAction(e->primaryStage.setScene(pagecredit));
-        historybtn.setOnAction(e->primaryStage.setScene(pagehistory));
+        creditloanbtn.setOnAction(e-> primaryStage.setScene(pagecreditloan));
+        historybtn.setOnAction(e->{
+                Transaction(Username);
+                primaryStage.setScene(pagehistory);});
         savingbtn.setOnAction(e->primaryStage.setScene(pagesaving));
         interestpredictorbtn.setOnAction(e->primaryStage.setScene(pagedeposit));
         
@@ -605,8 +843,9 @@ public class InsideOut extends Application {
 
 // decorations
     
-    public void whiterec(AnchorPane pane){
-        Rectangle whiterec = new Rectangle(635,335);  // Width, Height
+    public static void whiterec(AnchorPane pane){
+        Rectangle whiterec = new Rectangle(635,335); 
+        whiterec.toBack();// Width, Height
         whiterec.setFill(Color.WHITE);  // Fill the rectangle with blue color
         whiterec.setArcWidth(20);     // Horizontal radius of the corner
         whiterec.setArcHeight(20);    // Vertical radius of the corner
@@ -634,16 +873,23 @@ public class InsideOut extends Application {
     }
     
     // yellow button
-    public void buttonfontsize(Button button){
+    public static void buttonfontsize(Button button){
         button.setStyle("-fx-background-color:#FED760;-fx-text-fill:black;");
         button.setFont(Font.font("Anton", 20)); 
+    }
+    
+    public static void categorybtn(Button button,ListView list){    
+        button.setFont(Font.font("Anton", 15)); 
+        button.setStyle("-fx-background-color:#FED760;");
+        button.setPrefWidth(150);
+        list.setStyle("-fx-background-color:#FED760;");
     }
     
     // button
         public void mainpagebtn(Button button, double width, double height, double topAnchor, double leftAnchor) {
         button.setStyle("-fx-background-color:#FED760;-fx-text-fill:black;");
         button.setFont(Font.font("Anton", 15));
-        button.setPrefSize(260,20);
+        button.setPrefSize(200,20);
         
         button.setPrefSize(width, height); 
         AnchorPane.setTopAnchor(button, topAnchor); 
@@ -726,8 +972,8 @@ public class InsideOut extends Application {
         // user input section
         TextArea area = new TextArea();
         area.setPromptText("Type your "+type+" here..."); // to display Type your type here ... section
-        area.setPrefWidth(400);  // Set the preferred width
-        area.setPrefHeight(160);  
+        area.setPrefWidth(600);  // Set the preferred width
+        area.setPrefHeight(60);  
         area.setWrapText(true); // this ensures when text type exceed the width of textarea thn the text will be displayed at the nxt line
         area.setStyle("-fx-font-size: 15px; -fx-background-color:#FFFFFF ; -fx-text-fill: black; -fx-border-radius: 5px;");
         area.setFont(Font.font("Anton", 12));
@@ -772,7 +1018,8 @@ public class InsideOut extends Application {
         Button savingbtn=new Button("Savings");       
         Button historybtn=new Button("History");       
         Button creditloanbtn=new Button("Credit Loan");       
-        Button interestpredictorbtn=new Button("Deposit Interest Predictor");       
+        Button interestpredictorbtn=new Button("Deposit Interest Predictor"); 
+        Button viewGraphsbtn=new Button("Graph");
         Button logoutbtn=new Button("Log Out");
         submenubtn(debitbtn,190,20,85,455);  // just for color and coordinate
         submenubtn(creditbtn,190,20,125,455); 
@@ -780,14 +1027,18 @@ public class InsideOut extends Application {
         submenubtn(historybtn,190,20,205,455); 
         submenubtn(creditloanbtn,190,20,245,455); 
         submenubtn(interestpredictorbtn,190,20,285,455); 
-        submenubtn(logoutbtn,190,20,325,452); 
-        logoutbtn.setStyle("-fx-background-color:#FEEBA8;-fx-text-fill:black;");
+        submenubtn(viewGraphsbtn,190,20,325,455); 
+        submenubtn(logoutbtn,190,20,42,455); 
+        logoutbtn.setPrefWidth(140); 
+        logoutbtn.setPrefHeight(20); 
+        logoutbtn.setStyle("-fx-background-color:#d2e3b7;-fx-text-fill:white;");
         debitbtn.setVisible(false);
         creditbtn.setVisible(false);
         savingbtn.setVisible(false);
         historybtn.setVisible(false);
         creditloanbtn.setVisible(false);
         interestpredictorbtn.setVisible(false);
+        viewGraphsbtn.setVisible(false);
         logoutbtn.setVisible(false);
         yellowrec.setVisible(false);
         
@@ -797,9 +1048,11 @@ public class InsideOut extends Application {
         historybtn.setManaged(false);
         creditloanbtn.setManaged(false);
         interestpredictorbtn.setManaged(false);
+        viewGraphsbtn.setManaged(false);
         logoutbtn.setManaged(false);
         yellowrec.setManaged(false);
         
+        yellowrec.getStyleClass().add("submenu");
         debitbtn.getStyleClass().add("submenu");
         creditbtn.getStyleClass().add("submenu");
         savingbtn.getStyleClass().add("submenu");
@@ -807,37 +1060,92 @@ public class InsideOut extends Application {
         creditloanbtn.getStyleClass().add("submenu");
         interestpredictorbtn.getStyleClass().add("submenu");
         logoutbtn.getStyleClass().add("submenu");
-        yellowrec.getStyleClass().add("submenu");
+        viewGraphsbtn.getStyleClass().add("submenu");
+        
         
 
-        pane.getChildren().addAll(debitbtn, creditbtn, savingbtn, historybtn, creditloanbtn, interestpredictorbtn, logoutbtn);
+        pane.getChildren().addAll(debitbtn, creditbtn, savingbtn, historybtn, creditloanbtn, interestpredictorbtn, logoutbtn,viewGraphsbtn);
 
         debitbtn.setOnAction(e -> primaryStage.setScene(debit));
         creditbtn.setOnAction(e -> primaryStage.setScene(credit));
         savingbtn.setOnAction(e -> primaryStage.setScene(saving));
-        historybtn.setOnAction(e -> primaryStage.setScene(history));
+        historybtn.setOnAction(e -> 
+        {   Transaction(Username);
+            primaryStage.setScene(history);
+                });
         creditloanbtn.setOnAction(e -> primaryStage.setScene(creditloan));
         interestpredictorbtn.setOnAction(e -> primaryStage.setScene(deposit));
         logoutbtn.setOnAction(e -> primaryStage.setScene(homepage)); // For example, go back to Page 1 when "Log Out" is clicked
         
  
     }
-    
+   
     public void showSubmenu(AnchorPane pane) {
-    // Find all buttons added to the pane
+    // Find all buttons added to the pane and toggle their visibility and managed state
     for (javafx.scene.Node node : pane.getChildren()) {
          if (node.getStyleClass().contains("submenu")) {
-            node.setVisible(!node.isVisible()); // Toggle visibility
-            node.setManaged(!node.isManaged()); // Toggle layout inclusion
+            node.setVisible(!node.isVisible()); 
+            node.setManaged(!node.isManaged());
         }
     }
-    } 
+
+}
+    private static String[] category = {""};
+    public static void selectCategory(AnchorPane pane){
+        
+        ListView<Button> listView = new ListView<>();
+        AnchorPane.setTopAnchor(listView, 250.0);  // 50px from the top of the parent
+        AnchorPane.setLeftAnchor(listView, 50.0); // 100px from the left of the parent
+        Button Food=new Button("Food");
+        Button Transportation=new Button("Transportation");
+        Button Fashion=new Button("Fashion");
+        Button Others=new Button("Others");
+        categorybtn(Food,listView);
+        categorybtn(Transportation,listView);
+        categorybtn(Fashion,listView);
+        categorybtn(Others,listView);
+        Label lbl=new Label();
+        lbl.setFont(Font.font("Anton", 15));
+        lbl.setLayoutX(50);
+        lbl.setLayoutY(300);
+        
+        Food.setOnAction(e-> {
+            category[0]="Food";
+            lbl.setText("Food");});
+        Transportation.setOnAction(e->{
+            category[0]="Transportation";      
+            lbl.setText("Transportation");});
+        
+        Fashion.setOnAction(e-> {
+             category[0]="Fashion";
+             lbl.setText("Fashion");});
+        Others.setOnAction(e->{
+                category[0]="Others";
+                lbl.setText("Others");});
+        
+        listView.getItems().addAll(Food,Transportation,Fashion,Others);
+        
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setContent(listView);
+        scrollPane.setStyle("-fx-border-width: 0;");
+
+        scrollPane.setPrefHeight(80);
+        scrollPane.setPrefWidth(180); 
+        AnchorPane.setTopAnchor(scrollPane ,280.0);  // 50px from the top of the parent
+        AnchorPane.setLeftAnchor(scrollPane, 250.0); // 100px from the left of the parent
+        
+        pane.getChildren().addAll(scrollPane,lbl);
+        System.out.println("Return lbl text "+category[0]);
+        
+    }
+    
+    public static String getCat(){
+        return category[0];
+    }
     
     private String selectedBank=""; // it should be static as
     
     public void bankSelection(AnchorPane pane){
-        
-        
        Label instruction = new Label("Select Your Bank");
        instruction.setStyle("-fx-background-color:#FFFFFF; -fx-text-fill: black; -fx-border-radius: 5px;");
        instruction.setFont(Font.font("Anton", 23));  // Set the font family and size here
@@ -905,6 +1213,8 @@ public class InsideOut extends Application {
         
         RHB.setOnAction(e -> { 
         label(rhblbl);
+        RHB.setVisible(false);
+        RHB.setManaged(false);
         MayBank.setVisible(false);
         MayBank.setManaged(false);
         HongLeong.setVisible(false);
@@ -919,6 +1229,8 @@ public class InsideOut extends Application {
         selectedBank="RHB";
         });
         MayBank.setOnAction(e -> { 
+        MayBank.setVisible(false);
+        MayBank.setManaged(false);
         RHB.setVisible(false);
         RHB.setManaged(false);
         HongLeong.setVisible(false);
@@ -935,6 +1247,8 @@ public class InsideOut extends Application {
         selectedBank="MayBank";
         });
         HongLeong.setOnAction(e -> { 
+        HongLeong.setVisible(false);
+        HongLeong.setManaged(false);
         RHB.setVisible(false);
         RHB.setManaged(false);
         MayBank.setVisible(false);
@@ -950,6 +1264,8 @@ public class InsideOut extends Application {
         selectedBank="HongLeong";
         });
         Alliance.setOnAction(e -> { 
+        Alliance.setVisible(false);
+        Alliance.setManaged(false);
         RHB.setVisible(false);
         RHB.setManaged(false);
         MayBank.setVisible(false);
@@ -965,6 +1281,8 @@ public class InsideOut extends Application {
         selectedBank="Allaince";
         });
         AmBank.setOnAction(e -> { 
+        AmBank.setVisible(false);
+        AmBank.setManaged(false);
         RHB.setVisible(false);
         RHB.setManaged(false);
         MayBank.setVisible(false);
@@ -980,6 +1298,8 @@ public class InsideOut extends Application {
         selectedBank="AmBank";
         });
         StandardChartered.setOnAction(e -> { 
+        StandardChartered.setVisible(false);
+        StandardChartered.setManaged(false);
         RHB.setVisible(false);
         RHB.setManaged(false);
         MayBank.setVisible(false);
@@ -1041,24 +1361,41 @@ public class InsideOut extends Application {
     for (javafx.scene.Node node : pane.getChildren()) {
          if (node.getStyleClass().contains("bankSelection")) {
             node.setVisible(!node.isVisible()); 
-            node.setManaged(!node.isManaged()); 
+            node.setManaged(!node.isManaged());
         }
         
     }
     } 
     
+    public static void viewBarChart(){
+        Transaction barchart=new Transaction(Username);
+        debitTotal=barchart.getDebitTotal();
+        creditTotal=barchart.getCreditTotal();
+        System.out.println("DEBIT TOTAL IN MAIN :" +debitTotal);
+        System.out.println("CreditTOTAL IN MAIN :" +creditTotal);
+    }
+    
+    public static void viewBarChartbtn(Button btn){
+        btn.setStyle("-fx-background-color:#fff8e3;-fx-text-fill:black;");
+        btn.setFont(Font.font("Anton", 15));
+        btn.setPrefSize(150,20);
+ 
+        AnchorPane.setTopAnchor(btn, 30.0); 
+        AnchorPane.setLeftAnchor(btn, 250.0); 
+        btn.setOnAction(e-> viewBarChart());
+    }
 
 // functions
 // log in page
-    public static String userinfo="/Users/cye/NewFolder/InsideOut/src/userinfo - Sheet1.csv";
-    public static void logIn(String name,String email,String password){
+    public static String logIn(String name,String email,String password){
        LogIn userLogIn=new LogIn(name,email,password);
        Label lbl=userLogIn.login();
-       Username=userLogIn.getName();
+       name=userLogIn.getName();
        popupMessage(lbl);
-       
+       return name;
     }  
-   
+    
+    
 // registration page
     static boolean registrationValid=false;
     public static void register(String username,String email,String password){
@@ -1069,17 +1406,15 @@ public class InsideOut extends Application {
     
 // record debit and credit
     static void store(String file,String content) {
-        String line;
+        String line="";
         BufferedWriter bw = null;
         try {
             bw = new BufferedWriter(new FileWriter(file, true));
-
             bw.newLine();
             bw.write(content);
         }
         catch(IOException e){
             e.printStackTrace();
-
         }
         finally {
             
@@ -1089,10 +1424,8 @@ public class InsideOut extends Application {
                 }
             }
             catch (IOException e ){
-
                 e.printStackTrace();
             }
-
         }
     }
 
@@ -1100,19 +1433,30 @@ public class InsideOut extends Application {
     static int transactionID=1;
     static double balance=0.0;
     static ArrayList<String> getBalance=new ArrayList<>();
-    static void Debit(double amount,String description,String type){
-        Debit debit=new Debit(Username,amount,description,type);
+    static void Debit(double amount,String description,String type,String category){
+        System.out.println("Username in Debit :"+Username);
+        Debit debit=new Debit(Username,amount,description,type,category);
         Label message=debit.getLabel();
         popupMessage(message);
         
     }
     
-    static void Credit(double amount,String description,String type){
-        Credit credit=new Credit(Username,amount,description,type);
+    static void Credit(double amount,String description,String type,String category){
+        Credit credit=new Credit(Username,amount,description,type,category);
         Label message=credit.getLabel();
         popupMessage(message);
     }
  
+ // history
+    public static void Transaction(String name){
+        System.out.println("Name in Transaction method "+name);
+        Transaction data = new Transaction(name);
+        data.readFile();
+        tableViewOverview.setItems(data.getOverviewData());
+        tableViewDebit.setItems(data.getDebitData());
+        tableViewCredit.setItems(data.getCreditData());
+    }
+   
 // savings
     public static void enterPercentage(AnchorPane pane){
         TextField enterPercentage = new TextField();
@@ -1134,8 +1478,9 @@ public class InsideOut extends Application {
         confirm.setLayoutX(220);
         confirm.setLayoutY(250);
         confirm.setOnAction(e-> {
-            Label savingSuccesful=new Label(savingPercentage[0]+"% will be deducted on next debit as saving.");
-            popupMessage(savingSuccesful);
+            Savings saving=new Savings(Username,savingPercentage[0]);
+            Label lbl=saving.getLabel();
+            popupMessage(lbl);
         });
         
         pane.getChildren().addAll(enterPercentage,confirm);

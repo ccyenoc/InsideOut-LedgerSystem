@@ -8,34 +8,40 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import static insideout.InsideOut.Username;
 
 public class Transaction {
-    private StringProperty transactionID;
-    private StringProperty time;
-    private StringProperty amount;
-    private StringProperty description;
-    private final String filepath="/Users/cye/NewFolder/InsideOut/src/recorddebitandcredit - Sheet1.csv";
+    private final StringProperty transactionID = new SimpleStringProperty("");
+    private final StringProperty time = new SimpleStringProperty("");
+    private final StringProperty amount = new SimpleStringProperty("");
+    private final StringProperty description = new SimpleStringProperty("");
+    private final StringProperty username = new SimpleStringProperty("");
+    private final String filepath = "/Users/cye/NewFolder/InsideOut/src/recorddebitandcredit.csv";
     private ObservableList<Transaction> debitData = FXCollections.observableArrayList();
     private ObservableList<Transaction> creditData = FXCollections.observableArrayList();
-    private ObservableList<Transaction> overviewData= FXCollections.observableArrayList();
+    private ObservableList<Transaction> overviewData = FXCollections.observableArrayList();
+    private double debitTotal=0.0;
+    private double creditTotal=0.0;
+
     
-    // Constructor
-    public Transaction(){
-        this.transactionID = new SimpleStringProperty("0");
-        this.time = new SimpleStringProperty("0");
-        this.amount = new SimpleStringProperty("0");
-        this.description = new SimpleStringProperty("0");
-    }
-    
-    public Transaction(String transactionID, String time, String amount, String description) {
-        this.transactionID = new SimpleStringProperty(transactionID);
-        this.time = new SimpleStringProperty(time);
-        this.amount = new SimpleStringProperty(amount);
-        this.description = new SimpleStringProperty(description);
+    public Transaction(String name) {
+        this.username.set(name);
+        readFile();
     }
 
-    // Getters and Setters (using StringProperty for JavaFX binding)
+    // Constructor with transaction details
+    public Transaction(String name, String transactionID, String time, String amount, String description) {
+        this.username.set(name);
+        this.transactionID.set(transactionID);
+        this.time.set(time);
+        this.amount.set(amount);
+        this.description.set(description);
+    }
+
+    // Getter methods
+    public String getTransactionID() {
+        return transactionID.get();
+    }
+
     public String getTime() {
         return time.get();
     }
@@ -48,7 +54,7 @@ public class Transaction {
         return description.get();
     }
 
-    // Properties (if needed for binding)
+    // Property methods for JavaFX binding
     public StringProperty transactionIDProperty() {
         return transactionID;
     }
@@ -65,60 +71,73 @@ public class Transaction {
         return description;
     }
 
+    public StringProperty usernameProperty() {
+        return username;
+    }
 
-    public void readFile(){
-    try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
+    // Method to read CSV and populate the data lists
+    public void readFile() {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
             String line;
-            ArrayList<Transaction> debitList=new ArrayList<>();
-            ArrayList<Transaction> creditList=new ArrayList<>();
-            ArrayList<Transaction> overviewList=new ArrayList<>();
-            boolean header=true;
+            ArrayList<Transaction> debitList = new ArrayList<>();
+            ArrayList<Transaction> creditList = new ArrayList<>();
+            ArrayList<Transaction> overviewList = new ArrayList<>();
+            boolean header = true;
+
             while ((line = reader.readLine()) != null) {
-                if(header==true){
-                    header=false;
+                if (header) {
+                    header = false;
                     continue;
                 }
-                
-                String[] columns = line.split(","); 
-                String type = columns[2];          
-                String amount = columns[3];        
-                String description = columns[4];   
-                String transactionID=columns[1];
-                String time=columns[5];  
-                String name=columns[0];
-                
-                if(Username.equals(name)){
-                overviewList.add(new Transaction(transactionID,time,amount,description));
-                if ("debit".equalsIgnoreCase(type)) {
-                    debitList.add(new Transaction(transactionID,time,amount,description));
-                } else if ("credit".equalsIgnoreCase(type)) {
-                    creditList.add(new Transaction(transactionID,time,amount,description));
+
+                String[] columns = line.split(",");
+                String type = columns[2];
+                String amount = columns[3];
+                String description = columns[4];
+                String transactionID = columns[1];
+                String time = columns[5];
+                String name = columns[0];
+
+                if (username.get().equals(name)) {
+                    overviewList.add(new Transaction(name, transactionID, time, amount, description));
+                    if ("debit".equalsIgnoreCase(type)) {
+                        debitTotal+=Double.parseDouble(amount);
+                        debitList.add(new Transaction(name, transactionID, time, amount, description));
+                    } else if ("credit".equalsIgnoreCase(type)) {
+                        creditTotal+=Double.parseDouble(amount);
+                        creditList.add(new Transaction(name, transactionID, time, amount, description));
+                    }
                 }
-             }
-                else{
-                    continue;
-                }
-                debitData.setAll(debitList);
-                creditData.setAll(creditList);
-                overviewData.setAll(overviewList);
             }
-            
-             
-        } catch(IOException ex){
+
+            debitData.setAll(debitList);
+            creditData.setAll(creditList);
+            overviewData.setAll(overviewList);
+           
+
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
-    
-   public ObservableList<Transaction> getDebitData() {
+
+    // Getter methods for ObservableLists
+    public ObservableList<Transaction> getDebitData() {
         return debitData;
     }
 
     public ObservableList<Transaction> getCreditData() {
         return creditData;
     }
-    
+
     public ObservableList<Transaction> getOverviewData() {
         return overviewData;
     }
-        
+    
+    public double getDebitTotal(){
+        return debitTotal;
     }
+    
+    public double getCreditTotal(){
+        return creditTotal;
+    }
+}

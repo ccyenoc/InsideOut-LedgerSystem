@@ -12,29 +12,38 @@ import javafx.scene.control.Label;
 
 public class Debit {
     private String username="";
-    private String filepath="/Users/cye/NewFolder/InsideOut/src/recorddebitandcredit - Sheet1.csv";
+    private String recorddebitandcredit="/Users/cye/NewFolder/InsideOut/src/recorddebitandcredit.csv";
+    private String recorddebit="/Users/cye/NewFolder/InsideOut/src/recorddebit.csv";
     private double amount=0.0;
     private String description="";
     private String type="";
+    private String category="";
     private Label lbl=new Label();
-    static String transactioninfo="";
-    static int transactionID=1;
-    static double balance=0.0;
-    static ArrayList<String> getBalance=new ArrayList<>();
+    private static String transactioninfo="";
+    private static String transactioninfoDebitcsv="";
+    private static int transactionID=1;
+    private static double balance=0.0;
+    private static ArrayList<String> getBalance=new ArrayList<>();
     
-    public Debit(String username,double amount,String description,String type){
+    public Debit(String username,double amount,String description,String type,String category){
         this.username=username;
         this.amount=amount;
         this.description=description;
         this.type=type;
+        this.category=category;
         updateDebit();
     }
     
     
     private void updateDebit(){
+        Savings debit=new Savings(amount);
+        System.out.println("Savings : "+amount);
+        boolean userStatus=debit.getdeductStatus();
+        System.out.println("userStatus "+userStatus);
+        
         String line="";
         readLastTransactionID();
-        try(BufferedReader reader=new BufferedReader(new FileReader(filepath));){
+        try(BufferedReader reader=new BufferedReader(new FileReader(recorddebitandcredit));){
             boolean header = true;
             while ((line = reader.readLine()) != null) {
                 if(header){
@@ -56,25 +65,38 @@ public class Debit {
             if(!getBalance.isEmpty()){
             int index=getBalance.size()-1;
             String []splitedrow=getBalance.get(index).split(",");
-            int balanceIndex=splitedrow.length-1;
+            int balanceIndex=splitedrow.length-2;
             balance=Double.parseDouble(splitedrow[balanceIndex]);
             }
         }catch (IOException ex){
             ex.printStackTrace();
             }      
         
+        String yesno="";
         if(amount<=0){
             lbl=new Label("Cash Amount can't be negative or zero!");
         }
         else{
-        balance+=amount;
+            if(userStatus==false){
+                balance+=amount;
+                yesno="No";
+            }
+            else{
+                double savings=debit.getSavings();
+                System.out.println("Savings is "+savings);
+                balance+=(amount-savings); // note : savings will only be added to balance at end of month eg (31 august);   
+                yesno="Yes";
+                userStatus=false;
+                debit.setdeductStatus(userStatus);
+            }
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd:MM:yyyy");
-        lbl=new Label("Succesfully Debited");
-        
-        transactioninfo = username + "," + transactionID + ","+type+","+amount+"," +description+","+ date + "," + balance;
+        lbl=new Label("Succesfully Debited");       
+        transactioninfo = username + "," + transactionID + ","+type+","+amount+"," +description+","+ date + "," + balance+","+category;
+        transactioninfoDebitcsv = username + "," + transactionID + ","+type+","+amount+"," +description+","+ date + "," + balance+","+category+","+yesno;
         transactionID++;
-        store(filepath,transactioninfo);
+        store(recorddebitandcredit,transactioninfo); // record for Transaction class
+        store(recorddebit,transactioninfoDebitcsv); // record for debit csv
         }
  
     }
@@ -82,10 +104,15 @@ public class Debit {
     public Label getLabel(){
         return lbl;
     }
+    
+    // for savingFile to calculate saving
+    public double getDebit(){
+        return amount;
+    }
             
     public void readLastTransactionID() {
     String line;
-    try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
+    try (BufferedReader reader = new BufferedReader(new FileReader(recorddebitandcredit))) {
         boolean header = true;
         while ((line = reader.readLine()) != null) {
             if (header) {

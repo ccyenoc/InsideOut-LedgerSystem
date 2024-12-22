@@ -15,18 +15,21 @@ import java.util.ArrayList;
 import java.util.Date;
 import javafx.scene.control.Label;
 public class Credit {
-    private String username="";
-    private String filepath="/Users/cye/NewFolder/InsideOut/src/recorddebitandcredit - Sheet1.csv";
-    private double amount=0.0;
-    private String description="";
-    private String type="";
+    private static String username="";
+    private static String recorddebitandcredit="/Users/cye/NewFolder/InsideOut/src/recorddebitandcredit.csv";
+    private static String recordcredit="/Users/cye/NewFolder/InsideOut/src/recordcredit.csv";
+    private static double amount=0.0;
+    private static String description="";
+    private static String type="";
+    private static String category="";
     private Label lbl=new Label();
     
-    public Credit(String username,double amount,String description,String type){
+    public Credit(String username,double amount,String description,String type,String category){
         this.username=username;
         this.amount=amount;
         this.description=description;
         this.type=type;
+        this.category=category;
         updateDebit();
     }
     
@@ -34,7 +37,7 @@ public class Credit {
     private void updateDebit(){
         String line="";
         readLastTransactionID();
-        try(BufferedReader reader=new BufferedReader(new FileReader(filepath));){
+        try(BufferedReader reader=new BufferedReader(new FileReader(recorddebitandcredit));){
             boolean header = true;
             while ((line = reader.readLine()) != null) {
                 if(header){
@@ -56,7 +59,7 @@ public class Credit {
             if(!getBalance.isEmpty()){
             int index=getBalance.size()-1;
             String []splitedrow=getBalance.get(index).split(",");
-            int balanceIndex=splitedrow.length-1;
+            int balanceIndex=splitedrow.length-2;
             balance=Double.parseDouble(splitedrow[balanceIndex]);
             }
         }catch (IOException ex){
@@ -75,10 +78,11 @@ public class Credit {
         lbl=new Label("Balance less than 0!");
         }
         else{
-        transactioninfo = username + "," + transactionID + ","+type+","+amount+"," +description+","+ date + "," + balance;
+        transactioninfo = username + "," + transactionID + ","+type+","+amount+"," +description+","+ date + "," + balance+","+category;
         transactionID++;
         lbl=new Label("Succesfully Credited");
-        store(filepath,transactioninfo);
+        store(recorddebitandcredit,transactioninfo);
+        store(recordcredit,transactioninfo);
         }
  
     }
@@ -89,7 +93,7 @@ public class Credit {
             
     public void readLastTransactionID() {
     String line;
-    try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
+    try (BufferedReader reader = new BufferedReader(new FileReader(recorddebitandcredit))) {
         boolean header = true;
         while ((line = reader.readLine()) != null) {
             if (header) {
