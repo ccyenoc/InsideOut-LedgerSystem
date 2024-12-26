@@ -8,20 +8,22 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Label;
 
 public class Transaction {
-    private final StringProperty transactionID = new SimpleStringProperty("");
-    private final StringProperty time = new SimpleStringProperty("");
-    private final StringProperty amount = new SimpleStringProperty("");
-    private final StringProperty description = new SimpleStringProperty("");
-    private final StringProperty username = new SimpleStringProperty("");
-    private final String filepath = "/Users/cye/NewFolder/InsideOut/src/recorddebitandcredit.csv";
+    private StringProperty transactionID = new SimpleStringProperty("");
+    private StringProperty time = new SimpleStringProperty("");
+    private StringProperty amount = new SimpleStringProperty("");
+    private StringProperty description = new SimpleStringProperty("");
+    private StringProperty username = new SimpleStringProperty("");
+    private String filepath = "/Users/cye/NewFolder/InsideOut/src/recorddebitandcredit.csv";
+    private double balance=0.0;
     private ObservableList<Transaction> debitData = FXCollections.observableArrayList();
     private ObservableList<Transaction> creditData = FXCollections.observableArrayList();
     private ObservableList<Transaction> overviewData = FXCollections.observableArrayList();
     private double debitTotal=0.0;
     private double creditTotal=0.0;
-
+   
     
     public Transaction(String name) {
         this.username.set(name);
@@ -36,6 +38,7 @@ public class Transaction {
         this.amount.set(amount);
         this.description.set(description);
     }
+   
 
     // Getter methods
     public String getTransactionID() {
@@ -97,8 +100,10 @@ public class Transaction {
                 String transactionID = columns[1];
                 String time = columns[5];
                 String name = columns[0];
+                
 
                 if (username.get().equals(name)) {
+                    balance=Double.parseDouble(columns[6]);
                     overviewList.add(new Transaction(name, transactionID, time, amount, description));
                     if ("debit".equalsIgnoreCase(type)) {
                         debitTotal+=Double.parseDouble(amount);
@@ -140,4 +145,10 @@ public class Transaction {
     public double getCreditTotal(){
         return creditTotal;
     }
+    
+    public Label getBalance(){
+       Label lbl=new Label("RM "+String.valueOf(balance));
+       return lbl;
+    }
+    
 }

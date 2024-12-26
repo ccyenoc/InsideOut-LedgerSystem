@@ -1,1 +1,4 @@
 Username,Transaction ID,Transaction Type,Amount,Description,Date,Balance,Category
+ccyenoc,1,Credit,1000.0,living,Thu Dec 26 00:31:43 MYT 2024,3900.0,Food
+ccyenoc,2,Credit,2000.0,living,Thu Dec 26 00:40:47 MYT 2024,1900.0,Food
+ccyenoc,3,Credit,1000.0,living,Thu Dec 26 00:46:23 MYT 2024,900.0,Food

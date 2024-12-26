@@ -1,0 +1,8 @@
+Username,Transaction ID,Transaction Type,Amount,Description,Date,Balance,Category
+ccyenoc,1,Debit,1000,Food,Wed Dec 11 11:00:35 MYT 2024,1000,Food
+ccyenoc,2,Debit,2000,Transportation,Wed Dec 11 11:00:50 MYT 2024,3000,Transportation
+ccyenoc,3,Credit,500,Fashion,Wed Dec 11 11:16:13 MYT 2024,2500,Fashion
+ccyenoc,4,Credit,50,Transportation,Wed Dec 11 11:21:42 MYT 2024,2450,Transportation
+ccyenoc,5,Credit,1000,JellyCat,Thu Dec 12 20:42:36 MYT 2024,1450,Others
+bcjr,6,Debit,2000,food,Thu Dec 12 20:51:54 MYT 2024,2000,Food
+ccyenoc,7,Credit,30,shirt,Fri Dec 13 20:43:30 MYT 2024,1420,Fashion

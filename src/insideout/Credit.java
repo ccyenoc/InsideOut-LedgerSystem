@@ -20,6 +20,8 @@ public class Credit {
     private static String recordcredit="/Users/cye/NewFolder/InsideOut/src/recordcredit.csv";
     private static double amount=0.0;
     private static String description="";
+    private String transactioninfo="";
+    private String transactioninfoCreditcsv="";
     private static String type="";
     private static String category="";
     private Label lbl=new Label();
@@ -30,14 +32,14 @@ public class Credit {
         this.description=description;
         this.type=type;
         this.category=category;
-        updateDebit();
+        updateCredit();
     }
     
     
-    private void updateDebit(){
+    private void updateCredit(){
         String line="";
-        readLastTransactionID();
-        try(BufferedReader reader=new BufferedReader(new FileReader(recorddebitandcredit));){
+        creditID();
+        try(BufferedReader reader=new BufferedReader(new FileReader(recordcredit));){
             boolean header = true;
             while ((line = reader.readLine()) != null) {
                 if(header){
@@ -78,11 +80,11 @@ public class Credit {
         lbl=new Label("Balance less than 0!");
         }
         else{
-        transactioninfo = username + "," + transactionID + ","+type+","+amount+"," +description+","+ date + "," + balance+","+category;
+        transactioninfoCreditcsv = username + "," + transactionID + ","+type+","+amount+"," +description+","+ date + "," + balance+","+category;
         transactionID++;
         lbl=new Label("Succesfully Credited");
-        store(recorddebitandcredit,transactioninfo);
-        store(recordcredit,transactioninfo);
+        store(recordcredit,transactioninfoCreditcsv);
+        readLastTransactionID();
         }
  
     }
@@ -91,8 +93,9 @@ public class Credit {
         return lbl;
     }
             
-    public void readLastTransactionID() {
-    String line;
+     public void readLastTransactionID() {
+    String line="";
+    ArrayList<String> str=new ArrayList<>();
     try (BufferedReader reader = new BufferedReader(new FileReader(recorddebitandcredit))) {
         boolean header = true;
         while ((line = reader.readLine()) != null) {
@@ -100,24 +103,55 @@ public class Credit {
                 header = false;
                 continue;
             }
-            String[] columns = line.split(",");
-            if (columns.length > 1) {  // Ensure there are enough columns in the row
-           try {
-        int lastID = Integer.parseInt(columns[1].trim());  // Parse transaction ID (column 1 should be the ID)
-        if (lastID >= transactionID) {
-            transactionID = lastID + 1;  // Update transaction ID to the next number
-            transactionID=Integer.parseInt(String.format("%08d",transactionID));
+            
+            str.add(line);
         }
-    } catch (NumberFormatException e) {
-        // If parsing fails, this row is skipped (invalid transaction ID format)
-        System.out.println("Invalid transaction ID in row: " + line);
-    }
-}
+        
+        if(str.size()!=0){
+        int lastIndex=str.size()-1;
+        String row[]=str.get(lastIndex).split(",");
+        int lastID=Integer.parseInt(row[1]);
+        transactionID=lastID+1;
+        } 
+        else{
+           transactionID=1; 
         }
-    } catch (IOException ex) {
-        ex.printStackTrace();
+        
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd:MM:yyyy");
+        transactioninfo = username + "," + transactionID + ","+type+","+amount+"," +description+","+ date + "," + balance+","+category;
+        store(recorddebitandcredit,transactioninfo); 
+    }catch (IOException e) {
+       e.printStackTrace();
     }
 }
     
-   
+    public void creditID(){
+    String line="";
+    ArrayList<String> str=new ArrayList<>();
+    try (BufferedReader reader = new BufferedReader(new FileReader(recordcredit))) {
+        boolean header = true;
+        while ((line = reader.readLine()) != null) {
+            if (header) {
+                header = false;
+                continue;
+            }
+            
+            str.add(line);
+        }
+        
+        if(str.size()!=0){
+        int lastIndex=str.size()-1;
+        String row[]=str.get(lastIndex).split(",");
+        int lastID=Integer.parseInt(row[1]);
+        transactionID=lastID+1;
+        } 
+        else{
+           transactionID=1; 
+        }
+    }catch (IOException e) {
+       e.printStackTrace();
+    }
+
+            }
 }
