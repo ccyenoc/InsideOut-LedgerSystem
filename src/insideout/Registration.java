@@ -40,7 +40,7 @@ public class Registration{
                 
                 String checkUser[]=line.split(",");
                 for(int i=0;i<checkUser.length;i++){
-                    if(checkUser[1].equals(email)){ // check whether user exists
+                    if(checkUser[2].equals(email)){ // check whether user exists
                         lbl =new Label("User Exist!");
                         break userFound;
                     }

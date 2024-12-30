@@ -23,7 +23,7 @@ public class Debit {
     private Label lbl=new Label();
     private String transactioninfo="";
     private String transactioninfoDebitcsv="";
-    private int transactionID=1;
+    private String transactionID="";
     private double balance=0.0;
     private ArrayList<String> getBalance=new ArrayList<>();
     
@@ -125,11 +125,11 @@ public class Debit {
         if(str.size()!=0){
         int lastIndex=str.size()-1;
         String row[]=str.get(lastIndex).split(",");
-        int lastID=Integer.parseInt(row[1]);
-        transactionID=lastID+1;
+        int ID=Integer.parseInt(row[1].replace("TS",""))+1;
+        transactionID="TS"+String.format("%06d",ID);
         } 
         else{
-           transactionID=1; 
+           transactionID="TS"+String.format("%06d",1);
         }
         
         Date date = new Date();
@@ -158,11 +158,11 @@ public class Debit {
         if(str.size()!=0){
         int lastIndex=str.size()-1;
         String row[]=str.get(lastIndex).split(",");
-        int lastID=Integer.parseInt(row[1]);
-        transactionID=lastID+1;
+        int ID=Integer.parseInt(row[1].replace("DB",""))+1;
+        transactionID="DB"+String.format("%06d",ID);
         } 
         else{
-           transactionID=1; 
+           transactionID="DB"+String.format("%06d",1);
         }
     }catch (IOException e) {
        e.printStackTrace();

@@ -19,9 +19,9 @@ import static insideout.InsideOut.piechart;
 public class SpendingCategory {
     private static Label lbl=new Label();
 
-    public static Label SpendingCategoryChart(String username,AnchorPane pane) {
+    public static PieChart SpendingCategoryChart(String username) {
         PieChart pieChart = new PieChart();
-        pieChart.setTitle("Spending Distribution Based On Category");
+        pieChart.setTitle("Spending Distribution");
 
         String filePath = "/Users/cye/NewFolder/InsideOut/src/recordcredit.csv";
         Map<String, Double> userCategoryAmounts = new HashMap<>();
@@ -39,7 +39,6 @@ public class SpendingCategory {
 
                 String[] data = line.split(",");
                 String name = data[0];
-                System.out.println(username);
                 double amount = Double.parseDouble(data[3]);
                 String category = data[7];
 
@@ -51,7 +50,6 @@ public class SpendingCategory {
 
             if (userCategoryAmounts.isEmpty()) {
                 lbl=new Label("No Data Found!");
-                return lbl;
             } else {
                 for (Map.Entry<String, Double> entry : userCategoryAmounts.entrySet()) {
                     String category = entry.getKey();
@@ -59,16 +57,20 @@ public class SpendingCategory {
                     double percentage = (amount / totalAmount) * 100;
 
                     pieChart.getData().add(new PieChart.Data(category + "(" + String.format("%.2f", percentage) + "%)", amount));
+                   
                 }
             }
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        
         piechart(pieChart);
-        pane.getChildren().add(pieChart);
-        return lbl;
+        return pieChart;
+    }
+    
+    public static Label getLabel(){
+      return lbl;
     }
     
   

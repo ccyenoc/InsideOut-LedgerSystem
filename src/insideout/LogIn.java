@@ -45,7 +45,7 @@ public class LogIn {
            }
 
            lbl=new Label("User Not Found!"); 
-     
+           isUser=false;
            }
            }catch (IOException ex){
                  ex.printStackTrace();

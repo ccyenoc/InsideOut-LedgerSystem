@@ -12,10 +12,12 @@ import java.io.IOException;
 import java.util.Scanner;
 import javafx.scene.layout.AnchorPane;
 import static insideout.InsideOut.graphs;
+import javafx.scene.chart.PieChart;
+import javafx.scene.control.Label;
 
 public class SavingGrowth {
 
-    public static BarChart<String, Number>  SavingGrowthChart(String targetUsername,AnchorPane pane) {
+    public static BarChart<String, Number>  SavingGrowthChart(String targetUsername) {
         CategoryAxis xAxis = new CategoryAxis();
         xAxis.setLabel("Month");
 
@@ -23,7 +25,7 @@ public class SavingGrowth {
         yAxis.setLabel("Savings");
 
         BarChart<String, Number> barChart = new BarChart<>(xAxis, yAxis);
-        barChart.setTitle("Savings Growth for User: " + targetUsername);
+        barChart.setTitle("Savings Growth");
         barChart.setCategoryGap(50);
 
         XYChart.Series<String, Number> monthlySavingsSeries = new XYChart.Series<>();
@@ -44,6 +46,9 @@ public class SavingGrowth {
                 }
 
                 String[] data = line.split(",");
+                if(data.length<=3){
+                 continue;
+                }
                 String username = data[0];
                 double currentMonthlySavings = Double.parseDouble(data[7]);
                 double totalSavings = Double.parseDouble(data[5]);
@@ -57,6 +62,7 @@ public class SavingGrowth {
 
                     monthlySavingsSeries.getData().add(new XYChart.Data<>("Month " + monthCount, totalSavings));
                     previousMonthlySavings = currentMonthlySavings;
+                 
             }
             }
         } catch (IOException e) {
@@ -65,10 +71,11 @@ public class SavingGrowth {
 
         graphs(barChart);
         barChart.getData().addAll(monthlySavingsSeries);
-        pane.getChildren().add(barChart);
-        
+      
         return barChart;
     }
+    
+ 
 
    
 }

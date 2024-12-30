@@ -6,3 +6,18 @@ ccyenoc,4,Debit,1000.0,living,Wed Dec 25 00:28:12 MYT 2024,4000.0,Food,No
 ccyenoc,5,Debit,1000.0,living,Wed Dec 25 01:01:13 MYT 2024,4900.0,Food,Yes
 ccyenoc,6,Debit,2000000.0,living,Thu Dec 26 00:40:36 MYT 2024,1804900.0,Food,Yes
 ccyenoc,7,Debit,100.0,living,Thu Dec 26 00:43:45 MYT 2024,1804990.0,Food,Yes
+ccyenoc,8,Debit,1000.0,Happy Happy,Thu Dec 26 16:40:02 MYT 2024,1805890.0,Fashion,Yes
+ccyenoc,9,Debit,10000.0,living,Thu Dec 26 17:00:44 MYT 2024,1814890.0,Fashion,Yes
+ccyenoc,10,Debit,1000.0,living,Thu Dec 26 17:06:44 MYT 2024,1815790.0,Food,Yes
+ccyenoc,11,Debit,10000.0,shirt cny,Thu Dec 26 17:26:14 MYT 2024,1824790.0,Fashion,Yes
+ccyenoc,12,Debit,1000.0,christmas,Thu Dec 26 17:27:37 MYT 2024,1825690.0,Others,Yes
+ccyenoc,13,Debit,2.0E7,loan,Sun Dec 29 22:49:03 MYT 2024,2.162569E7,Others,Yes
+ccyenoc,14,Debit,1000.0,living,Sun Dec 29 22:52:09 MYT 2024,2.162668E7,Food,Yes
+ccyenoc,15,Debit,1000.0,living,Sun Dec 29 22:59:28 MYT 2024,2.162767E7,Food,Yes
+ccyenoc,DB000016,Debit,1000.0,living,Mon Dec 30 00:34:45 MYT 2024,2.162866E7,Food,Yes
+ccyenoc,DB000017,Debit,1000.0,loan,Mon Dec 30 00:35:41 MYT 2024,2.162965E7,Food,Yes
+ccyenoc,DB000018,Debit,1000.0,loan,Mon Dec 30 14:42:10 MYT 2024,2.163064E7,Food,Yes
+ccyenoc,DB000019,Debit,100.0,food,Mon Dec 30 15:54:16 MYT 2024,2.1630739E7,Food,Yes
+ccyenoc,DB000020,Debit,1000.0,loan,Mon Dec 30 20:54:11 MYT 2024,2.1631729E7,Food,Yes
+ccyenoc,DB000021,Debit,10000.0,loan,Mon Dec 30 21:10:02 MYT 2024,2.1641629E7,Food,Yes
+ccyenoc,DB000022,Debit,1000.0,loan,Mon Dec 30 21:14:41 MYT 2024,2.1642619E7,Food,Yes
