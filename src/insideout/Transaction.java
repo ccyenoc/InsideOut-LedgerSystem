@@ -16,7 +16,7 @@ public class Transaction {
     private StringProperty amount = new SimpleStringProperty("");
     private StringProperty description = new SimpleStringProperty("");
     private StringProperty username = new SimpleStringProperty("");
-    private String filepath = "/Users/cye/NewFolder/InsideOut/src/recorddebitandcredit.csv";
+    private String filepath = "src/recorddebitandcredit.csv";
     private double balance=0.0;
     private ObservableList<Transaction> debitData = FXCollections.observableArrayList();
     private ObservableList<Transaction> creditData = FXCollections.observableArrayList();

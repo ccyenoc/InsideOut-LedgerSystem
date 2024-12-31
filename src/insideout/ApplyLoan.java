@@ -26,7 +26,7 @@ public class ApplyLoan{
     private String LoanID="";
     private Label lbl;
     
-    private String applyFile="/Users/cye/NewFolder/InsideOut/src/creditloan-apply.csv";
+    private String applyFile="src/creditloan-apply.csv";
     public ApplyLoan(){
     }
    

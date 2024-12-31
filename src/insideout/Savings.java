@@ -20,8 +20,8 @@ public class Savings {
     private double savings=0.0; // update the balance at recorddebitandcredit at the end of month
     private double totalSavings=0.0; // for display purpose at view balance
     private double savingPerMonth=0.0;
-    protected String savingFile="/Users/cye/NewFolder/InsideOut/src/savings - Sheet1.csv";
-    private String recorddebitandcredit="/Users/cye/NewFolder/InsideOut/src/recorddebitandcredit.csv";
+    protected String savingFile="src/savings - Sheet1.csv";
+    private String recorddebitandcredit="src/recorddebitandcredit.csv";
     protected boolean deductdebit=false;
     private boolean headerinfile=true;
     private Label lbl;

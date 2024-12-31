@@ -13,8 +13,8 @@ import java.util.Date;
 import javafx.scene.control.Label;
 public class Credit {
     private static String username="";
-    private static String recorddebitandcredit="/Users/cye/NewFolder/InsideOut/src/recorddebitandcredit.csv";
-    private static String recordcredit="/Users/cye/NewFolder/InsideOut/src/recordcredit.csv";
+    private static String recorddebitandcredit="src/recorddebitandcredit.csv";
+    private static String recordcredit="src/recordcredit.csv";
     private static double amount=0.0;
     private static String description="";
     private String transactioninfo="";

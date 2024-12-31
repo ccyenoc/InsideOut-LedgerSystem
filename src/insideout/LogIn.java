@@ -13,7 +13,7 @@ public class LogIn {
     private String name="";
     private String email="";
     private String password="";
-    private static String userinfo="/Users/cye/NewFolder/InsideOut/src/userinfo - Sheet1.csv";
+    private static String userinfo="src/userinfo - Sheet1.csv";
     private boolean UserFound=false;
     
     public LogIn(String name,String email,String password){

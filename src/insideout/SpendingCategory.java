@@ -23,7 +23,7 @@ public class SpendingCategory {
         PieChart pieChart = new PieChart();
         pieChart.setTitle("Spending Distribution");
 
-        String filePath = "/Users/cye/NewFolder/InsideOut/src/recordcredit.csv";
+        String filePath = "src/recordcredit.csv";
         Map<String, Double> userCategoryAmounts = new HashMap<>();
         double totalAmount=0.0;
 

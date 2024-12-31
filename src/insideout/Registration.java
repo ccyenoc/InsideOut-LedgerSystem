@@ -14,7 +14,7 @@ public class Registration{
     private static String username="";
     private static String email="";
     private static String password="";
-    private static String userinfo="/Users/cye/NewFolder/InsideOut/src/userinfo - Sheet1.csv";
+    private static String userinfo="src/userinfo - Sheet1.csv";
     
     public Registration(String username,String email,String password){
         this.username=username;

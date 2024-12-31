@@ -18,9 +18,9 @@ import javafx.scene.control.Label;
 
 
 public class Repayment {
-    private String balanceFile="/Users/cye/NewFolder/InsideOut/src/recorddebitandcredit.csv";
-    private String applyFile="/Users/cye/NewFolder/InsideOut/src/creditloan-apply.csv";
-    private String repaymentFile="/Users/cye/NewFolder/InsideOut/src/creditloan-repay - Sheet1.csv";
+    private String balanceFile="src/recorddebitandcredit.csv";
+    private String applyFile="src/creditloan-apply.csv";
+    private String repaymentFile="src/creditloan-repay - Sheet1.csv";
     private ArrayList<Integer> userIndex=new ArrayList<>();
     private ArrayList<String> findUser=new ArrayList<>();
     private ArrayList<String> info=new ArrayList<>();

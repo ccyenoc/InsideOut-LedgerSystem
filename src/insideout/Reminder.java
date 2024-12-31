@@ -28,7 +28,7 @@ public class Reminder {
     String[] userID;
     String[] repaymentPeriod;
     String[] remainingPayment;
-    final String filename = "/Users/cye/NewFolder/InsideOut/src/creditloan-apply.csv";
+    final String filename = "src/creditloan-apply.csv";
     private static final String EMAIL_FROM = "woiaijdwj@gmail.com";
     private static final String APP_PASSWORD = "cwwl zggf qwwf bcdm";
     private static Label lbl;
@@ -94,7 +94,7 @@ public class Reminder {
             message.setSubject("Remaining Payment");
             message.setText("RM" + remainingPayment + " required to pay before " + duedate);
             Transport.send(message);
-            lbl=new Label("Reminder!\nAuto-deduction from balance will be taken to pau for loan(s)");
+            lbl=new Label("Reminder!\nAuto-deduction from balance will be taken to pay for loan(s)");
         }
 
     }

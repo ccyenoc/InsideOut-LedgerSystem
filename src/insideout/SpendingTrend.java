@@ -34,7 +34,7 @@ public class SpendingTrend{
         XYChart.Series<String, Number> creditSeries = new XYChart.Series<>();
         creditSeries.setName("Spending trends for a month");
 
-        String filePath = "/Users/cye/NewFolder/InsideOut/src/recordcredit.csv";
+        String filePath = "src/recordcredit.csv";
 
         Map<String, Double> monthlyCreditTotals = new HashMap<>();
         SimpleDateFormat inputFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");

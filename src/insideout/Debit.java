@@ -13,9 +13,9 @@ import javafx.scene.control.Label;
 
 public class Debit {
     private String username="";
-    private String recorddebitandcredit="/Users/cye/NewFolder/InsideOut/src/recorddebitandcredit.csv";
-    private String recorddebit="/Users/cye/NewFolder/InsideOut/src/recorddebit.csv";
-    private String savingFile="/Users/cye/NewFolder/InsideOut/src/savings - Sheet1.csv";
+    private String recorddebitandcredit="src/recorddebitandcredit.csv";
+    private String recorddebit="src/recorddebit.csv";
+    private String savingFile="src/savings - Sheet1.csv";
     private double amount=0.0;
     private String description="";
     private String type="";

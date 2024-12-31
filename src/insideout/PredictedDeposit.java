@@ -13,8 +13,8 @@ import java.util.Date;
 public class PredictedDeposit {
    
     private String bank="";
-    private String predictDepositFile="/Users/cye/NewFolder/InsideOut/src/predcitedDeposit.csv";
-    private String getBalanceFile="/Users/cye/NewFolder/InsideOut/src/recorddebitandcredit.csv";
+    private String predictDepositFile="src/predcitedDeposit.csv";
+    private String getBalanceFile="src/recorddebitandcredit.csv";
     private String username="";
     private ArrayList<String> lines=new ArrayList<>();
     private ArrayList<String> addLine=new ArrayList<>();
