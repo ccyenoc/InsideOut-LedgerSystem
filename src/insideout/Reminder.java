@@ -29,7 +29,7 @@ public class Reminder {
     String[] repaymentPeriod;
     String[] remainingPayment;
     final String filename = "src/creditloan-apply.csv";
-    private static final String EMAIL_FROM = "woiaijdwj@gmail.com";
+  //  private static final String EMAIL_FROM = "woiaijdwj@gmail.com";
     private static final String APP_PASSWORD = "cwwl zggf qwwf bcdm";
     private static Label lbl;
 
@@ -88,9 +88,9 @@ public class Reminder {
         int compare=currentTime.compareTo(duedate);
         if (currentTime.after(duedate) || currentTime.equals(duedate)){
             Message message =new MimeMessage(getEmailSession());
-            message.setFrom(new InternetAddress(EMAIL_FROM));
-            String EMAIL_TO = "liangyao0808@gmail.com";
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(EMAIL_TO));
+         //   message.setFrom(new InternetAddress(EMAIL_FROM));
+           // String EMAIL_TO = "liangyao0808@gmail.com";
+           // message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(EMAIL_TO));
             message.setSubject("Remaining Payment");
             message.setText("RM" + remainingPayment + " required to pay before " + duedate);
             Transport.send(message);
@@ -101,9 +101,9 @@ public class Reminder {
    
     private static Session getEmailSession(){
         return Session.getInstance(getGmailProperties(), new Authenticator() {
-            protected PasswordAuthentication getPasswordAuthentication(){
-                return new PasswordAuthentication(EMAIL_FROM , APP_PASSWORD);
-            }
+          //  protected PasswordAuthentication getPasswordAuthentication(){
+             //   return new PasswordAuthentication(EMAIL_FROM , APP_PASSWORD);
+           // }
         });
     }
 

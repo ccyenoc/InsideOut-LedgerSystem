@@ -83,7 +83,7 @@ public class InsideOut extends Application {
     private static ArrayList<TextArea> textarea=new ArrayList<>();
     private static ArrayList<Label> clearLabel=new ArrayList<>();
     
-    protected boolean userStatus=true;
+    protected static boolean userStatus=false;
     private boolean overdue=false;
     
     @Override
@@ -330,39 +330,38 @@ public class InsideOut extends Application {
           Username=logIn(name[0], useremail[0], userpassword[0]);
           
           // send reminder if there is loan dueing
-         try {
-    Reminder reminder = new Reminder();
-    reminder.notification(Username);  // Trigger the notification method
-    Label lbl = reminder.getLabel(); // Get the Label to display
+   //      try {
+   // Reminder reminder = new Reminder();
+ //   reminder.notification(Username);  // Trigger the notification method
+   // Label lbl = reminder.getLabel(); // Get the Label to display
 
     // Check if the label is not null before calling popupMessage
-    if (lbl != null) {
-        popupMessage(lbl);
-    } else {
-        System.out.println("No label to display.");
-    }
-} catch (NullPointerException ex) {
-    System.err.println("Null value encountered: " + ex.getMessage());
-} catch (Exception c) {
-    System.err.println("An unexpected error occurred: " + c.getMessage());
-}
+ //  if (lbl != null) {
+  //      popupMessage(lbl);
+ //   } else {
+  //      System.out.println("No label to display.");
+  //  }
+// } catch (NullPointerException ex) {
+ //   System.err.println("Null value encountered: " + ex.getMessage());
+//} catch (Exception c) {
+ //   System.err.println("An unexpected error occurred: " + c.getMessage());
+//}
           
           // add savings into balance when reaches end of month
           Savings endmonth=new Savings(Username);
-          endmonth.isEndOfMonth();
-          
+          endmonth.isEndOfMonth(Username);
           // update loan status
-          Repayment check = new Repayment(Username);
-          check.updateStatus();
-          check.checkDeduction();
-          check.checkOverdue();
-          this.overdue=check.getOverdue(); // check if there is any overdue loan
-          if(overdue==true){
-            Label overdued=new Label("Overdue Loan Found!\nPlease make repayment now.\nDebit and Credit function will be disabled\nuntil the loan is fully paid!");
-            popupMessage(overdued);
-          }
           if(isUser==true){
-            primaryStage.setScene(pagemainPage);}
+            primaryStage.setScene(pagemainPage);
+            Repayment check = new Repayment(Username);
+            check.updateStatus();
+            check.checkDeduction();
+            check.checkOverdue();
+            this.overdue=check.getOverdue(); // check if there is any overdue loan
+            if(overdue==true){
+              Label overdued=new Label("Overdue Loan Found!\nPlease make repayment now.\nDebit and Credit function will be disabled\nuntil the loan is fully paid!");
+              popupMessage(overdued);
+          }}
                 }); //from login to mainpage
 
         currenttime(mainPage);
@@ -1675,7 +1674,7 @@ public class InsideOut extends Application {
     
  
     public static ArrayList<String> getBalance=new ArrayList<>();
-    static void Debit(double amount,String description,String type,String category){
+    public static void Debit(double amount,String description,String type,String category){
         Debit debit=new Debit(Username,amount,description,type,category);
         Label message=debit.getLabel();
         popupMessage(message);

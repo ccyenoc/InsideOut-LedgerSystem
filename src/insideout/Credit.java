@@ -7,6 +7,7 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,6 +21,7 @@ public class Credit {
     private String transactioninfo="";
     private String transactioninfoCreditcsv="";
     private String transactionID="";
+    private String creditID="";
     private static String type="";
     private static String category="";
     private static double balance=0.0;
@@ -38,7 +40,8 @@ public class Credit {
     private void updateCredit(){
         String line="";
         creditID();
-        try(BufferedReader reader=new BufferedReader(new FileReader(recordcredit));){
+        readLastTransactionID();
+        try(BufferedReader reader=new BufferedReader(new FileReader(recorddebitandcredit));){
             boolean header = true;
             while ((line = reader.readLine()) != null) {
                 if(header){
@@ -58,10 +61,11 @@ public class Credit {
 
             // to find the last balance user hold
             if(!getBalance.isEmpty()){
-            int index=getBalance.size()-1;
-            String []splitedrow=getBalance.get(index).split(",");
-            int balanceIndex=splitedrow.length-2;
-            balance=Double.parseDouble(splitedrow[balanceIndex]);
+           int index = getBalance.size() - 1; 
+            String[] splitedrow = getBalance.get(index).split(",");
+            String balanceStr = splitedrow[6]; 
+            balance = Double.parseDouble(balanceStr); 
+            System.out.println("Balance "+balance);
             }
         }catch (IOException ex){
             ex.printStackTrace();
@@ -79,10 +83,12 @@ public class Credit {
         lbl=new Label("Balance less than 0!");
         }
         else{
-        transactioninfoCreditcsv = username + "," + transactionID + ","+type+","+amount+"," +description+","+ date + "," + balance+","+category;
+        BigDecimal bd = new BigDecimal(balance);
+        transactioninfo=username + "," + transactionID + ","+type+","+amount+"," +description+","+ date + "," + bd+","+category;
+        transactioninfoCreditcsv = username + "," + creditID + ","+type+","+amount+"," +description+","+ date + "," + bd+","+category;
         lbl=new Label("Succesfully Credited");
         store(recordcredit,transactioninfoCreditcsv);
-        readLastTransactionID();
+        store(recorddebitandcredit,transactioninfo);
         }
  
     }
@@ -109,11 +115,11 @@ public class Credit {
         if(str.size()!=0){
         int lastIndex=str.size()-1;
         String row[]=str.get(lastIndex).split(",");
-        int ID=Integer.parseInt(row[1].replace("DB",""))+1;
-        transactionID="CD"+String.format("%06d",ID);
+        int ID=Integer.parseInt(row[1].replace("CD",""))+1;
+        creditID="CD"+String.format("%06d",ID);
         } 
         else{
-           transactionID="CD"+String.format("%06d",1);
+           creditID="CD"+String.format("%06d",1);
         }
     }catch (IOException e) {
        e.printStackTrace();
@@ -145,10 +151,6 @@ public class Credit {
            transactionID="TS"+String.format("%06d",1);
         }
         
-        Date date = new Date();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd:MM:yyyy");
-        transactioninfo = username + "," + transactionID + ","+type+","+amount+"," +description+","+ date + "," + balance+","+category;
-        store(recorddebitandcredit,transactioninfo); 
     }catch (IOException e) {
        e.printStackTrace();
     }

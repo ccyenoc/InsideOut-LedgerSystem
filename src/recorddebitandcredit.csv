@@ -1,29 +1,12 @@
 Username,Transaction ID,Transaction Type,Amount,Description,Date,Balance,Category
-ccyenoc,1,Debit,1000,Food,Wed Dec 11 11:00:35 MYT 2024,1000,Food
-ccyenoc,2,Debit,2000,Transportation,Wed Dec 11 11:00:50 MYT 2024,3000,Transportation
-ccyenoc,3,Credit,500,Fashion,Wed Dec 11 11:16:13 MYT 2024,2500,Fashion
-ccyenoc,4,Credit,50,Transportation,Wed Dec 11 11:21:42 MYT 2024,2450,Transportation
-ccyenoc,5,Credit,1000,JellyCat,Thu Dec 12 20:42:36 MYT 2024,1450,Others
-bcjr,6,Debit,2000,food,Thu Dec 12 20:51:54 MYT 2024,2000,Food
-ccyenoc,7,Credit,30,shirt,Fri Dec 13 20:43:30 MYT 2024,1420,Fashion
-ccyenoc,8,Debit,2.0E7,loan,Sun Dec 29 22:49:03 MYT 2024,2.162569E7,Others
-ccyenoc,TS000009,Repayment,10008.33,Loan ID: AL000001,Sun Dec 29 22:52:00 MYT 2024,2.161568167E7,Monthly Repayment
-ccyenoc,TS000010,Repayment,7573.2,Loan ID: AL000001,Sun Dec 29 22:59:11 MYT 2024,2.1608108470000003E7,Monthly Repayment
-ccyenoc,TS000011,Repayment,7573.2,Loan ID: AL000001,Sun Dec 29 23:02:00 MYT 2024,2.1600535270000003E7,Monthly Repayment
-ccyenoc,TS000012,Repayment,7573.2,Loan ID: AL000001,Sun Dec 29 23:05:13 MYT 2024,2.1592962070000004E7,Monthly Repayment
-ccyenoc,TS000013,Debit,1000.0,living,Mon Dec 30 00:34:45 MYT 2024,2.162866E7,Food
-ccyenoc,TS000014,Repayment,101.2,Loan ID: AL000001,Mon Dec 30 00:35:31 MYT 2024,2.16285588E7,Monthly Repayment
-ccyenoc,TS000015,Debit,1000.0,loan,Mon Dec 30 00:35:42 MYT 2024,2.162965E7,Food
-ccyenoc,TS000016,Repayment,101.2,Loan ID: AL000001,Mon Dec 30 14:29:05 MYT 2024,2.16295488E7,Monthly Repayment
-ccyenoc,TS000017,Repayment,101.2,Loan ID: AL000001,Mon Dec 30 14:41:48 MYT 2024,2.16294476E7,Monthly Repayment
-ccyenoc,TS000018,Debit,1000.0,loan,Mon Dec 30 14:42:10 MYT 2024,2.163064E7,Food
-ccyenoc,TS000019,Repayment,1011.96,Loan ID: AL000001,Mon Dec 30 14:47:27 MYT 2024,2.162962804E7,Monthly Repayment
-ccyenoc,TS000020,Repayment,4528.16,Loan ID: AL000001,Mon Dec 30 14:55:29 MYT 2024,2.162509988E7,Monthly Repayment
-ccyenoc,TS000021,Repayment,1208.82,Loan ID: ,Mon Dec 30 15:51:20 MYT 2024,2.162389106E7,Monthly Repayment
-ccyenoc,TS000022,Repayment,1208.82,Loan ID: ,Mon Dec 30 15:54:07 MYT 2024,2.162268224E7,Monthly Repayment
-ccyenoc,TS000023,Debit,100.0,food,Mon Dec 30 15:54:16 MYT 2024,2.1630739E7,Food
-ccyenoc,TS000024,Repayment,1208.82,Loan ID: ,Mon Dec 30 16:04:27 MYT 2024,2.162953018E7,Monthly Repayment
-ccyenoc,TS000025,Repayment,1208.82,Loan ID: ,Mon Dec 30 16:08:50 MYT 2024,2.162832136E7,Monthly Repayment
-ccyenoc,TS000026,Debit,1000.0,loan,Mon Dec 30 20:54:11 MYT 2024,2.1631729E7,Food
-ccyenoc,TS000027,Debit,10000.0,loan,Mon Dec 30 21:10:02 MYT 2024,2.1641629E7,Food
-ccyenoc,TS000028,Debit,1000.0,loan,Mon Dec 30 21:14:41 MYT 2024,2.1642619E7,Food
+ccyenoc,TS000001,Debit,1000.0,living,Wed Jan 01 15:28:17 MYT 2025,1000.0,Food
+ccyenoc,TS000002,Debit,1000.0,loan,Wed Jan 01 15:28:49 MYT 2025,2000.0,Food
+ccyenoc,TS000003,Debit,1000.0,food,Wed Jan 01 15:30:16 MYT 2025,3000.0,Food
+ccyenoc,TS000004,Debit,1000.0,loan,Wed Jan 01 15:35:56 MYT 2025,3900.0,Food
+ccyenoc,TS000005,Debit,1000.0,cny shirt,Wed Jan 01 15:50:21 MYT 2025,4800.0,Fashion
+ccyenoc,TS000006,Debit,2000.0,test,Wed Jan 01 15:55:05 MYT 2025,6600.0,Fashion
+ccyenoc,TS000007,Debit,1000.0,loan,Wed Jan 01 16:00:07 MYT 2025,7600.0,Food
+ccyenoc,TS000008,Debit,1500.0,living,Wed Jan 01 16:06:29 MYT 2025,9100.0,Transportation
+ccyenoc,TS000007,Credit,500.0,food,Wed Jan 01 16:06:53 MYT 2025,8600,Food
+ccyenoc,TS000008,Credit,500.0,living,Wed Jan 01 16:07:49 MYT 2025,8100,Food
+ccyenoc,TS000009,Credit,500.0,living,Wed Jan 01 16:32:48 MYT 2025,7600,Food

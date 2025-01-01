@@ -1,10 +1,1 @@
-Username,Saving ID,Saving Percentage,Debit,Saving,Total Savings,Time,Total Savings per month
-ccyenoc,1,10.0,1000.0,100.0,100.0,Tue Dec 24 23:51:16 MYT 2024,100
-ccyenoc,2,10.0,1000.0,100.0,200.0,Tue Dec 24 23:52:28 MYT 2024,300
-ccyenoc,3,10.0,1000.0,100.0,300.0,Tue Dec 24 23:57:21 MYT 2024,600
-ccyenoc,4,10.0,10000.0,1000.0,1300.0,Wed Dec 25 00:02:22 MYT 2024,1900
-ccyenoc,5,10.0,1000.0,100.0,1400.0,Wed Dec 25 00:03:43 MYT 2024,3200
-ccyenoc,6,10.0,1000.0,100.0,1500.0,Wed Dec 25 00:10:46 MYT 2024,3300
-ccyenoc,7,10.0,1000.0,100.0,1600.0,Wed Dec 25 00:28:12 MYT 2024,3400
-ccyenoc,8,10.0,1000.0,100.0,1700.0,Wed Dec 25 01:01:13 MYT 2024,3500
-ccyenoc,9,1.0,2.0E7,200000.0,201700.0,Sun Dec 29 22:49:03 MYT 2024,203500.0
+Username,Saving ID,Saving Percentage,Debit,Saving,Total Savings,Time,Total Savings per month,Add to Balance

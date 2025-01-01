@@ -11,6 +11,8 @@ import java.util.Arrays;
 import java.util.Date;
 import javafx.scene.control.Label;
 
+import java.math.BigDecimal;
+
 public class Debit {
     private String username="";
     private String recorddebitandcredit="src/recorddebitandcredit.csv";
@@ -38,8 +40,11 @@ public class Debit {
     
     
     private void updateDebit(){
-        InsideOut insideOut = new InsideOut();
-        boolean status=insideOut.userStatus;
+        Savings savings=new Savings(amount,username);
+        savings.updateDeductStatus(); // make sure deductdebit is correct
+        boolean status=Savings.deductdebit;  // get from Savings to control whether the amount of debit should be deducted for saving
+        System.out.println("UserStatus : "+status);
+
         Savings debit=new Savings(amount,username);
         String line="";
         debitID();
@@ -84,15 +89,17 @@ public class Debit {
                 yesno="No";
             }
             else{
-                double savings=debit.getSavings();
-                balance+=(amount-savings); // note : savings will only be added to balance at end of month eg (31 august);   
+                double saving=debit.getSavings();
+                savings.findPercentage();
+                balance+=(amount-saving); // note : savings will only be added to balance at end of month eg (31 august);   
                 yesno="Yes";              
             }
-            
+        
+        BigDecimal bd = new BigDecimal(balance);
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd:MM:yyyy");
         lbl=new Label("Succesfully Debited");       
-        transactioninfoDebitcsv = username + "," + transactionID + ","+type+","+amount+"," +description+","+ date + "," + balance+","+category+","+yesno;
+        transactioninfoDebitcsv = username + "," + transactionID + ","+type+","+amount+"," +description+","+ date + "," + bd+","+category+","+yesno;
         store(recorddebit,transactioninfoDebitcsv); // record for debit csv
         readLastTransactionID();
         }
