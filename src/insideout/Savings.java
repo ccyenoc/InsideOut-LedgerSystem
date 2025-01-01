@@ -238,49 +238,6 @@ public class Savings {
     
     
     
-    public double savingPerMonth(){
-      try(BufferedReader reader=new BufferedReader(new FileReader(savingFile))){
-           String line="";
-           ArrayList<String> findUser=new ArrayList<>();
-           boolean header=true;
-           
-           while((line=reader.readLine())!=null){
-               if(header==true){
-                   header=false;
-                   continue;
-               }
-  
-               String []row=line.split(",");
-               if(username.equals(row[0])){
-                   findUser.add(line);
-               }
-           }
-           
-           
-          int lastindex=findUser.size()-1;
-          if(lastindex<=0){
-              savingPerMonth=0.0;
-          }      
-          else{
-            String rows[]=findUser.get(lastindex).split(",");
-            if(rows[1]==null && rows[3]==null){ // debited
-               int lastindexs=findUser.size()-2;
-               String lines[]=findUser.get(lastindexs).split(",");
-               savingPerMonth=Double.parseDouble(lines[7]);               
-             }
-            else{
-             savingPerMonth=Double.parseDouble(rows[7]);
-            }
-          }
-      
-      }catch(IOException ex){
-         ex.printStackTrace();
-      }
-      
-      return savingPerMonth;
-    
-    }
-    
     public void isEndOfMonth(String username) {
         this.username=username;
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Kuala_Lumpur"));
