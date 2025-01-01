@@ -97,9 +97,7 @@ public class Savings {
     public void updateSavingPercentage() {
       savingFileID();
       String line=username+","+transactionID+","+percentage;
-      String str="";
-      store(savingFile,line);
-          
+       appendToFile(savingFile,line);
     }
     
 
@@ -126,32 +124,45 @@ public class Savings {
              
              String row[]=str.split(",");
              if(username.equals(row[0])){
+              getLast.add(str); 
               lastUserIndex=getLast.size()-1; // condition no need to be handled (index -1 ) 
+              continue;
            }
               getLast.add(str); 
           }
           
+          System.out.println(lastUserIndex);
           // condition need to be handled:
           // 1. user index=1 (savingpermonth=savings) (condition where first data in csv)
           // 2.user index=2(savingpermonth=+saving if "No") (savingpermonth=saving if "Yes");
           if(lastUserIndex>1){
           String content[]=getLast.get(lastUserIndex-1).split(",");
           if(content[8].equalsIgnoreCase("No")){
+              System.out.println("Content[7] :"+content[7]);
               savingPerMonth=Double.parseDouble(content[7])+savings;   
+              System.out.println("Condition : No");
           }else{
              savingPerMonth=savings;  
+             System.out.println("Condition : Yes");
           }
           }
           else {// condition where first data 
             savingPerMonth=savings;  
+             System.out.println("Condition :lastUserIndex 0/1");
+             System.out.println(lastUserIndex);
           }
           
           
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd:MM:yyyy");
+        System.out.println(getLast.get(lastUserIndex));
         String oriLine=getLast.get(lastUserIndex);
+        System.out.println("Ori Line "+oriLine);
         String update=","+debit+","+savings+","+totalSavings+","+date+","+savingPerMonth+","+"No";
-        getLast.set(lastUserIndex,oriLine+update);
+        String updated=oriLine+update;
+        getLast.set(lastUserIndex,updated);
+        System.out.println(getLast.get(lastUserIndex));
+        System.out.println(lastUserIndex);
         
         updateFile(getLast,savingFile);
                
@@ -611,6 +622,32 @@ public class Savings {
         }
         }catch(IOException ex){
             ex.printStackTrace();
+        }
+    }
+    
+    public static void appendToFile(String filePath, String data) {
+        boolean headerExists = false;
+        String firstLine ="";
+        // Read the file to check if header exists
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            firstLine=reader.readLine();
+            if (firstLine != null) {
+                headerExists = true; // Header found
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Now append data, if the header exists, skip writing it again
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
+            if (headerExists==true) {
+                writer.newLine(); 
+            }
+
+            writer.write(data);
+            writer.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
     

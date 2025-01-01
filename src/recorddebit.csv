@@ -7,3 +7,14 @@ ccyenoc,DB000005,Debit,1000.0,cny shirt,Wed Jan 01 15:50:21 MYT 2025,4800,Fashio
 ccyenoc,DB000006,Debit,2000.0,test,Wed Jan 01 15:55:05 MYT 2025,6600,Fashion,Yes
 ccyenoc,DB000007,Debit,1000.0,loan,Wed Jan 01 16:00:07 MYT 2025,7600,Food,No
 ccyenoc,DB000008,Debit,1500.0,living,Wed Jan 01 16:06:29 MYT 2025,9100,Transportation,No
+ccyenoc,DB000009,Debit,1000.0,living,Wed Jan 01 16:35:51 MYT 2025,10000,Food,Yes
+ccyenoc,DB000010,Debit,100.0,loan,Wed Jan 01 16:43:51 MYT 2025,10090,Food,Yes
+ccyenoc,DB000011,Debit,100.0,living,Wed Jan 01 16:49:25 MYT 2025,10180,Food,Yes
+ccyenoc,DB000012,Debit,1000.0,living,Wed Jan 01 16:50:32 MYT 2025,11080,Food,Yes
+ccyenoc,DB000013,Debit,1000.0,living,Wed Jan 01 16:52:55 MYT 2025,11980,Food,Yes
+ccyenoc,DB000014,Debit,1000.0,living,Wed Jan 01 17:08:30 MYT 2025,12880,Food,Yes
+ccyenoc,DB000015,Debit,1000.0,living,Wed Jan 01 17:21:31 MYT 2025,13880,Food,No
+ccyenoc,DB000016,Debit,1000.0,living,Wed Jan 01 17:21:52 MYT 2025,14880,Transportation,No
+ccyenoc,DB000017,Debit,2500.0,Happy Go Lucky,Wed Jan 01 17:22:36 MYT 2025,17380,Food,No
+ccyenoc,DB000018,Debit,2000.0,happy,Wed Jan 01 17:25:27 MYT 2025,19380,Food,No
+ccyenoc,DB000019,Debit,2389.0,happy,Wed Jan 01 17:36:45 MYT 2025,21769,Food,No

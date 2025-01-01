@@ -26,6 +26,7 @@ public class Debit {
     private String transactioninfo="";
     private String transactioninfoDebitcsv="";
     private String transactionID="";
+    private String debitID="";
     private double balance=0.0;
     private ArrayList<String> getBalance=new ArrayList<>();
     
@@ -48,7 +49,8 @@ public class Debit {
         Savings debit=new Savings(amount,username);
         String line="";
         debitID();
-        try(BufferedReader reader=new BufferedReader(new FileReader(recorddebit));){
+        readLastTransactionID();
+        try(BufferedReader reader=new BufferedReader(new FileReader(recorddebitandcredit));){
             boolean header = true;
             while ((line = reader.readLine()) != null) {
                 if(header){
@@ -70,7 +72,7 @@ public class Debit {
             if(!getBalance.isEmpty()){
             int index=getBalance.size()-1;
             String []splitedrow=getBalance.get(index).split(",");
-            int balanceIndex=splitedrow.length-3;
+            int balanceIndex=splitedrow.length-2;
             balance=Double.parseDouble(splitedrow[balanceIndex]);
             }
             
@@ -99,9 +101,10 @@ public class Debit {
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd:MM:yyyy");
         lbl=new Label("Succesfully Debited");       
-        transactioninfoDebitcsv = username + "," + transactionID + ","+type+","+amount+"," +description+","+ date + "," + bd+","+category+","+yesno;
+        transactioninfoDebitcsv = username + "," + debitID + ","+type+","+amount+"," +description+","+ date + "," + bd+","+category+","+yesno;
         store(recorddebit,transactioninfoDebitcsv); // record for debit csv
-        readLastTransactionID();
+        transactioninfo = username + "," + transactionID + ","+type+","+amount+"," +description+","+ date + "," + balance+","+category;
+        store(recorddebitandcredit,transactioninfo); 
         }
  
     }
@@ -138,11 +141,7 @@ public class Debit {
         else{
            transactionID="TS"+String.format("%06d",1);
         }
-        
-        Date date = new Date();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd:MM:yyyy");
-        transactioninfo = username + "," + transactionID + ","+type+","+amount+"," +description+","+ date + "," + balance+","+category;
-        store(recorddebitandcredit,transactioninfo); 
+
     }catch (IOException e) {
        e.printStackTrace();
     }
@@ -166,10 +165,10 @@ public class Debit {
         int lastIndex=str.size()-1;
         String row[]=str.get(lastIndex).split(",");
         int ID=Integer.parseInt(row[1].replace("DB",""))+1;
-        transactionID="DB"+String.format("%06d",ID);
+        debitID="DB"+String.format("%06d",ID);
         } 
         else{
-           transactionID="DB"+String.format("%06d",1);
+           debitID="DB"+String.format("%06d",1);
         }
     }catch (IOException e) {
        e.printStackTrace();

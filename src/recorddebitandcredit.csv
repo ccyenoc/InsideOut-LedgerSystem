@@ -10,3 +10,15 @@ ccyenoc,TS000008,Debit,1500.0,living,Wed Jan 01 16:06:29 MYT 2025,9100.0,Transpo
 ccyenoc,TS000007,Credit,500.0,food,Wed Jan 01 16:06:53 MYT 2025,8600,Food
 ccyenoc,TS000008,Credit,500.0,living,Wed Jan 01 16:07:49 MYT 2025,8100,Food
 ccyenoc,TS000009,Credit,500.0,living,Wed Jan 01 16:32:48 MYT 2025,7600,Food
+ccyenoc,TS000010,Debit,1000.0,living,Wed Jan 01 16:35:51 MYT 2025,10000.0,Food
+ccyenoc,TS000011,Debit,100.0,loan,Wed Jan 01 16:43:51 MYT 2025,10090.0,Food
+ccyenoc,TS000012,Debit,100.0,living,Wed Jan 01 16:49:25 MYT 2025,10180.0,Food
+ccyenoc,TS000013,Debit,1000.0,living,Wed Jan 01 16:50:32 MYT 2025,11080.0,Food
+ccyenoc,TS000014,Debit,1000.0,living,Wed Jan 01 16:52:55 MYT 2025,11980.0,Food
+ccyenoc,TS000015,Debit,1000.0,living,Wed Jan 01 17:08:30 MYT 2025,12880.0,Food
+ccyenoc,TS000016,Debit,1000.0,living,Wed Jan 01 17:21:31 MYT 2025,13880.0,Food
+ccyenoc,TS000017,Debit,1000.0,living,Wed Jan 01 17:21:52 MYT 2025,14880.0,Transportation
+ccyenoc,TS000018,Credit,500.0,loan,Wed Jan 01 17:22:10 MYT 2025,14380,Food
+ccyenoc,TS000019,Debit,2500.0,Happy Go Lucky,Wed Jan 01 17:22:36 MYT 2025,17380.0,Food
+ccyenoc,TS000020,Debit,2000.0,happy,Wed Jan 01 17:25:27 MYT 2025,19380.0,Food
+ccyenoc,TS000021,Debit,2389.0,happy,Wed Jan 01 17:36:45 MYT 2025,21769.0,Food
