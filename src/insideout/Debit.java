@@ -42,8 +42,7 @@ public class Debit {
     
     private void updateDebit(){
         Savings savings=new Savings(amount,username);
-        savings.updateDeductStatus(); // make sure deductdebit is correct
-        boolean status=Savings.deductdebit;  // get from Savings to control whether the amount of debit should be deducted for saving
+        boolean status=savings.updateDeductStatus(); // get the status(true--debit need to be deducted)
         System.out.println("UserStatus : "+status);
 
         Savings debit=new Savings(amount,username);

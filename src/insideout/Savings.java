@@ -24,7 +24,6 @@ public class Savings {
     private double savingPerMonth=0.0;
     protected String savingFile="src/savings - Sheet1.csv";
     private String recorddebitandcredit="src/recorddebitandcredit.csv";
-    protected static boolean deductdebit=false;
     private boolean headerinfile=true;
     private Label lbl;
     private String transactionID="";
@@ -130,40 +129,30 @@ public class Savings {
            }
               getLast.add(str); 
           }
-          
-          System.out.println(lastUserIndex);
+
           // condition need to be handled:
           // 1. user index=1 (savingpermonth=savings) (condition where first data in csv)
           // 2.user index=2(savingpermonth=+saving if "No") (savingpermonth=saving if "Yes");
           if(lastUserIndex>1){
           String content[]=getLast.get(lastUserIndex-1).split(",");
           if(content[8].equalsIgnoreCase("No")){
-              System.out.println("Content[7] :"+content[7]);
               savingPerMonth=Double.parseDouble(content[7])+savings;   
-              System.out.println("Condition : No");
           }else{
              savingPerMonth=savings;  
-             System.out.println("Condition : Yes");
           }
           }
           else {// condition where first data 
             savingPerMonth=savings;  
-             System.out.println("Condition :lastUserIndex 0/1");
-             System.out.println(lastUserIndex);
           }
           
           
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd:MM:yyyy");
-        System.out.println(getLast.get(lastUserIndex));
         String oriLine=getLast.get(lastUserIndex);
-        System.out.println("Ori Line "+oriLine);
         String update=","+debit+","+savings+","+totalSavings+","+date+","+savingPerMonth+","+"No";
         String updated=oriLine+update;
         getLast.set(lastUserIndex,updated);
-        System.out.println(getLast.get(lastUserIndex));
-        System.out.println(lastUserIndex);
-        
+
         updateFile(getLast,savingFile);
                
     }catch(IOException ex){
@@ -247,13 +236,7 @@ public class Savings {
         return lbl;
     }
     
-    public boolean getdeductStatus(){
-        return deductdebit;
-    }
     
-    public void setdeductStatus(boolean deductdebit){
-        this.deductdebit=deductdebit;
-    }
     
     public double savingPerMonth(){
       try(BufferedReader reader=new BufferedReader(new FileReader(savingFile))){
@@ -320,7 +303,6 @@ public class Savings {
         if (current.after(dueDate) || current.equals(dueDate)) {
         String line="";
         boolean header=true;
-        System.out.println("End of Month");
         String status="";
         String lastUpdatedDate="";
         try(BufferedReader reader=new BufferedReader(new FileReader(savingFile))){
@@ -343,7 +325,7 @@ public class Savings {
                     }
                 findUser.add(line);
               }  
-          
+          }
           
           // user found baru can update 
           // also the length should be exactly 8
@@ -362,12 +344,20 @@ public class Savings {
 
             if(index>=0){ // got data in csv file
             String content[]=findUser.get(index).split(","); // get the last index
+            while (content.length <= 3) {
+    index--;
+    if (index < 0) {
+        throw new IllegalArgumentException("No valid data found in findUser.");
+    }
+    content = findUser.get(index).split(","); // Update content with the new index
+}
+            
             this.totalSavings=Double.parseDouble(content[7]);
             endOfMonthUpdateCsv(totalSavings,today);
           }
           }
         }
-          }
+          
           
         }catch(IOException ex){
          ex.printStackTrace();
@@ -394,8 +384,7 @@ public class Savings {
                     balance=Double.parseDouble(row[6]); // get user last balance
                 }
             }
-            System.out.println("Balance "+balance);
-            System.out.println("TotalSavings"+totalSavings);
+
             balance+=totalSavings;
             BigDecimal bd = new BigDecimal(balance);
             
@@ -413,15 +402,12 @@ public class Savings {
            int lastIndexSaving=-1;
            ArrayList<String> Saving=new ArrayList<>();
            while((str=br.readLine())!=null){
-               System.out.println("Yes");
              if(head==true){
                  Saving.add(str);
                  head=false;
                  continue;     
              }
-              System.out.println("Second loop");
               String content[]=str.split(",");
-              System.out.println("Username"+username);
                 if(content[0].equals(username)){ // find username (!! might not be debited )
                     Saving.add(str);
                     lastIndexSaving=Saving.size()- 1;
@@ -439,7 +425,6 @@ public class Savings {
                String split[]=Saving.get(i).split(",");
                split[8]="Yes|" + today;
                String update=String.join(",",split);
-               System.out.println(update);
                Saving.set(i,update);
              }
            
@@ -587,10 +572,13 @@ public class Savings {
         }
     }
     
-    public void updateDeductStatus(){
+    // when status will be true?
+    // length<=3 && username match
+    public boolean updateDeductStatus(){
+        boolean deductdebit=false;
         String line="";
         boolean header=true;
-        
+        int lastIndex=-1;
         ArrayList<String> addLine=new ArrayList<>();
         try(BufferedReader reader=new BufferedReader(new FileReader(savingFile))){
             pending:{
@@ -603,14 +591,15 @@ public class Savings {
                 String row[]=line.split(",");
                 if(row[0].equals(username)){
                     addLine.add(line);
+                    lastIndex=addLine.size()-1;
                 } 
             }
-            
-            int lastIndex=addLine.size()-1;
-            if(lastIndex<0){
-              deductdebit = false; // set deduct debit to true so that debit will be deducted based on the percentage 
-            }else{
-                String[] check=addLine.get(lastIndex).split(",");
+
+            if(lastIndex<0){ // meaning that no username matches 
+              deductdebit = false; 
+            }else{ // username match
+                System.out.println(addLine.get(lastIndex));
+                String[] check=addLine.get(lastIndex).split(","); // get the content of user last line
                 if(check.length<4){
                     deductdebit = true; 
                     break pending;
@@ -623,6 +612,8 @@ public class Savings {
         }catch(IOException ex){
             ex.printStackTrace();
         }
+        
+        return deductdebit;
     }
     
     public static void appendToFile(String filePath, String data) {

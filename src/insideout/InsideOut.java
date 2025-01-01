@@ -709,7 +709,7 @@ public class InsideOut extends Application {
         yes.setOnAction(e->{
             enterSavingPercentagelbl.setVisible(true);
             enterSavingPercentagelbl.setManaged(true);
-            userStatus=enterPercentage(saving);
+            enterPercentage(saving);
         });
         
         
@@ -2042,7 +2042,7 @@ public class InsideOut extends Application {
     }
     
 // savings
-    public static boolean enterPercentage(AnchorPane pane){
+    public static void enterPercentage(AnchorPane pane){
         TextField enterPercentage = new TextField();
         enterPercentage.setPromptText("Enter percentage(%) here :");
         enterPercentage.setStyle("-fx-text-fill:black;");
@@ -2064,14 +2064,12 @@ public class InsideOut extends Application {
         confirm.setLayoutY(250);
         confirm.setOnAction(e-> {
             Savings saving=new Savings(Username,savingPercentage[0]);
-            status[0]=saving.getdeductStatus();
             Label lbl=saving.getLabel();
             popupMessage(lbl);
         });
         
         
         pane.getChildren().addAll(enterPercentage,confirm);
-        return status[0];
     }
     
 // predicted deposit
