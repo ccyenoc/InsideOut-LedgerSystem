@@ -9,6 +9,7 @@ import java.io.FileWriter;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -38,7 +39,6 @@ public class Savings {
     public Savings(double debit,String name){
         this.debit=debit;
         this.username=name;
-        findPercentage();
     }
 
     public Savings(String username){
@@ -112,6 +112,7 @@ public class Savings {
         String str="";
         boolean header=true;
         ArrayList<String> getLast=new ArrayList<>();
+        ArrayList<String> findUserSavingPerMonth=new ArrayList<>();
         int lastUserIndex=-1; 
          try(BufferedReader reader=new BufferedReader(new FileReader(savingFile))){
           while((str=reader.readLine())!=null){
@@ -124,7 +125,8 @@ public class Savings {
              String row[]=str.split(",");
              if(username.equals(row[0])){
               getLast.add(str); 
-              lastUserIndex=getLast.size()-1; // condition no need to be handled (index -1 ) 
+              findUserSavingPerMonth.add(str);
+              lastUserIndex=getLast.size()-1; // index for getLast ArrayList(to set)
               continue;
            }
               getLast.add(str); 
@@ -133,14 +135,21 @@ public class Savings {
           // condition need to be handled:
           // 1. user index=1 (savingpermonth=savings) (condition where first data in csv)
           // 2.user index=2(savingpermonth=+saving if "No") (savingpermonth=saving if "Yes");
-          if(lastUserIndex>1){
-          String content[]=getLast.get(lastUserIndex-1).split(",");
-          if(content[8].equalsIgnoreCase("No")){
-              savingPerMonth=Double.parseDouble(content[7])+savings;   
-          }else{
-             savingPerMonth=savings;  
-          }
-          }
+          int userLastIndex=findUserSavingPerMonth.size()-1; // index to find the user savingpermonth(whether added to balance or not)
+           if(lastUserIndex>1){  // condition where previously got data in csv(no matter the user)
+               
+               if(userLastIndex-1<0){ // user first saving
+                 savingPerMonth=savings;
+               }
+               else{
+                 String content[]=findUserSavingPerMonth.get(userLastIndex-1).split(","); // to find the last savingpermonth
+                if(content[8].equalsIgnoreCase("No")){ // havent add to balance
+                     savingPerMonth=Double.parseDouble(content[7])+savings;   
+                }else{  // added to balance
+                     savingPerMonth=savings;  
+                 }
+                }
+            }
           else {// condition where first data 
             savingPerMonth=savings;  
           }
@@ -148,11 +157,16 @@ public class Savings {
           
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd:MM:yyyy");
-        String oriLine=getLast.get(lastUserIndex);
-        String update=","+debit+","+savings+","+totalSavings+","+date+","+savingPerMonth+","+"No";
-        String updated=oriLine+update;
-        getLast.set(lastUserIndex,updated);
-
+        String oriLine[]=getLast.get(lastUserIndex).split(",");
+        ArrayList<String> updated=new ArrayList<String>(Arrays.asList(oriLine));
+        updated.add(String.valueOf(debit));
+        updated.add(String.valueOf(savings));
+        updated.add(String.valueOf(totalSavings));
+        updated.add(String.valueOf(date));
+        updated.add(String.valueOf(savingPerMonth));
+        updated.add("No");
+        String fullSavingLine=String.join(",",updated);
+        getLast.set(lastUserIndex,fullSavingLine);
         updateFile(getLast,savingFile);
                
     }catch(IOException ex){
@@ -240,16 +254,15 @@ public class Savings {
     
     public void isEndOfMonth(String username) {
         this.username=username;
-        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Kuala_Lumpur"));
-        Calendar current = Calendar.getInstance(TimeZone.getTimeZone("Asia/Kuala_Lumpur"));
+       Calendar current = Calendar.getInstance(TimeZone.getTimeZone("Asia/Kuala_Lumpur"));
+       Calendar endOfMonth = Calendar.getInstance(TimeZone.getTimeZone("Asia/Kuala_Lumpur"));
 
-        // Set the due date to Dec 31, 2025, 00:00:00 MYT
-        Calendar dueDate = Calendar.getInstance(TimeZone.getTimeZone("Asia/Kuala_Lumpur"));
-        dueDate.set(2025, Calendar.DECEMBER, 31, 0, 0, 0);
-        dueDate.set(Calendar.MILLISECOND, 0);
-        current.set(2025, Calendar.DECEMBER, 31, 0, 0, 0);
-        current.set(Calendar.MILLISECOND, 0);
-
+      // Set the calendar to the last day of the current month
+      endOfMonth.set(Calendar.DAY_OF_MONTH, endOfMonth.getActualMaximum(Calendar.DAY_OF_MONTH));
+      endOfMonth.set(Calendar.HOUR_OF_DAY, 0);
+      endOfMonth.set(Calendar.MINUTE, 0);
+      endOfMonth.set(Calendar.SECOND, 0);
+      endOfMonth.set(Calendar.MILLISECOND, 0);
 
         SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
         
@@ -257,11 +270,12 @@ public class Savings {
         String checkUpdated="";
         ArrayList<String> findUser=new ArrayList<>();
         // Check if current is strictly after the due date
-        if (current.after(dueDate) || current.equals(dueDate)) {
+        if (current.after(endOfMonth) || current.equals(endOfMonth)) {
         String line="";
         boolean header=true;
         String status="";
         String lastUpdatedDate="";
+        boolean updated=false;
         try(BufferedReader reader=new BufferedReader(new FileReader(savingFile))){
           while((line=reader.readLine())!=null){
               if(header==true){
@@ -276,9 +290,7 @@ public class Savings {
               if(row[0].equals(username) && row.length==9){
                     findUser.add(line);
                     if (row[8].contains("|")) { // if does not contains means No
-                        String[] statusAndDate = row[8].split("\\|");
-                        status = statusAndDate[0];
-                        lastUpdatedDate = statusAndDate[1]; // get last update date
+                        updated=true;
                     }
                 findUser.add(line);
               }  
@@ -291,9 +303,9 @@ public class Savings {
           // 2. user activate savings but havent debited
           // 3. user login twice perday (during end of month)
           if(findUser.size()!=0){  // if user is found in csv
-          String today = "Tue Dec 31 23:59:59 MYT 2024";
+          String today = sdf.format(new Date());
           int index=0;
-                if (lastUpdatedDate!=null && !lastUpdatedDate.equals(today)) { // if updated and it is not the same with current time 
+                if (updated==false) { // if updated and it is not the same with current time 
                      index = findUser.size() - 1;
                     if (findUser.get(index).split(",").length < 4) { // if user hasn't debited
                         index = findUser.size() - 2; // get the previous line

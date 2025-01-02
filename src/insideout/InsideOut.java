@@ -1817,6 +1817,9 @@ public class InsideOut extends Application {
       
           
          confirmapply.setOnAction(c -> {
+        if(period[0].matches("-?\\\\d*\\\\.?\\\\d+") && principal[0].matches("-?\\\\d*\\\\.?\\\\d+") 
+           && rate[0].matches("-?\\\\d*\\\\.?\\\\d+") && month[0].matches("-?\\\\d*\\\\.?\\\\d+")){
+       
         if (period[0]!=null) {
             try{
            applyLoan(period[0],pane,principal[0],rate[0],month[0]);
@@ -1827,7 +1830,11 @@ public class InsideOut extends Application {
         } else {
             Label selectperiodfirst=new Label("Select a Period");
             popupMessage(selectperiodfirst);
-        }});
+        }}
+             else{
+                 Label lbl=new Label("Enter a Number\neg.whole number/decimal number");
+                 popupMessage(lbl);
+             }});
         pane.getChildren().addAll(monthly,monthlylbl,quarterly,quarterlylbl,semiannual,semiannuallbl,annual,anuallylbl,confirmapply,
                 interestRatelbl,periodlbl,enterprincipal,enterrate,selectPeriodlbl,entermonth);
 
@@ -1990,6 +1997,7 @@ public class InsideOut extends Application {
               }); 
         
           confirmrepay.setOnAction(e->{
+               if(repayamount[0].matches("-?\\\\d*\\\\.?\\\\d+")){
               if(getID[0].getText().equals("Repay LoanID...")){
               Label lbl=new Label("Select a Loan.");
               popupMessage(lbl);
@@ -2011,7 +2019,17 @@ public class InsideOut extends Application {
               popupMessage(wrongcashformat);
               ex.printStackTrace();
               }
-          }});
+          }
+               }
+               else{
+               Label lbl=new Label("Enter a number\neg.whole number/decimal number)");
+               popupMessage(lbl);
+               }
+           
+               
+               
+               
+               });
  
       pane.getChildren().addAll(getID[0],activeloanbtn,overdueloanbtn,confirmrepay,amountRepay);
 
@@ -2063,9 +2081,14 @@ public class InsideOut extends Application {
         confirm.setLayoutX(220);
         confirm.setLayoutY(250);
         confirm.setOnAction(e-> {
+            if(savingPercentage[0].matches("-?\\\\d*\\\\.?\\\\d+")){
             Savings saving=new Savings(Username,savingPercentage[0]);
             Label lbl=saving.getLabel();
+            popupMessage(lbl);}
+            else{
+            Label lbl=new Label("Enter Number (integer/double)");
             popupMessage(lbl);
+            }
         });
         
         

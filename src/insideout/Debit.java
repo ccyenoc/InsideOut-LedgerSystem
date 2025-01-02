@@ -45,7 +45,6 @@ public class Debit {
         boolean status=savings.updateDeductStatus(); // get the status(true--debit need to be deducted)
         System.out.println("UserStatus : "+status);
 
-        Savings debit=new Savings(amount,username);
         String line="";
         debitID();
         readLastTransactionID();
@@ -90,8 +89,8 @@ public class Debit {
                 yesno="No";
             }
             else{
-                double saving=debit.getSavings();
                 savings.findPercentage();
+                double saving=savings.getSavings();
                 balance+=(amount-saving); // note : savings will only be added to balance at end of month eg (31 august);   
                 yesno="Yes";              
             }
@@ -102,7 +101,7 @@ public class Debit {
         lbl=new Label("Succesfully Debited");       
         transactioninfoDebitcsv = username + "," + debitID + ","+type+","+amount+"," +description+","+ date + "," + bd+","+category+","+yesno;
         store(recorddebit,transactioninfoDebitcsv); // record for debit csv
-        transactioninfo = username + "," + transactionID + ","+type+","+amount+"," +description+","+ date + "," + balance+","+category;
+        transactioninfo = username + "," + transactionID + ","+type+","+amount+"," +description+","+ date + "," + bd+","+category;
         store(recorddebitandcredit,transactioninfo); 
         }
  

@@ -19,3 +19,11 @@ ccyenoc,DB000017,Debit,2500.0,Happy Go Lucky,Wed Jan 01 17:22:36 MYT 2025,17380,
 ccyenoc,DB000018,Debit,2000.0,happy,Wed Jan 01 17:25:27 MYT 2025,19380,Food,No
 ccyenoc,DB000019,Debit,2389.0,happy,Wed Jan 01 17:36:45 MYT 2025,21769,Food,No
 ccyenoc,DB000020,Debit,1000.0,living,Wed Jan 01 17:50:28 MYT 2025,22769,Food,No
+brayden,DB000021,Debit,10000.0,tesla,Thu Jan 02 15:49:09 MYT 2025,10000,Transportation,No
+brayden,DB000022,Debit,10.0,food,Thu Jan 02 16:16:38 MYT 2025,10010,Food,No
+brayden,DB000023,Debit,1000.0,living,Thu Jan 02 16:22:24 MYT 2025,11010,Food,No
+brayden,DB000024,Debit,1000.0,food,Thu Jan 02 16:31:55 MYT 2025,12010,Food,No
+brayden,DB000025,Debit,100.0,living,Thu Jan 02 16:43:07 MYT 2025,12110,Food,No
+brayden,DB000026,Debit,1000.0,living,Thu Jan 02 16:50:32 MYT 2025,13110,Food,Yes
+brayden,DB000027,Debit,1000.0,driving ,Thu Jan 02 16:53:15 MYT 2025,14110,Transportation,Yes
+brayden,DB000028,Debit,1000.0,living,Thu Jan 02 16:59:17 MYT 2025,15010,Food,Yes
