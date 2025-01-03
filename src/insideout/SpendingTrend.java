@@ -21,7 +21,14 @@ import javafx.scene.control.Label;
 
 public class SpendingTrend{
     private static Label lbl=new Label();
-  public static BarChart<String, Number> SpendingTrend(String targetUsername,String Category){
+    private String targetUsername;
+    private String Category;
+    public SpendingTrend(String targetUsername,String Category){
+      this.targetUsername=targetUsername;
+      this.Category=Category;
+    }
+    
+  public BarChart<String, Number> SpendingTrendGraph(){
         CategoryAxis xAxis = new CategoryAxis();
         xAxis.setLabel("Month");
 
@@ -40,7 +47,7 @@ public class SpendingTrend{
         SimpleDateFormat inputFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
         SimpleDateFormat outputFormat = new SimpleDateFormat("MMM yyyy");
         
-        barChart.setCategoryGap(200);
+        barChart.setCategoryGap(50);
 
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -64,23 +71,25 @@ public class SpendingTrend{
                         String month = outputFormat.format(parsedDate);
 
                         monthlyCreditTotals.put(month, monthlyCreditTotals.getOrDefault(month, 0.0) + creditAmount);
+                        
+        
                     } catch (ParseException e) {
                         System.out.println("Invalid date format: " + date);
                     }
+                    
+                      for (Map.Entry<String, Double> entry : monthlyCreditTotals.entrySet()) {
+                          creditSeries.getData().add(new XYChart.Data<>(entry.getKey(), entry.getValue()));
+                       }
                 }
                 else{
                   lbl=new Label("No Data For "+Category+" Category!");
                 }
             }
+            
+            
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        // Add the aggregated credit amounts for each month to the chart
-        for (Map.Entry<String, Double> entry : monthlyCreditTotals.entrySet()) {
-            creditSeries.getData().add(new XYChart.Data<>(entry.getKey(), entry.getValue()));
-        }
-        
         graphs(barChart);
         barChart.getData().add(creditSeries);
         

@@ -22,7 +22,7 @@ public class Registration{
         this.password=password;    
     }
     
-    public static Label register(){
+    public Label register(){
         String line="";
         String newUserInfo="";
         Label lbl=new Label();

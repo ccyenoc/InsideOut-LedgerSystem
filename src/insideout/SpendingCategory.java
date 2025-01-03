@@ -18,8 +18,13 @@ import static insideout.InsideOut.piechart;
 
 public class SpendingCategory {
     private static Label lbl=new Label();
-
-    public static PieChart SpendingCategoryChart(String username) {
+    private static String username;
+    
+    public SpendingCategory(String username){
+      this.username=username;
+    }
+    
+    public static PieChart SpendingCategoryChart() {
         PieChart pieChart = new PieChart();
         pieChart.setTitle("Spending Distribution");
 

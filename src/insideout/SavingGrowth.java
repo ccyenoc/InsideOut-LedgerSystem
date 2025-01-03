@@ -12,12 +12,18 @@ import java.io.IOException;
 import java.util.Scanner;
 import javafx.scene.layout.AnchorPane;
 import static insideout.InsideOut.graphs;
+import java.util.ArrayList;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Label;
 
-public class SavingGrowth {
 
-    public static BarChart<String, Number>  SavingGrowthChart(String targetUsername) {
+public class SavingGrowth {
+   private static Label lbl=new Label();
+   private static String targetUsername;
+   public SavingGrowth(String targetUsername){
+     this.targetUsername=targetUsername;
+   }
+    public static BarChart<String, Number>  SavingGrowthChart() {
         CategoryAxis xAxis = new CategoryAxis();
         xAxis.setLabel("Month");
 
@@ -33,48 +39,62 @@ public class SavingGrowth {
 
         String filePath = "src/savings - Sheet1.csv";
 
+         boolean userFound = false;
+
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
-            boolean isHeader = true;
-             // Start with a high value
+            int rowCount = 0;
             int monthCount = 0; // To limit to 4 months
             double previousMonthlySavings = Double.MAX_VALUE;
-            while ((line = br.readLine()) != null && monthCount < 5) {
-                if (isHeader) {
-                    isHeader = false;
+            double currentMonthlySavings = 0;
+            double totalSavings = 0;
+
+            while ((line = br.readLine()) != null) {
+                if (rowCount == 0) { 
+                    rowCount++;
                     continue;
                 }
 
                 String[] data = line.split(",");
-                if(data.length<=3){
-                 continue;
+                if(data.length<4){
+                continue;
                 }
                 String username = data[0];
-                double currentMonthlySavings = Double.parseDouble(data[7]);
-                double totalSavings = Double.parseDouble(data[5]);
-                
-                if (username.equals(targetUsername) && currentMonthlySavings <= previousMonthlySavings) {
+            
+                if (username.equalsIgnoreCase(targetUsername)) {
+                    userFound = true; 
                     
-                    monthCount++;
-                    monthlySavingsSeries.getData().add(new XYChart.Data<>("Month " + monthCount, totalSavings));
-                    previousMonthlySavings = currentMonthlySavings;
-                }else{
+                    currentMonthlySavings = Double.parseDouble(data[7]);
+                    totalSavings = Double.parseDouble(data[5]);
 
-                    monthlySavingsSeries.getData().add(new XYChart.Data<>("Month " + monthCount, totalSavings));
-                    previousMonthlySavings = currentMonthlySavings;
-                 
+
+                    if (currentMonthlySavings <= previousMonthlySavings) { // when total savings less than 
+                        monthCount++;
+                        monthlySavingsSeries.getData().add(new XYChart.Data<>("Month " + monthCount, totalSavings));
+                        previousMonthlySavings = currentMonthlySavings;
+                    } else { // greater than or equals 
+                        monthlySavingsSeries.getData().add(new XYChart.Data<>("Month " + monthCount, totalSavings));
+                        previousMonthlySavings = currentMonthlySavings;
+                    }
+                }
             }
+
+            if (!userFound) {
+               lbl=new Label("No Data Found!"); 
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        
         graphs(barChart);
         barChart.getData().addAll(monthlySavingsSeries);
       
         return barChart;
     }
     
+    public static Label getLabel(){
+       return lbl;    
+    }
  
 
    
