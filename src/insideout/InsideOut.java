@@ -1510,7 +1510,7 @@ public class InsideOut extends Application {
         hideAllButtons(RHB,MayBank,HongLeong,Alliance,AmBank,StandardChartered);
         label(alliancelbl);
         instruction.setVisible(false);
-        selectedBank="Allaince";
+        selectedBank="Alliance";
         });
         AmBank.setOnAction(e -> { 
         hideAllLabels(rhblbl,maybanklbl,hongleonglbl,alliancelbl,standardcharteredlbl);
@@ -1526,7 +1526,7 @@ public class InsideOut extends Application {
         hideAllButtons(RHB,MayBank,HongLeong,Alliance,AmBank,StandardChartered);
         label(standardcharteredlbl);
         instruction.setVisible(false); 
-        selectedBank="StandardChartered";
+        selectedBank="Standard Chartered";
         });
         
         confirmbtn.setOnAction(c -> {
@@ -2082,49 +2082,16 @@ public class InsideOut extends Application {
     }
     
 // predicted deposit
-    static String predictedDepositfilepath= "/Users/cye/NewFolder/InsideOut/src/predcitedDeposit.csv";
-    static BufferedReader reader=null;
-    static BufferedWriter writer=null;
-    
-    public static void userInList(){
-        String line="";
-        boolean header=true;
-        ArrayList<String> add=new ArrayList<>();
-       try(BufferedReader reader=new BufferedReader(new FileReader(predictedDepositfilepath))){
-               while((line=reader.readLine())!=null){
-                   if(header==true){
-                     header=false;
-                     continue;
-                   }
-                   
-                   add.add(line);
-               }
-               
-               if(add.size()==0){
-               try(BufferedWriter writer=new BufferedWriter(new FileWriter(predictedDepositfilepath,true))){
-                   writer.newLine();
-                   writer.write(Username);
-               }catch(IOException ex){
-                   ex.printStackTrace();
-               }
-               
-               
-       }}catch(IOException ex){
-           ex.printStackTrace();
-       }
-    }
-       
+        
     public void depositCalculator(String bank,Label showDeposit,Label showMonthly,AnchorPane pane){
-        userInList();
         PredictedDeposit deposit=new PredictedDeposit();
         deposit.setName(Username);
-        deposit.addBalance();
+        deposit.getBalance();
         deposit.setBank(bank); 
-        deposit.updateBank();
         deposit.calculateDeposit();
         double predictedDeposit=deposit.getDeposit();
         double monthlyDeposit=deposit.getMonthlyDeposit();
-
+        
         showDeposit.setText("RM " + String.format("%.2f", predictedDeposit));
         showDeposit.setStyle("-fx-background-color:#FFFFFF; -fx-text-fill: black; -fx-border-radius: 5px;");
         showDeposit.setFont(Font.font("Anton", 23));  // Set the font family and size here
@@ -2136,6 +2103,7 @@ public class InsideOut extends Application {
         showMonthly.setFont(Font.font("Anton", 23));  // Set the font family and size here
         showMonthly.setLayoutX(300);
         showMonthly.setLayoutY(250);
+        
     
            if (showDeposit != null && !pane.getChildren().contains(showDeposit)) {
                  pane.getChildren().add(showDeposit);
@@ -2152,7 +2120,7 @@ public class InsideOut extends Application {
                 pane.getChildren().remove(showMonthly); 
                 pane.getChildren().add(showMonthly);
            }
-     
+        
     }
     
     public static void toViewBalance(Stage stage,Scene scene,AnchorPane pane,AnchorPane vbpane){
