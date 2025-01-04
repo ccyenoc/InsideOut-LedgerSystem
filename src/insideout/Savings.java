@@ -254,7 +254,21 @@ public class Savings {
     
     public void isEndOfMonth(String username) {
         this.username=username;
-       Calendar current = Calendar.getInstance(TimeZone.getTimeZone("Asia/Kuala_Lumpur"));
+      Calendar current = Calendar.getInstance(TimeZone.getTimeZone("Asia/Kuala_Lumpur"));
+        
+        // Set the current time to the last day of the current month (for testing)
+        current.set(Calendar.DAY_OF_MONTH, current.getActualMaximum(Calendar.DAY_OF_MONTH)); // Last day of the month
+        current.set(Calendar.HOUR_OF_DAY, 0);  // Midnight
+        current.set(Calendar.MINUTE, 0);
+        current.set(Calendar.SECOND, 0);
+        current.set(Calendar.MILLISECOND, 0);
+        
+        // Define the date format pattern
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
+        
+        // Format the current date (now set to the end of the month)
+        String formattedDate = sdf.format(current.getTime());
+        
        Calendar endOfMonth = Calendar.getInstance(TimeZone.getTimeZone("Asia/Kuala_Lumpur"));
 
       // Set the calendar to the last day of the current month
@@ -264,18 +278,14 @@ public class Savings {
       endOfMonth.set(Calendar.SECOND, 0);
       endOfMonth.set(Calendar.MILLISECOND, 0);
 
-        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
-        
-        boolean balanceUpdated=false;
-        String checkUpdated="";
         ArrayList<String> findUser=new ArrayList<>();
         // Check if current is strictly after the due date
         if (current.after(endOfMonth) || current.equals(endOfMonth)) {
         String line="";
         boolean header=true;
-        String status="";
-        String lastUpdatedDate="";
         boolean updated=false;
+        boolean shouldUpdate=false;
+        double lastSavings=Double.MAX_VALUE;
         try(BufferedReader reader=new BufferedReader(new FileReader(savingFile))){
           while((line=reader.readLine())!=null){
               if(header==true){
@@ -288,8 +298,13 @@ public class Savings {
               // if not handled, then the monthly saving will be added everytime user login
               String row[]=line.split(",");
               if(row[0].equals(username) && row.length==9){
+                  if(Double.parseDouble(row[7])<lastSavings){
+                       shouldUpdate=true;
+                      lastSavings=Double.parseDouble(row[7]); // compare the lastSaving with current savings, if less that means it should be updated
+                   }
+                  
                     findUser.add(line);
-                    if (row[8].contains("|")) { // if does not contains means No
+                    if (row[8].contains("|") && shouldUpdate==false) { // if does not contains means No
                         updated=true;
                     }
                 findUser.add(line);
@@ -360,7 +375,6 @@ public class Savings {
            readLastTransactionID();
            StringBuilder line=new StringBuilder();
            Date date = new Date();
-           SimpleDateFormat dateFormat = new SimpleDateFormat("dd:MM:yyyy");
            line.append(username).append(",").append(transactionID).append(",").append("Savings").append(",").append(savings).append(",")
                    .append("Savings").append(",").append(date).append(",").append(bd).append(",").append("Savings");
            
