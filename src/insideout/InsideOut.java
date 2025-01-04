@@ -1803,8 +1803,8 @@ public class InsideOut extends Application {
       
           
          confirmapply.setOnAction(c -> {
-        if(period[0].matches("-?\\\\d*\\\\.?\\\\d+") && principal[0].matches("-?\\\\d*\\\\.?\\\\d+") 
-           && rate[0].matches("-?\\\\d*\\\\.?\\\\d+") && month[0].matches("-?\\\\d*\\\\.?\\\\d+")){
+        if(!period[0].matches("-?\\\\d*\\\\.?\\\\d+") && !principal[0].matches("-?\\\\d*\\\\.?\\\\d+") 
+           && !rate[0].matches("-?\\\\d*\\\\.?\\\\d+") && !month[0].matches("-?\\\\d*\\\\.?\\\\d+")){
        
         if (period[0]!=null) {
             try{
@@ -1983,10 +1983,9 @@ public class InsideOut extends Application {
               }); 
         
           confirmrepay.setOnAction(e->{
-               if(repayamount[0].matches("-?\\\\d*\\\\.?\\\\d+")){
-              if(getID[0].getText().equals("Repay LoanID...")){
-              Label lbl=new Label("Select a Loan.");
-              popupMessage(lbl);
+               if(getID[0].getText().equals("Repay LoanID...")){
+                 Label lbl=new Label("Select a Loan."); // no loan selected
+                  popupMessage(lbl);
               }
               else{
               try{
@@ -2006,12 +2005,6 @@ public class InsideOut extends Application {
               ex.printStackTrace();
               }
           }
-               }
-               else{
-               Label lbl=new Label("Enter a number\neg.whole number/decimal number)");
-               popupMessage(lbl);
-               }
-           
                
                
                
