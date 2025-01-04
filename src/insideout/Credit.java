@@ -8,6 +8,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -84,8 +85,9 @@ public class Credit {
         }
         else{
         BigDecimal bd = new BigDecimal(balance);
-        transactioninfo=username + "," + transactionID + ","+type+","+amount+"," +description+","+ date + "," + bd+","+category;
-        transactioninfoCreditcsv = username + "," + creditID + ","+type+","+amount+"," +description+","+ date + "," + bd+","+category;
+        bd=bd.setScale(2, RoundingMode.HALF_UP);
+        transactioninfo=username + "," + transactionID + ","+type+","+String.format("%2f",amount)+"," +description+","+ date + "," + bd+","+category;
+        transactioninfoCreditcsv = username + "," + creditID + ","+type+","+String.format("%2f",amount)+"," +description+","+ date + "," + bd+","+category;
         lbl=new Label("Succesfully Credited");
         store(recordcredit,transactioninfoCreditcsv);
         store(recorddebitandcredit,transactioninfo);

@@ -102,6 +102,11 @@ public class InsideOut extends Application {
         Scene pageViewBalance=new Scene(viewBalance,700,400);
         StackPane spBalance=new StackPane();
         
+        AnchorPane viewLoanHistory=new AnchorPane();
+        Scene pageviewLoanHistory=new Scene(viewLoanHistory,700,400);
+        StackPane spLoanHistory=new StackPane();
+        
+        
         
 // homepage (registration && login page)
         
@@ -283,6 +288,8 @@ public class InsideOut extends Application {
                 }
         }); // registration to log in page
 
+         Label usernamelbl[]=new Label[1];
+         usernamelbl[0]=new Label();
         loginbtn.setOnAction(e-> {
           Username=logIn(name[0], useremail[0], userpassword[0]);
           // send reminder if there is loan dueing
@@ -317,7 +324,14 @@ public class InsideOut extends Application {
             if(overdue==true){
               Label overdued=new Label("Overdue Loan Found!\nPlease make repayment now.\nDebit and Credit function will be disabled\nuntil the loan is fully paid!");
               popupMessage(overdued);
-          }}
+          }
+           usernamelbl[0]=new Label(Username);
+            
+        usernamelbl[0].setFont(Font.font("Anton", 50));
+        AnchorPane.setTopAnchor(usernamelbl[0], 100.0);
+        AnchorPane.setLeftAnchor(usernamelbl[0], 100.0);
+        mainPage.getChildren().add(usernamelbl[0]);
+          }
                 }); //from login to mainpage
 
         currenttime(mainPage);
@@ -350,6 +364,9 @@ public class InsideOut extends Application {
         Label welcome=new Label("Welcome ");// get username afterward
         welcome=header(welcome,mainPage);
         welcome.setFont(Font.font("Anton", 60));
+        
+      
+
         mainPage.getChildren().addAll(menu,welcome,debitbtn,creditbtn,historybtn,creditloanbtn,interestpredictorbtn,logoutbtn,savingbtn,viewGraphsbtn); 
         
 // debit page
@@ -405,9 +422,10 @@ public class InsideOut extends Application {
        else{
        final String input = amountdebit.getText(); // Get the text entered by the user in amountdebit TextField 
        try{
+           int descriptiondlength=descriptiondstr[0].split(" ").length;
            String category=getCat();
            boolean descriptionword=false;
-           if(descriptiondstr[0].split(" ").length>200){
+           if(descriptiondlength>200){
                descriptionword=true;
            }
            
@@ -783,11 +801,19 @@ public class InsideOut extends Application {
           
           Label amountRepaylbl=new Label("Amount");
           AnchorPane.setTopAnchor(amountRepaylbl, 250.0);
-          AnchorPane.setLeftAnchor(amountRepaylbl, 50.0);
+          AnchorPane.setLeftAnchor(amountRepaylbl, 500.0);
           amountRepaylbl.setStyle("-fx-text-fill:black;");
           amountRepaylbl.setFont(Font.font("Anton", 20));
+          
+          Button viewLoanHistorybtn=new Button("Loan History");
+          AnchorPane.setTopAnchor(viewLoanHistorybtn, 30.0);
+          AnchorPane.setLeftAnchor(viewLoanHistorybtn, 50.0);
+          buttonfontsize(viewLoanHistorybtn);
+          viewLoanHistorybtn.setOnAction(e-> primaryStage.setScene(pagehistory));
+                  
+        
      
-          repay.getChildren().addAll(repaytitle,selectRepay,amountRepaylbl);
+          repay.getChildren().addAll(repaytitle,selectRepay,amountRepaylbl,viewLoanHistory);
          
 // predited deposit page
         
@@ -1140,7 +1166,7 @@ public class InsideOut extends Application {
         Label time = new Label();  // display the time
         time.setFont(Font.font("Anton", 70)); 
         time.setLayoutX(410);
-        time.setLayoutY(20);
+        time.setLayoutY(100);
 
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 

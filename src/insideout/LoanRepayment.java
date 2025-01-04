@@ -22,7 +22,6 @@ public class LoanRepayment {
     
     public LoanRepayment(String targetUsername){
       this.targetUsername=targetUsername;
-      System.out.println("TragetUsername for LoanRepayment :" +targetUsername);
     }
     
     public PieChart LoanRepaymentGraph() {

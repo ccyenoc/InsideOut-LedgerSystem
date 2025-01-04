@@ -12,6 +12,7 @@ import java.util.Date;
 import javafx.scene.control.Label;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class Debit {
     private String username="";
@@ -96,12 +97,13 @@ public class Debit {
             }
         
         BigDecimal bd = new BigDecimal(balance);
+        bd=bd.setScale(2, RoundingMode.HALF_UP);
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd:MM:yyyy");
         lbl=new Label("Succesfully Debited");       
-        transactioninfoDebitcsv = username + "," + debitID + ","+type+","+amount+"," +description+","+ date + "," + bd+","+category+","+yesno;
+        transactioninfoDebitcsv = username + "," + debitID + ","+type+","+String.format("%2f",amount)+"," +description+","+ date + "," + bd+","+category+","+yesno;
         store(recorddebit,transactioninfoDebitcsv); // record for debit csv
-        transactioninfo = username + "," + transactionID + ","+type+","+amount+"," +description+","+ date + "," + bd+","+category;
+        transactioninfo = username + "," + transactionID + ","+type+","+String.format("%2f",amount)+"," +description+","+ date + "," + bd+","+category;
         store(recorddebitandcredit,transactioninfo); 
         }
  
