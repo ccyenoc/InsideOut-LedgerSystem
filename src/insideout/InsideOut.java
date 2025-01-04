@@ -36,6 +36,7 @@ public class InsideOut extends Application {
     private static TableView<Transaction> tableViewOverview = new TableView<>();
     private static TableView<Transaction> tableViewDebit = new TableView<>();
     private static TableView<Transaction> tableViewCredit = new TableView<>();
+    private static TableView<Transaction> tableViewLoanApplied=new TableView<>();
 
     private static ArrayList<Node> clearNodes=new ArrayList<>();
     
@@ -632,14 +633,54 @@ public class InsideOut extends Application {
         DescriptionCredit.setCellValueFactory(new PropertyValueFactory<>("description"));
         DescriptionCredit.setPrefWidth(230); 
         creditTab.setContent(tableViewCredit);
+        
+        Tab appliedloanTab = new Tab("Loan Applied");
+        appliedloanTab.setClosable(false); // Disables the close button
+        TableColumn<Transaction, String> LoanID = new TableColumn<>("LoanID");
+        LoanID.setCellValueFactory(new PropertyValueFactory<>("loanID"));
+        LoanID.setPrefWidth(90);
+
+        TableColumn<Transaction, String> Principal = new TableColumn<>("Principal");
+        Principal.setCellValueFactory(new PropertyValueFactory<>("Principal"));
+        Principal.setPrefWidth(90);
+        
+        TableColumn<Transaction, String> Interest = new TableColumn<>("Interest Rate");
+        Interest.setCellValueFactory(new PropertyValueFactory<>("Interest"));
+        Interest.setPrefWidth(90); 
+        
+        TableColumn<Transaction, String> TotalLoan = new TableColumn<>("Total Loan");
+        TotalLoan.setCellValueFactory(new PropertyValueFactory<>("totalLoan"));
+        TotalLoan.setPrefWidth(90); 
+        
+        TableColumn<Transaction, String> outstandingBalance = new TableColumn<>("Outstanding Balance");
+        outstandingBalance.setCellValueFactory(new PropertyValueFactory<>("outstandingBalance"));
+        outstandingBalance.setPrefWidth(90); 
+        
+        TableColumn<Transaction, String> period = new TableColumn<>("Period");
+        period.setCellValueFactory(new PropertyValueFactory<>("period"));
+        period.setPrefWidth(70); 
+        
+        TableColumn<Transaction, String> appliedTime = new TableColumn<>("Apply Time");
+        appliedTime.setCellValueFactory(new PropertyValueFactory<>("applyTime"));
+        appliedTime.setPrefWidth(200); 
+        
+        TableColumn<Transaction, String> dueTime = new TableColumn<>("Due Time");
+        dueTime.setCellValueFactory(new PropertyValueFactory<>("dueTime"));
+        dueTime.setPrefWidth(200); 
+        
+        TableColumn<Transaction, String> status = new TableColumn<>("Status");
+        status.setCellValueFactory(new PropertyValueFactory<>("status"));
+        status.setPrefWidth(70); 
+        
+        appliedloanTab.setContent(tableViewLoanApplied);
 
         tableViewOverview.getColumns().addAll(TransactionIDOverview, TimeOverview, AmountOverview, DescriptionOverview);
         tableViewDebit.getColumns().addAll(TransactionIDDebit, TimeDebit, AmountDebit, DescriptionDebit);
         tableViewCredit.getColumns().addAll(TransactionIDCredit, TimeCredit, AmountCredit, DescriptionCredit);
-        tabPane.getTabs().addAll(overviewTab,debitTab,creditTab);
-       
+        tableViewLoanApplied.getColumns().addAll(LoanID,Principal,Interest,TotalLoan,outstandingBalance,period,appliedTime,dueTime,status);
+        tabPane.getTabs().addAll(overviewTab,debitTab,creditTab,appliedloanTab);
       
-        history.getChildren().addAll(tableViewOverview,tableViewDebit,tableViewCredit,tabPane,hourglassview);
+        history.getChildren().addAll(tableViewOverview,tableViewDebit,tableViewCredit,tabPane,hourglassview,tableViewLoanApplied);
      
         pagehistory.setFill(Color.web("#a8c4f4"));
 
@@ -1708,6 +1749,7 @@ public class InsideOut extends Application {
         tableViewOverview.setItems(data.getOverviewData());
         tableViewDebit.setItems(data.getDebitData());
         tableViewCredit.setItems(data.getCreditData());
+        tableViewLoanApplied.setItems(data.getAppliedLoan());
     }
     
 // apply loan 
@@ -1831,8 +1873,8 @@ public class InsideOut extends Application {
       
           
          confirmapply.setOnAction(c -> {
-        if(!period[0].matches("\\d*\\.?\\d+") && !principal[0].matches("\\d*\\.?\\d+") 
-           && !rate[0].matches("\\d*\\.?\\d+") && !month[0].matches("\\d*\\.?\\d+")){
+        if(principal[0].matches("\\d*\\.?\\d+") 
+           && rate[0].matches("\\d*\\.?\\d+") && month[0].matches("\\d*\\.?\\d+")){
        
         if (period[0]!=null) {
             try{
