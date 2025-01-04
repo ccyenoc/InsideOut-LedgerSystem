@@ -1166,7 +1166,7 @@ public class InsideOut extends Application {
         Label time = new Label();  // display the time
         time.setFont(Font.font("Anton", 70)); 
         time.setLayoutX(410);
-        time.setLayoutY(100);
+        time.setLayoutY(80);
 
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
