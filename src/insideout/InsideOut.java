@@ -673,7 +673,9 @@ public class InsideOut extends Application {
         no.setLayoutY(150);
         no.setPrefSize(50,15);
         no.setOnAction(e->{
-            Label selectother=new Label("Saving Not Activated, proceed with other page");
+            Savings cancel=new Savings(Username);
+            cancel.cancelSaving();
+            Label selectother=new Label("Next debit will not be deducted for saving.");
             popupMessage(selectother);
         });
         
@@ -1803,8 +1805,8 @@ public class InsideOut extends Application {
       
           
          confirmapply.setOnAction(c -> {
-        if(!period[0].matches("-?\\\\d*\\\\.?\\\\d+") && !principal[0].matches("-?\\\\d*\\\\.?\\\\d+") 
-           && !rate[0].matches("-?\\\\d*\\\\.?\\\\d+") && !month[0].matches("-?\\\\d*\\\\.?\\\\d+")){
+        if(!period[0].matches("\\d*\\.?\\d+") && !principal[0].matches("\\d*\\.?\\d+") 
+           && !rate[0].matches("\\d*\\.?\\d+") && !month[0].matches("\\d*\\.?\\d+")){
        
         if (period[0]!=null) {
             try{
@@ -2060,7 +2062,7 @@ public class InsideOut extends Application {
         confirm.setLayoutX(220);
         confirm.setLayoutY(250);
         confirm.setOnAction(e-> {
-            if(savingPercentage[0].matches("-?\\\\d*\\\\.?\\\\d+")){
+            if(savingPercentage[0].matches("\\d*\\.?\\d+")){ // only positive allowed
             Savings saving=new Savings(Username,savingPercentage[0]);
             Label lbl=saving.getLabel();
             popupMessage(lbl);}

@@ -585,6 +585,41 @@ public class Savings {
         return deductdebit;
     }
     
+    public void cancelSaving(){
+        String line="";
+        boolean header=true;
+        int userLastIndex=0;
+        ArrayList<String> update=new ArrayList<>();
+        try(BufferedReader reader=new BufferedReader(new FileReader(savingFile))){
+         while((line=reader.readLine())!=null){
+           if(header==true){
+             update.add(line);
+             header=false;
+             continue;
+           }
+           
+           String row[]=line.split(",");
+           if(row[0].equals(username)){
+             update.add(line);
+             userLastIndex=update.size()-1;
+             continue;
+           }
+           
+           update.add(line);
+           
+         }
+           String checkPendingSaving[]=update.get(userLastIndex).split(",");
+           if(checkPendingSaving.length<4){
+             update.remove(userLastIndex);
+             updateFile(update,savingFile);
+           }
+           
+
+        }catch(IOException ex){
+          ex.printStackTrace();
+        }
+    }
+    
     public static void appendToFile(String filePath, String data) {
         boolean headerExists = false;
         String firstLine ="";
@@ -610,5 +645,7 @@ public class Savings {
             e.printStackTrace();
         }
     }
+    
+    
     
 }
