@@ -153,7 +153,7 @@ public void MonthlyDeduction(ArrayList<String> list, ArrayList<String> fileConte
            // update the new balance to recorddebitandcredit file
            StringBuilder updateNewBalance = new StringBuilder().append(username).append(",").append(transactionID).
                    append(",").append("Repayment").append(",").append(repayment).append(",").append("Loan ID: ").append(LoanID).
-                   append(",").append(date).append(",").append(balance).append(",").append("Monthly Repayment");
+                   append(",").append(date).append(",").append(String.format("%.2f",(balance))).append(",").append("Monthly Repayment");
            appendFile(balanceFile,String.valueOf(updateNewBalance));
            calculateOutstandingBalance(repayment);
            // update the repayment csv
@@ -508,10 +508,9 @@ public void MonthlyDeduction(ArrayList<String> list, ArrayList<String> fileConte
              
              if(row[10].equals("Paid")){
               lbl=new Label("Loan Repayment Cleared.");
-              break quit;
              }
              
-             row[5]=String.valueOf(outstanding);
+             row[5]=String.format("%.2f",outstanding);
              totalLoan=row[4];
              for(int i=0;i<row.length;i++){
                  if(i==row.length-1){
@@ -565,7 +564,7 @@ public void MonthlyDeduction(ArrayList<String> list, ArrayList<String> fileConte
         
         
         builder.append(username).append(",").append(RepaymentID).append(",").append(loanID).append(",").append(totalrepaymentamount)
-                .append(",").append(repaymentamount).append(",").append(totalLoanPaid).append(",").append(date);
+                .append(",").append(String.format("%.2f",repaymentamount)).append(",").append(String.format("%.2f",totalLoanPaid)).append(",").append(date);
        appendFile(repaymentFile,String.valueOf(builder));
     
     }
