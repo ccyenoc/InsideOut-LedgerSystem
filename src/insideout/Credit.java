@@ -19,8 +19,6 @@ public class Credit {
     private static String recordcredit="src/recordcredit.csv";
     private static double amount=0.0;
     private static String description="";
-    private String transactioninfo="";
-    private String transactioninfoCreditcsv="";
     private String transactionID="";
     private String creditID="";
     private static String type="";
@@ -86,11 +84,11 @@ public class Credit {
         else{
         BigDecimal bd = new BigDecimal(balance);
         bd=bd.setScale(2, RoundingMode.HALF_UP);
-        transactioninfo=username + "," + transactionID + ","+type+","+String.format("%2f",amount)+"," +description+","+ date + "," + bd+","+category;
-        transactioninfoCreditcsv = username + "," + creditID + ","+type+","+String.format("%2f",amount)+"," +description+","+ date + "," + bd+","+category;
+            String transactioninfo = username + "," + transactionID + "," + type + "," + String.format("%2f", amount) + "," + description + "," + date + "," + bd + "," + category;
+            String transactioninfoCreditcsv = username + "," + creditID + "," + type + "," + String.format("%2f", amount) + "," + description + "," + date + "," + bd + "," + category;
         lbl=new Label("Succesfully Credited");
-        store(recordcredit,transactioninfoCreditcsv);
-        store(recorddebitandcredit,transactioninfo);
+        store(recordcredit, transactioninfoCreditcsv);
+        store(recorddebitandcredit, transactioninfo);
         }
  
     }

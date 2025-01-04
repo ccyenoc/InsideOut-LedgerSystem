@@ -32,7 +32,7 @@ public class Registration{
         try(BufferedReader reader=new BufferedReader(new FileReader(userinfo))){
             userFound:{
             while((line=reader.readLine())!=null){ // to check if there is exist user and username taken
-                if(header==true){
+                if(header){
                     header=false;
                     lines.add(line);
                     continue;
@@ -67,7 +67,7 @@ public class Registration{
                     // when it is a new user and username is unique, check password and email format
                     String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
                     boolean validEmail = Pattern.matches(emailRegex, email);
-                    if(validEmail==false){
+                    if(!validEmail){
                         lbl =new Label("Invalid Email !");
                         break userFound;
                     }
@@ -75,7 +75,7 @@ public class Registration{
                         !password.matches(".*[A-Z].*") || // requirement 2: consist atleast 1 Uppercase
                         ! password.matches(".*[a-z].*") || // requirement 3: consist atleast 1 lowercase
                         !password.matches(".*\\d.*") || // requirement 4: consist atleast 1 digit
-                        !password.matches(".*[@$!%*?&^#_+=[\\\\]{}|;:',<>,./].*"))){ // requirement 5: consist at least 1 special character
+                        !password.matches(".*[@$!%*?&^#_+=[\\\\]{}|;:',<>./].*"))){ // requirement 5: consist at least 1 special character
                         lbl=new Label("Enter a Strong Password!");
                         break userFound;
                     }
@@ -83,7 +83,7 @@ public class Registration{
                     
                     
                     registrationValid=true;
-                    if(registrationValid==true){
+                    if(registrationValid){
                      String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
                      newUserInfo=username+","+userID+","+email+","+hashedPassword;
                      store(userinfo,newUserInfo);

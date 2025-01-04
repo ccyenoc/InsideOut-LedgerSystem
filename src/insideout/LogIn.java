@@ -14,7 +14,6 @@ public class LogIn {
     private String email="";
     private String password="";
     private static String userinfo="src/userinfo - Sheet1.csv";
-    private boolean UserFound=false;
     private String userID;
     
     public LogIn(String name,String email,String password){

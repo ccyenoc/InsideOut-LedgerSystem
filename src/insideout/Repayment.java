@@ -133,7 +133,7 @@ public void MonthlyDeduction(ArrayList<String> list, ArrayList<String> fileConte
       String lastBalance[]={""};
       try(BufferedReader reader=new BufferedReader(new FileReader(balanceFile))){ // get user final balance;
          while((line=reader.readLine())!=null){
-           if(header==true){
+           if(header){
                header=false;
                continue;
            }
@@ -207,7 +207,7 @@ public void MonthlyDeduction(ArrayList<String> list, ArrayList<String> fileConte
                 ArrayList<String> lines = new ArrayList<>();
                 ArrayList<Integer> indexUser=new ArrayList<>();
                 while ((line = reader.readLine()) != null) {
-                    if(header==true){
+                    if(header){
                      header=false;
                      lines.add(line);
                      continue;
@@ -353,7 +353,7 @@ public void MonthlyDeduction(ArrayList<String> list, ArrayList<String> fileConte
       ArrayList<String> findTotal=new ArrayList<>();
       try(BufferedReader reader=new BufferedReader(new FileReader(repaymentFile))){
         while((line=reader.readLine())!=null){
-           if(header==true){
+           if(header){
              header=false;
              continue;
            }
@@ -364,7 +364,7 @@ public void MonthlyDeduction(ArrayList<String> list, ArrayList<String> fileConte
              findTotal.add(row[5]);
            }
            
-           if(findTotal.size()==0){
+           if(findTotal.isEmpty()){
              lastTotal=0.0;
            }
            else{
@@ -384,7 +384,7 @@ public void MonthlyDeduction(ArrayList<String> list, ArrayList<String> fileConte
         boolean header=true;
        try(BufferedReader reader=new BufferedReader(new FileReader(applyFile))){
            while((line=reader.readLine())!=null){
-             if(header==true){
+             if(header){
                  header=false;
                  continue;
              }
@@ -405,7 +405,7 @@ public void MonthlyDeduction(ArrayList<String> list, ArrayList<String> fileConte
     boolean header=true;
     try(BufferedReader reader=new BufferedReader(new FileReader(applyFile))){
         while((line=reader.readLine())!=null){
-          if(header==true){
+          if(header){
             header=false;
             continue;
           }
@@ -432,7 +432,7 @@ public void MonthlyDeduction(ArrayList<String> list, ArrayList<String> fileConte
         boolean header=true;
         try(BufferedReader reader=new BufferedReader(new FileReader(applyFile))){
             while((line=reader.readLine())!=null){
-              if(header==true){
+              if(header){
                   header=false;
                   continue;
               }
@@ -457,7 +457,7 @@ public void MonthlyDeduction(ArrayList<String> list, ArrayList<String> fileConte
         boolean header=true;
         try(BufferedReader reader=new BufferedReader(new FileReader(applyFile))){
             while((line=reader.readLine())!=null){
-              if(header==true){
+              if(header){
                   header=false;
                   continue;
               }
@@ -485,7 +485,7 @@ public void MonthlyDeduction(ArrayList<String> list, ArrayList<String> fileConte
      try(BufferedReader reader =new BufferedReader(new FileReader(applyFile))){
          quit:{
        while((line=reader.readLine())!=null){
-         if(header==true){
+         if(header){
              header=false;
              if (lines.isEmpty()) {
                         lines.add(line);
@@ -543,7 +543,7 @@ public void MonthlyDeduction(ArrayList<String> list, ArrayList<String> fileConte
         boolean header=true;
         try(BufferedReader reader=new BufferedReader(new FileReader(repaymentFile))){
         while((line=reader.readLine())!=null){
-           if(header==true){
+           if(header){
            header=false;
            continue;
            }

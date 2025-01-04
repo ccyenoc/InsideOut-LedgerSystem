@@ -135,7 +135,7 @@ public class Transaction {
         try(BufferedReader br=new BufferedReader(new FileReader(loanApplied))){
           ArrayList<Transaction> LoanApply=new ArrayList<>();
           while((str=br.readLine())!=null){
-            if(head==true){
+            if(head){
                head=false;
                continue;
             }

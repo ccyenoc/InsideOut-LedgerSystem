@@ -1,7 +1,6 @@
 package insideout;
 import java.io.*;
-import java.text.SimpleDateFormat;
-import javafx.scene.*; 
+import javafx.scene.*;
 import javafx.scene.control.*; 
 import javafx.stage.*;  
 import javafx.util.*; 
@@ -11,7 +10,6 @@ import java.util.ArrayList;
 import java.util.function.Consumer;
 import javafx.animation.*; 
 import javafx.application.Application;
-import javafx.collections.*;
 import javafx.scene.chart.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.*;  
@@ -20,19 +18,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.scene.text.Font;
 
-import org.mindrot.jbcrypt.BCrypt;
-
 public class InsideOut extends Application {
     
-    private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
     private static final double ASPECT_RATIO = 16.0 / 9.0;
     public static boolean isUser=false;
     public static String Username="";
     public static double debitTotal=0.0;
     public static double creditTotal=0.0;
-    private static boolean debitcategorySelected=false;
-    private static boolean creditcategorySelected=false;
-    
+
     private static TableView<Transaction> tableViewOverview = new TableView<>();
     private static TableView<Transaction> tableViewDebit = new TableView<>();
     private static TableView<Transaction> tableViewCredit = new TableView<>();
@@ -40,7 +33,6 @@ public class InsideOut extends Application {
 
     private static ArrayList<Node> clearNodes=new ArrayList<>();
     
-    protected static boolean userStatus=false;
     private boolean overdue=false;
     
     @Override
@@ -53,59 +45,46 @@ public class InsideOut extends Application {
         
         AnchorPane registration=new AnchorPane();
         Scene pageregistration=new Scene (registration,700,400);
-        StackPane spRegistration = new StackPane();
-         
+
         AnchorPane logIn=new AnchorPane();
         Scene pagelogin=new Scene(logIn,700,400);
-        StackPane spLogIn = new StackPane();
-         
+
         AnchorPane mainPage=new AnchorPane();
         Scene pagemainPage= new Scene (mainPage,700,400);
-        StackPane spMain = new StackPane();
-        
+
         AnchorPane debit=new AnchorPane();
         Scene pagedebit=new Scene(debit,700,400);
-        StackPane spDebit = new StackPane();
-        
+
         AnchorPane credit=new AnchorPane();
         Scene pagecredit=new Scene(credit,700,400);
-        StackPane spCredit = new StackPane();
-        
-        StackPane spHistory = new StackPane();
+
         AnchorPane history=new AnchorPane();
         Scene pagehistory=new Scene (history,700,400);
         
         AnchorPane saving=new AnchorPane();
         Scene pagesaving=new Scene(saving,700,400);
-        StackPane spSaving = new StackPane();
-        
+
         AnchorPane creditloan=new AnchorPane();
         Scene pagecreditloan=new Scene(creditloan,700,400);
-        StackPane spCreditLoan = new StackPane();
-        
+
          AnchorPane applyLoan=new AnchorPane();
          Scene pageapplyLoan=new Scene(applyLoan,700,400);
-         StackPane spApply = new StackPane();
-          
+
          AnchorPane repay=new AnchorPane();
          Scene pagerepay=new Scene(repay,700,400);
-         StackPane spRepay = new StackPane();
-        
+
         AnchorPane predicteddeposit=new AnchorPane();
         Scene pagedeposit=new Scene(predicteddeposit,700,400);
         StackPane spDeposit = new StackPane();
         
         AnchorPane viewGraph=new AnchorPane();
         Scene pageViewGraph=new Scene(viewGraph,700,400);
-        StackPane spGraph = new StackPane();
-        
+
         AnchorPane viewBalance=new AnchorPane();
         Scene pageViewBalance=new Scene(viewBalance,700,400);
-        StackPane spBalance=new StackPane();
-        
+
         AnchorPane viewLoanHistory=new AnchorPane();
-        Scene pageviewLoanHistory=new Scene(viewLoanHistory,700,400);
-        StackPane spLoanHistory=new StackPane();
+
         
         
         
@@ -284,7 +263,7 @@ public class InsideOut extends Application {
         
         tologinpage.setOnAction(e->{
                 register(registername[0],registeremail[0],registerpassword[0]);
-                if(registrationValid==true){
+                if(registrationValid){
                 primaryStage.setScene(pagelogin);
                 }
         }); // registration to log in page
@@ -315,14 +294,14 @@ public class InsideOut extends Application {
           Savings endmonth=new Savings(Username);
           endmonth.isEndOfMonth(Username);
           // update loan status
-          if(isUser==true){
+          if(isUser){
             primaryStage.setScene(pagemainPage);
             Repayment check = new Repayment(Username);
             check.updateStatus();
             check.checkDeduction();
             check.checkOverdue();
             this.overdue=check.getOverdue(); // check if there is any overdue loan
-            if(overdue==true){
+            if(overdue){
               Label overdued=new Label("Overdue Loan Found!\nPlease make repayment now.\nDebit and Credit function will be disabled\nuntil the loan is fully paid!");
               popupMessage(overdued);
           }
@@ -416,7 +395,7 @@ public class InsideOut extends Application {
         
     
        confirmdebit.setOnAction(e -> {
-       if(overdue==true){
+       if(overdue){
          Label overdueLoan=new Label("Clear Loan Repayment Before Making any Transaction");
          popupMessage(overdueLoan);
        }
@@ -430,7 +409,7 @@ public class InsideOut extends Application {
                descriptionword=true;
            }
            
-          if(descriptionword==false){
+          if(!descriptionword){
           double debitamount =Double.parseDouble(input); 
           Debit(debitamount, descriptiondstr[0], "Debit",category);}
           else{
@@ -518,7 +497,7 @@ public class InsideOut extends Application {
        confirmcredit.setLayoutX(500);
        confirmcredit.setLayoutY(300);
        
-       if(overdue==true){
+       if(overdue){
           confirmcredit.setDisable(true);
         }
        else{
@@ -530,7 +509,7 @@ public class InsideOut extends Application {
            if(descriptiondstr[0].split(" ").length>200){
                descriptionword=true;
            }
-           if(descriptionword==false){
+           if(!descriptionword){
               double creditamount =Double.parseDouble(input); 
               Credit(creditamount, descriptioncstr[0], "Credit",categoryCredit);
            }
@@ -1639,11 +1618,7 @@ public class InsideOut extends Application {
         btn.toFront();
     }
     
-    
-    public static void setLabelVisibility(Label label) {
-    label.setVisible(false);
-    label.setManaged(false);  // Initially set the label to not be visible or managed
-    }
+
     
     public static void label(Label label){
        label.setStyle("-fx-background-color:#FFFFFF; -fx-text-fill: black; -fx-border-radius: 5px;");
@@ -1670,16 +1645,6 @@ public class InsideOut extends Application {
         Transaction barchart=new Transaction(Username);
         debitTotal=barchart.getDebitTotal();
         creditTotal=barchart.getCreditTotal();
-    }
-    
-    public static void viewBarChartbtn(Button btn){
-        btn.setStyle("-fx-background-color:#fff8e3;-fx-text-fill:black;");
-        btn.setFont(Font.font("Anton", 15));
-        btn.setPrefSize(150,20);
- 
-        AnchorPane.setTopAnchor(btn, 30.0); 
-        AnchorPane.setLeftAnchor(btn, 250.0); 
-        btn.setOnAction(e-> viewBarChart());
     }
 
 // functions
@@ -2093,7 +2058,7 @@ public class InsideOut extends Application {
         btn.setPrefWidth(150); 
         buttonBox.getChildren().add(btn);
         
-        String loanID[]={LoanID.get(i)};
+        String[] loanID ={LoanID.get(i)};
       
         btn.setOnAction(c -> { getID.setText(loanID[0]);
                                scroll.setVisible(false);
@@ -2122,7 +2087,7 @@ public class InsideOut extends Application {
         savingPercentage[0] = newValue.trim();
         });
         
-        boolean status[]=new boolean[1];
+        boolean[] status =new boolean[1];
         Button confirm=new Button("Confirm");
         confirm.setStyle("-fx-background-color:#FED760;-fx-text-fill:black;");
         confirm.setFont(Font.font("Anton", 15));

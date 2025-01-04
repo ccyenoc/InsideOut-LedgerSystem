@@ -13,7 +13,9 @@ import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Properties;
+
 import javafx.scene.control.Label;
+
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.PasswordAuthentication;
@@ -29,16 +31,16 @@ public class Reminder {
     String[] repaymentPeriod;
     String[] remainingPayment;
     final String filename = "src/creditloan-apply.csv";
-  //  private static final String EMAIL_FROM = "woiaijdwj@gmail.com";
+    //  private static final String EMAIL_FROM = "woiaijdwj@gmail.com";
     private static final String APP_PASSWORD = "cwwl zggf qwwf bcdm";
     private static Label lbl;
 
-    public Reminder(){
+    public Reminder() {
         try {
             Scanner reader = new Scanner(new FileReader(this.filename));
             reader.nextLine();
-            int indexCount = 0 ;
-            while (reader.hasNextLine()){
+            int indexCount = 0;
+            while (reader.hasNextLine()) {
                 indexCount++;
                 String line = reader.nextLine();
             }
@@ -48,77 +50,76 @@ public class Reminder {
             this.repaymentPeriod = new String[indexCount];
             this.remainingPayment = new String[indexCount];
             reader.close();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-        try{
+        try {
             Scanner reader = new Scanner(new FileReader(this.filename));
             reader.nextLine();
-            for (int i = 0 ; i < overdue.length ; i ++  ){
-                String[]line = reader.nextLine().split(",");
+            for (int i = 0; i < overdue.length; i++) {
+                String[] line = reader.nextLine().split(",");
                 this.overdue[i] = line[9];
-                this.userID[i]  = line[0];
+                this.userID[i] = line[0];
                 this.repaymentPeriod[i] = line[6];
                 this.remainingPayment[i] = line[5];
 
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
-    public void notification(String username) throws Exception{
-        Date duedate=new Date();
-        String remainingPayment  = "";
 
-        for (int i = 0 ; i < userID.length ; i ++ ){
+    public void notification(String username) throws Exception {
+        Date duedate = new Date();
+        String remainingPayment = "";
+
+        for (int i = 0; i < userID.length; i++) {
             //Actually its not useerID ...
-            if (username.equals(userID[i])){
-                 SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
-                 duedate = dateFormat.parse(overdue[i]);
-                 remainingPayment = this.remainingPayment[i];
+            if (username.equals(userID[i])) {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+                duedate = dateFormat.parse(overdue[i]);
+                remainingPayment = this.remainingPayment[i];
                 break;
             }
         }
-        Date currentTime =new Date();
+        Date currentTime = new Date();
 
-        int compare=currentTime.compareTo(duedate);
-        if (currentTime.after(duedate) || currentTime.equals(duedate)){
-            Message message =new MimeMessage(getEmailSession());
-         //   message.setFrom(new InternetAddress(EMAIL_FROM));
-           // String EMAIL_TO = "liangyao0808@gmail.com";
-           // message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(EMAIL_TO));
+        int compare = currentTime.compareTo(duedate);
+        if (currentTime.after(duedate) || currentTime.equals(duedate)) {
+            Message message = new MimeMessage(getEmailSession());
+            // message.setFrom(new InternetAddress(EMAIL_FROM));
+            // String EMAIL_TO = "liangyao0808@gmail.com";
+            // message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(EMAIL_TO));
             message.setSubject("Remaining Payment");
             message.setText("RM" + remainingPayment + " required to pay before " + duedate);
             Transport.send(message);
-            lbl=new Label("Reminder!\nAuto-deduction from balance will be taken to pay for loan(s)");
+            lbl = new Label("Reminder!\nAuto-deduction from balance will be taken to pay for loan(s)");
         }
 
     }
-   
-    private static Session getEmailSession(){
+
+    private static Session getEmailSession() {
         return Session.getInstance(getGmailProperties(), new Authenticator() {
-          //  protected PasswordAuthentication getPasswordAuthentication(){
-             //   return new PasswordAuthentication(EMAIL_FROM , APP_PASSWORD);
-           // }
+            //  protected PasswordAuthentication getPasswordAuthentication(){
+            //   return new PasswordAuthentication(EMAIL_FROM , APP_PASSWORD);
+            // }
         });
     }
 
-    private static Properties getGmailProperties(){
+    private static Properties getGmailProperties() {
         Properties prop = new Properties();
-        prop.put("mail.smtp.auth" , "true");
-        prop.put("mail.smtp.starttls.enable" , "true");
-        prop.put("mail.smtp.host" , "smtp.gmail.com");
-        prop.put("mail.smtp.port" , "587");
-        prop.put("mail.smtp.ssl.trust" , "smtp.gmail.com");
+        prop.put("mail.smtp.auth", "true");
+        prop.put("mail.smtp.starttls.enable", "true");
+        prop.put("mail.smtp.host", "smtp.gmail.com");
+        prop.put("mail.smtp.port", "587");
+        prop.put("mail.smtp.ssl.trust", "smtp.gmail.com");
         return prop;
     }
 
-    public static Label getLabel(){
-        return lbl;   
+    public static Label getLabel() {
+        return lbl;
     }
 
 }

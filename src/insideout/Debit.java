@@ -24,8 +24,6 @@ public class Debit {
     private String type="";
     private String category="";
     private Label lbl=new Label();
-    private String transactioninfo="";
-    private String transactioninfoDebitcsv="";
     private String transactionID="";
     private String debitID="";
     private double balance=0.0;
@@ -85,7 +83,7 @@ public class Debit {
             lbl=new Label("Cash Amount can't be negative or zero!");
         }
         else{
-            if(status==false){
+            if(!status){
                 balance+=amount;
                 yesno="No";
             }
@@ -100,11 +98,11 @@ public class Debit {
         bd=bd.setScale(2, RoundingMode.HALF_UP);
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd:MM:yyyy");
-        lbl=new Label("Succesfully Debited");       
-        transactioninfoDebitcsv = username + "," + debitID + ","+type+","+String.format("%2f",amount)+"," +description+","+ date + "," + bd+","+category+","+yesno;
-        store(recorddebit,transactioninfoDebitcsv); // record for debit csv
-        transactioninfo = username + "," + transactionID + ","+type+","+String.format("%2f",amount)+"," +description+","+ date + "," + bd+","+category;
-        store(recorddebitandcredit,transactioninfo); 
+        lbl=new Label("Succesfully Debited");
+            String transactioninfoDebitcsv = username + "," + debitID + "," + type + "," + String.format("%2f", amount) + "," + description + "," + date + "," + bd + "," + category + "," + yesno;
+        store(recorddebit, transactioninfoDebitcsv); // record for debit csv
+            String transactioninfo = username + "," + transactionID + "," + type + "," + String.format("%2f", amount) + "," + description + "," + date + "," + bd + "," + category;
+        store(recorddebitandcredit, transactioninfo);
         }
  
     }
