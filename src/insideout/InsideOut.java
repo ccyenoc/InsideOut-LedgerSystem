@@ -46,23 +46,46 @@ public class InsideOut extends Application {
     
     @Override
     public void start(Stage primaryStage) {
-        URL hourglass = getClass().getResource("/hourglass.png");
-        URL clover = getClass().getResource("/clover.png");
-        URL coin = getClass().getResource("/coin.png");
-        URL comp = getClass().getResource("/comp.png");
-        URL file = getClass().getResource("/file.png");
-        URL logo = getClass().getResource("/insideoutlogo.png");
-        URL key = getClass().getResource("/key.png");
-        URL lock = getClass().getResource("/lock.png");
-        URL money = getClass().getResource("/money.png");
-        URL moneybag = getClass().getResource("/moneybag.png");
-        URL moneyfly = getClass().getResource("/moneyfly.png");
-        URL piggybank = getClass().getResource("/piggybank.png");
-        URL purse = getClass().getResource("/purse.png");
-        URL questionmark = getClass().getResource("/questionmark.png");
-        URL star = getClass().getResource("/star.png");
-        URL tree = getClass().getResource("/tree.png");
-        
+        URL hourglass = getClass().getResource("/resources/hourglass.png");
+        URL clover = getClass().getResource("/resources/clover.png");
+        URL coin = getClass().getResource("/resources/coin.png");
+        URL comp = getClass().getResource("/resources/comp.png");
+        URL file = getClass().getResource("/resources/file.png");
+        URL logo = getClass().getResource("/resources/insideoutlogo.png");
+        URL key = getClass().getResource("/resources/key.png");
+        URL lock = getClass().getResource("/resources/lock.png");
+        URL money = getClass().getResource("/resources/money.png");
+        URL moneybag = getClass().getResource("/resources/moneybag.png");
+        URL moneyfly = getClass().getResource("/resources/moneyfly.png");
+        URL piggybank = getClass().getResource("/resources/piggybank.png");
+        URL purse = getClass().getResource("/resources/purse.png");
+        URL questionmark = getClass().getResource("/resources/questionmark.png");
+        URL star = getClass().getResource("/resources/star.png");
+        URL tree = getClass().getResource("/resources/tree.png");
+
+        if (hourglass == null) System.err.println("Resource not found: hourglass.png");
+        if (clover == null) System.err.println("Resource not found: clover.png");
+        if (coin == null) System.err.println("Resource not found: coin.png");
+        if (comp == null) System.err.println("Resource not found: comp.png");
+        if (file == null) System.err.println("Resource not found: file.png");
+        if (logo == null) System.err.println("Resource not found: insideoutlogo.png");
+        if (key == null) System.err.println("Resource not found: key.png");
+        if (lock == null) System.err.println("Resource not found: lock.png");
+        if (money == null) System.err.println("Resource not found: money.png");
+        if (moneybag == null) System.err.println("Resource not found: moneybag.png");
+        if (moneyfly == null) System.err.println("Resource not found: moneyfly.png");
+        if (piggybank == null) System.err.println("Resource not found: piggybank.png");
+        if (purse == null) System.err.println("Resource not found: purse.png");
+        if (questionmark == null) System.err.println("Resource not found: questionmark.png");
+        if (star == null) System.err.println("Resource not found: star.png");
+        if (tree == null) System.err.println("Resource not found: tree.png");
+
+        if (hourglass == null || clover == null || coin == null || comp == null ||
+                file == null || logo == null || key == null || lock == null ||
+                money == null || moneybag == null || moneyfly == null || piggybank == null ||
+                purse == null || questionmark == null || star == null || tree == null) {
+            System.err.println("One or more resources are missing. Please check the resources folder.");
+        }
         
 // anchorpane and scene
         StackPane stackpane = new StackPane();
