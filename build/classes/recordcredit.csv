@@ -1,0 +1,14 @@
+Username,Transaction ID,Transaction Type,Amount,Description,Date,Balance,Category
+ccyenoc,1,Credit,1000.0,living,Thu Dec 26 00:31:43 MYT 2024,3900.0,Food
+ccyenoc,2,Credit,2000.0,living,Thu Dec 26 00:40:47 MYT 2024,1900.0,Food
+ccyenoc,3,Credit,1000.0,living,Thu Dec 26 00:46:23 MYT 2024,900.0,Food
+ccyenoc,4,Credit,100.0,eat eat,Thu Dec 26 16:40:46 MYT 2024,800.0,Food
+ccyenoc,5,Credit,500.0,christmas,Thu Dec 26 17:27:52 MYT 2024,300.0,Others
+ccyenoc,6,Credit,100.0,living,Thu Dec 26 17:32:40 MYT 2024,200.0,Transportation
+ccyenoc,CD000007,Credit,500.0,food,Wed Jan 01 16:06:53 MYT 2025,8600,Food
+ccyenoc,CD000008,Credit,500.0,living,Wed Jan 01 16:32:48 MYT 2025,7600,Food
+ccyenoc,CD000009,Credit,500.0,loan,Wed Jan 01 17:22:10 MYT 2025,14380,Food
+brayden,CD000010,Credit,1000.0,living,Thu Jan 02 17:20:44 MYT 2025,14010,Food
+brayden,CD000011,Credit,200.0,living,Fri Jan 03 14:25:45 MYT 2025,13810,Transportation
+ccyenoc,CD000012,Credit,200.000000,food,Sat Jan 04 17:37:00 MYT 2025,26557.9000000000014551915228366851806640625,Food
+ccyenoc,CD000013,Credit,1000.000000,food,Sat Jan 04 17:39:46 MYT 2025,25557.90,Food
