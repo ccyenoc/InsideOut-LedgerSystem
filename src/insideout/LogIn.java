@@ -15,7 +15,7 @@ public class LogIn {
     private String password="";
     private static String userinfo="src/userinfo - Sheet1.csv";
     private boolean UserFound=false;
-    private String userID;
+    private Label userID;
     
     public LogIn(String name,String email,String password){
         this.name=name;
@@ -41,7 +41,7 @@ public class LogIn {
                        isUser=true;
                        lbl=new Label("Welcome to InsideOut!");
                        getName();
-                       userID=findUser[1];
+                       userID=new Label(findUser[1]);
                        break found;
                 }
            }
@@ -60,7 +60,7 @@ public class LogIn {
         return name;
     }
     
-    public String getID(){
+    public Label getID(){
       return userID;
     }
 }

@@ -1,5 +1,6 @@
 package insideout;
 import java.io.*;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import javafx.scene.*; 
 import javafx.scene.control.*; 
@@ -45,6 +46,23 @@ public class InsideOut extends Application {
     
     @Override
     public void start(Stage primaryStage) {
+        URL hourglass = getClass().getResource("/hourglass.png");
+        URL clover = getClass().getResource("/clover.png");
+        URL coin = getClass().getResource("/coin.png");
+        URL comp = getClass().getResource("/comp.png");
+        URL file = getClass().getResource("/file.png");
+        URL logo = getClass().getResource("/insideoutlogo.png");
+        URL key = getClass().getResource("/key.png");
+        URL lock = getClass().getResource("/lock.png");
+        URL money = getClass().getResource("/money.png");
+        URL moneybag = getClass().getResource("/moneybag.png");
+        URL moneyfly = getClass().getResource("/moneyfly.png");
+        URL piggybank = getClass().getResource("/piggybank.png");
+        URL purse = getClass().getResource("/purse.png");
+        URL questionmark = getClass().getResource("/questionmark.png");
+        URL star = getClass().getResource("/star.png");
+        URL tree = getClass().getResource("/tree.png");
+        
         
 // anchorpane and scene
         StackPane stackpane = new StackPane();
@@ -130,20 +148,20 @@ public class InsideOut extends Application {
         pagehomepage.setFill(Color.web("#a8c4f4"));
         
         
-         Image piggybank = new Image("file:/Users/cye/NewFolder/InsideOut/src/piggybank.png"); 
-        ImageView piggybankview=new ImageView(piggybank);
+        Image piggybankimg = new Image(piggybank.toString());
+        ImageView piggybankview=new ImageView(piggybankimg);
         piggybankview.setFitWidth(75);  
         piggybankview.setFitHeight(75); 
-        Image money=new Image("file:/Users/cye/NewFolder/InsideOut/src/money.png");
-        ImageView moneyview=new ImageView(money);
+        Image moneyimg=new Image(money.toString());
+        ImageView moneyview=new ImageView(moneyimg);
         moneyview.setFitWidth(75);  
         moneyview.setFitHeight(75); 
-        Image moneybag=new Image("file:/Users/cye/NewFolder/InsideOut/src/moneybag.png");
-        ImageView moneybagview=new ImageView(moneybag);
+        Image moneybagimg=new Image(moneybag.toString());
+        ImageView moneybagview=new ImageView(moneybagimg);
         moneybagview.setFitWidth(75);  
         moneybagview.setFitHeight(75); 
-        Image coin=new Image("file:/Users/cye/NewFolder/InsideOut/src/coin.png");
-        ImageView coinview=new ImageView(coin);
+        Image coinimg=new Image(coin.toString());
+        ImageView coinview=new ImageView(coinimg);
         coinview.setFitWidth(75);  
         coinview.setFitHeight(75); 
       
@@ -240,8 +258,8 @@ public class InsideOut extends Application {
         AnchorPane.setTopAnchor(loginbtn,300.0);
         AnchorPane.setLeftAnchor(loginbtn,400.0);
         
-        Image key=new Image("file:/Users/cye/NewFolder/InsideOut/src/key.png");
-        ImageView keyview=new ImageView(key);
+        Image keyimg=new Image(key.toString());
+        ImageView keyview=new ImageView(keyimg);
         keyview.setFitWidth(50);    
         keyview.setFitHeight(50); 
         keyview.setLayoutX(185);
@@ -294,8 +312,7 @@ public class InsideOut extends Application {
          Label usernamelbl[]=new Label[1];
          usernamelbl[0]=new Label();
         loginbtn.setOnAction(e-> {
-          Username=logIn(name[0], useremail[0], userpassword[0]);
-          System.out.println(isUser);
+          Username=logIn(name[0], useremail[0], userpassword[0],mainPage);
           if(isUser==true){
             primaryStage.setScene(pagemainPage);
             Repayment check = new Repayment(Username);
@@ -316,10 +333,8 @@ public class InsideOut extends Application {
           
            try {
                Reminder reminder = new Reminder(Username);
-               Label lbl = reminder.getLabel(); // Get the Label to display
-
-               if (!lbl.getText().isEmpty()) {
-                  popupMessage(lbl);
+               if (!reminder.getLabel().getText().isEmpty()) {
+                  popupMessage(reminder.getLabel());
                 } 
         } catch (NullPointerException ex) {
                System.err.println("Null value encountered: " + ex.getMessage());
@@ -449,19 +464,19 @@ public class InsideOut extends Application {
        }
          }});
 
-         ImageView piggybankdebit=new ImageView(piggybank);
-         piggybankdebit.setLayoutX(150);
-         piggybankdebit.setLayoutY(40);
-         piggybankdebit.setFitWidth(50);
-         piggybankdebit.setFitHeight(50);
-         ImageView coindebit=new ImageView(coin);
-         coindebit.setLayoutX(185);
-         coindebit.setLayoutY(42);
-         coindebit.setFitWidth(60);
-         coindebit.setFitHeight(60);
+         ImageView piggybankdebitimg=new ImageView(piggybank.toString());
+         piggybankdebitimg.setLayoutX(150);
+         piggybankdebitimg.setLayoutY(40);
+         piggybankdebitimg.setFitWidth(50);
+         piggybankdebitimg.setFitHeight(50);
+         ImageView coindebitimg=new ImageView(coin.toString());
+         coindebitimg.setLayoutX(185);
+         coindebitimg.setLayoutY(42);
+         coindebitimg.setFitWidth(60);
+         coindebitimg.setFitHeight(60);
          
          
-         debit.getChildren().addAll(categoryselected,select,confirmdebit,amountdebit,descriptiond,debittitle,amountinstruction,descriptioninstruction,piggybankdebit,coindebit);
+         debit.getChildren().addAll(categoryselected,select,confirmdebit,amountdebit,descriptiond,debittitle,amountinstruction,descriptioninstruction,piggybankdebitimg,coindebitimg);
       
          
 // credit page
@@ -473,14 +488,14 @@ public class InsideOut extends Application {
          amountinstruction=instruction(100,"Credit Amount");
          descriptioninstruction=instruction( 160,"Description");
          
-         Image moneyfly=new Image("file:/Users/cye/NewFolder/InsideOut/src/moneyfly.png");
-         ImageView moneyflyview=new ImageView(moneyfly);
+         Image moneyflyimg=new Image(moneyfly.toString());
+         ImageView moneyflyview=new ImageView(moneyflyimg);
          moneyflyview.setLayoutX(160);
          moneyflyview.setLayoutY(40);
          moneyflyview.setFitWidth(60);
          moneyflyview.setFitHeight(50);
          
-         ImageView coincredit=new ImageView(coin);
+         ImageView coincredit=new ImageView(coin.toString());
          coincredit.setLayoutX(205);
          coincredit.setLayoutY(40);
          coincredit.setFitWidth(60);
@@ -564,8 +579,8 @@ public class InsideOut extends Application {
         historytitle.setVisible(true);
         history.getChildren().add(historytitle);
         
-        Image hourglass=new Image("file:/Users/cye/NewFolder/InsideOut/src/hourglass.png");
-        ImageView hourglassview=new ImageView(hourglass);
+        Image hourglassimg=new Image(hourglass.toString());
+        ImageView hourglassview=new ImageView(hourglassimg);
         hourglassview.setLayoutX(200);
         hourglassview.setLayoutY(40);
         hourglassview.setFitWidth(60);
@@ -706,8 +721,8 @@ public class InsideOut extends Application {
         enterSavingPercentagelbl.setVisible(false);
         enterSavingPercentagelbl.setManaged(false);
         
-         Image tree=new Image("file:/Users/cye/NewFolder/InsideOut/src/tree.png");
-         ImageView treeview=new ImageView(tree);
+         Image treeimg=new Image(tree.toString());
+         ImageView treeview=new ImageView(treeimg);
          treeview.setLayoutX(200);
          treeview.setLayoutY(40);
          treeview.setFitWidth(60);
@@ -871,18 +886,18 @@ public class InsideOut extends Application {
         bank.setStyle("-fx-background-color:#FFFFFF; -fx-text-fill: black; -fx-border-radius: 5px;");
         bank.setFont(Font.font("Anton", 30));  // Set the font family and size here
         
-        Image questionmark=new Image("file:/Users/cye/NewFolder/InsideOut/src/questionmark.png");
-        ImageView questionmarkview=new ImageView(questionmark);
+        Image questionmarkimg=new Image(questionmark.toString());
+        ImageView questionmarkview=new ImageView(questionmarkimg);
         questionmarkview.setLayoutX(400);
         questionmarkview.setLayoutY(50);
         questionmarkview.setFitWidth(40);
         questionmarkview.setFitHeight(40);
         
-        ImageView coinpredict=new ImageView(coin);
-        coinpredict.setFitWidth(60);    
-        coinpredict.setFitHeight(60); 
-        coinpredict.setLayoutX(430);
-        coinpredict.setLayoutY(40);
+        ImageView coinpredictimg=new ImageView(coin.toString());
+        coinpredictimg.setFitWidth(60);    
+        coinpredictimg.setFitHeight(60); 
+        coinpredictimg.setLayoutX(430);
+        coinpredictimg.setLayoutY(40);
 
         bankSelection(predicteddeposit,spDeposit);
         
@@ -901,7 +916,7 @@ public class InsideOut extends Application {
         Button displayPredictedDepositbtn=new Button("Calculate Predicted Deposit");
         clearNodes.add(displayDeposit);
         
-        predicteddeposit.getChildren().addAll(deposittitle,arrow,bank,coinpredict,questionmarkview);
+        predicteddeposit.getChildren().addAll(deposittitle,arrow,bank,coinpredictimg,questionmarkview);
  // bar chart
         
         viewGraph.setStyle("-fx-background-color: #a8c4f4;");
@@ -1686,11 +1701,20 @@ public class InsideOut extends Application {
 
 // functions
 // log in page
-    public String logIn(String name,String email,String password){
+    public String logIn(String name,String email,String password,AnchorPane pane){
+
        LogIn userLogIn=new LogIn(name,email,password);
        Label lbl=userLogIn.login();
        name=userLogIn.getName();
+       
+       Label userid=userLogIn.getID();
+       userid.setFont(Font.font("Anton", 20));
+       AnchorPane.setTopAnchor(userid, 33.0);
+       AnchorPane.setLeftAnchor(userid, 550.0);
+       
+       pane.getChildren().addAll(userid);
        popupMessage(lbl);
+       
        return name;
     }  
     

@@ -257,11 +257,11 @@ public class Savings {
         Calendar current = Calendar.getInstance(TimeZone.getTimeZone("Asia/Kuala_Lumpur")); 
         Calendar endOfMonth = Calendar.getInstance(TimeZone.getTimeZone("Asia/Kuala_Lumpur"));
 
-      endOfMonth.set(Calendar.DAY_OF_MONTH, endOfMonth.getActualMaximum(Calendar.DAY_OF_MONTH));
-      endOfMonth.set(Calendar.HOUR_OF_DAY, 0);
-      endOfMonth.set(Calendar.MINUTE, 0);
-      endOfMonth.set(Calendar.SECOND, 0);
-      endOfMonth.set(Calendar.MILLISECOND, 0);
+        endOfMonth.set(Calendar.DAY_OF_MONTH, endOfMonth.getActualMaximum(Calendar.DAY_OF_MONTH));
+        endOfMonth.set(Calendar.HOUR_OF_DAY, 0);
+        endOfMonth.set(Calendar.MINUTE, 0);
+        endOfMonth.set(Calendar.SECOND, 0);
+        endOfMonth.set(Calendar.MILLISECOND, 0);
 
         ArrayList<String> findUser=new ArrayList<>();
         // Check if current is strictly after the due date
@@ -360,7 +360,7 @@ public class Savings {
            readLastTransactionID();
            StringBuilder line=new StringBuilder();
            Date date = new Date();
-           line.append(username).append(",").append(transactionID).append(",").append("Savings").append(",").append(savings).append(",")
+           line.append(username).append(",").append(transactionID).append(",").append("Savings").append(",").append(String.format("%.2f",totalSavings)).append(",")
                    .append("Savings").append(",").append(date).append(",").append(bd).append(",").append("Savings");
            
            store(recorddebitandcredit,String.valueOf(line));

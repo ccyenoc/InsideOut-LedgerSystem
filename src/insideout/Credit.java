@@ -86,8 +86,8 @@ public class Credit {
         else{
         BigDecimal bd = new BigDecimal(balance);
         bd=bd.setScale(2, RoundingMode.HALF_UP);
-        transactioninfo=username + "," + transactionID + ","+type+","+String.format("%2f",amount)+"," +description+","+ date + "," + bd+","+category;
-        transactioninfoCreditcsv = username + "," + creditID + ","+type+","+String.format("%2f",amount)+"," +description+","+ date + "," + bd+","+category;
+        transactioninfo=username + "," + transactionID + ","+type+","+String.format("%.2f",amount)+"," +description+","+ date + "," + bd+","+category;
+        transactioninfoCreditcsv = username + "," + creditID + ","+type+","+String.format("%.2f",amount)+"," +description+","+ date + "," + bd+","+category;
         lbl=new Label("Succesfully Credited");
         store(recordcredit,transactioninfoCreditcsv);
         store(recorddebitandcredit,transactioninfo);

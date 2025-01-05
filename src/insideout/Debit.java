@@ -101,9 +101,9 @@ public class Debit {
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd:MM:yyyy");
         lbl=new Label("Succesfully Debited");       
-        transactioninfoDebitcsv = username + "," + debitID + ","+type+","+String.format("%2f",amount)+"," +description+","+ date + "," + bd+","+category+","+yesno;
+        transactioninfoDebitcsv = username + "," + debitID + ","+type+","+String.format("%.2f",amount)+"," +description+","+ date + "," + bd+","+category+","+yesno;
         store(recorddebit,transactioninfoDebitcsv); // record for debit csv
-        transactioninfo = username + "," + transactionID + ","+type+","+String.format("%2f",amount)+"," +description+","+ date + "," + bd+","+category;
+        transactioninfo = username + "," + transactionID + ","+type+","+String.format("%.2f",amount)+"," +description+","+ date + "," + bd+","+category;
         store(recorddebitandcredit,transactioninfo); 
         }
  

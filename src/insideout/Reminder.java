@@ -64,9 +64,6 @@ public class Reminder {
              sendEmailDate = calendar.getTime();
 
              if(row[0].equals(this.username)){
-             System.out.println("Date : "+date);
-             System.out.println("NextPatmentDate : "+nextPaymentDate);
-             System.out.println("SendEmailDate : "+sendEmailDate);
              if(row[10].equalsIgnoreCase("Overdue")){
              overdue.add(row[1]); // add loanID (so odd index represent ID && even index represent RemainingPyament)
              overdue.add(row[5]); // add the remaining payment of laon (to be displayed
@@ -86,12 +83,10 @@ public class Reminder {
             System.out.println(active.size());
             
             if(overdue.size()!=0){
-              System.out.println("OverdueLoan");
               overdueLoanNotification();
               
             }
             else if(active.size()!=0){
-              System.out.println("ReminderNotification");
               reminderNotification();
             }
         }catch (Exception e){
