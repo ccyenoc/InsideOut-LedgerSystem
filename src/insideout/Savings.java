@@ -57,7 +57,7 @@ public class Savings {
         try(BufferedReader reader=new BufferedReader(new FileReader(savingFile))){
             pending:{
             while((line=reader.readLine())!=null){
-                if(header==true){
+                if(header){
                     header=false;
                     continue;
                 }
@@ -182,7 +182,7 @@ public class Savings {
            boolean header=true;
            
            while((line=reader.readLine())!=null){
-               if(header==true){
+               if(header){
                    header=false;
                    continue;
                }
@@ -273,7 +273,7 @@ public class Savings {
         double lastSavings=Double.MAX_VALUE;
         try(BufferedReader reader=new BufferedReader(new FileReader(savingFile))){
           while((line=reader.readLine())!=null){
-              if(header==true){
+              if(header){
                 header=false;
                 continue;
               }
@@ -289,7 +289,7 @@ public class Savings {
                    }
                   
                     findUser.add(line);
-                    if (row[8].contains("|") && shouldUpdate==false) { // if does not contains means No
+                    if (row[8].contains("|") && !shouldUpdate) { // if does not contains means No
                         updated=true;
                     }
                 findUser.add(line);
@@ -305,7 +305,7 @@ public class Savings {
           if(findUser.size()!=0){  // if user is found in csv
           String today = sdf.format(new Date());
           int index=0;
-                if (updated==false) { // if updated and it is not the same with current time 
+                if (!updated) { // if updated and it is not the same with current time
                      index = findUser.size() - 1;
                     if (findUser.get(index).split(",").length < 4) { // if user hasn't debited
                         index = findUser.size() - 2; // get the previous line
@@ -343,7 +343,7 @@ public class Savings {
         try(BufferedReader reader=new BufferedReader(new FileReader(recorddebitandcredit));
             BufferedReader br=new BufferedReader(new FileReader(savingFile))){
             while((readline=reader.readLine())!=null){
-                if(header==true){
+                if(header){
                     header=false;
                     continue;
                 }
@@ -370,7 +370,7 @@ public class Savings {
            int lastIndexSaving=-1;
            ArrayList<String> Saving=new ArrayList<>();
            while((str=br.readLine())!=null){
-             if(head==true){
+             if(head){
                  Saving.add(str);
                  head=false;
                  continue;     
@@ -444,7 +444,7 @@ public class Savings {
            boolean header=true;
            
            while((line=reader.readLine())!=null){
-               if(header==true){
+               if(header){
                    header=false;
                    continue;
                }
@@ -489,7 +489,7 @@ public class Savings {
            boolean header=true;
            
            while((line=reader.readLine())!=null){
-               if(header==true){
+               if(header){
                    header=false;
                    continue;
                }
@@ -551,7 +551,7 @@ public class Savings {
         try(BufferedReader reader=new BufferedReader(new FileReader(savingFile))){
             pending:{
             while((line=reader.readLine())!=null){
-                if(header==true){
+                if(header){
                     header=false;
                     continue;
                 }
@@ -590,7 +590,7 @@ public class Savings {
         ArrayList<String> update=new ArrayList<>();
         try(BufferedReader reader=new BufferedReader(new FileReader(savingFile))){
          while((line=reader.readLine())!=null){
-           if(header==true){
+           if(header){
              update.add(line);
              header=false;
              continue;
@@ -633,7 +633,7 @@ public class Savings {
 
         // Now append data, if the header exists, skip writing it again
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
-            if (headerExists==true) {
+            if (headerExists) {
                 writer.newLine(); 
             }
 

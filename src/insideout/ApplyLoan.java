@@ -1,10 +1,7 @@
 package insideout;
 
 import java.io.*;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import static insideout.InsideOut.store;
@@ -18,7 +15,6 @@ public class ApplyLoan{
     private double monthlyRepayment=0.0;
     private int paymentFrequency=0;
     private int month=0;
-    private double year=0.0;
     private String dueDate="";
     private String currentDate="";
     private String nextPaymentDate="";
@@ -44,7 +40,7 @@ public class ApplyLoan{
    
    public void setTime(String month){
     this.month=Integer.parseInt(month);
-    this.year=Double.parseDouble(month)/12;
+       double year = Double.parseDouble(month) / 12;
    }
    
    public void setPaymentFrequency(String frequency){
@@ -138,7 +134,7 @@ public class ApplyLoan{
    }
    
    public void LoanID(){
-    String line="";
+    String line;
     ArrayList<String> str=new ArrayList<>();
     try (BufferedReader reader = new BufferedReader(new FileReader(applyFile))) {
         boolean header = true;
@@ -151,7 +147,7 @@ public class ApplyLoan{
             str.add(line);
         }
         
-        if(str.size()!=0){
+        if(!str.isEmpty()){
         int lastIndex=str.size()-1;
         String row[]=str.get(lastIndex).split(",");
         int lastID=Integer.parseInt(row[1].replace("AL",""));
@@ -167,13 +163,13 @@ public class ApplyLoan{
             }
    
    public String getTotalOustandingBalance(String username){
-     String line="";
+     String line;
      boolean header=true;
      double totaloutstandingbalance=0.0;
      ArrayList<String> findUser=new ArrayList<>();
      try(BufferedReader reader=new BufferedReader(new FileReader(applyFile))){
        while((line=reader.readLine())!=null){
-           if(header==true){
+           if(header){
                header=false;
                continue;
            }    

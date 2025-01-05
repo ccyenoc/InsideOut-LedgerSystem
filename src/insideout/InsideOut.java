@@ -48,7 +48,7 @@ public class InsideOut extends Application {
     
     @Override
     public void start(Stage primaryStage) {
-       
+
 // anchorpane and scene
         StackPane stackpane = new StackPane();
         AnchorPane homepage = new AnchorPane();

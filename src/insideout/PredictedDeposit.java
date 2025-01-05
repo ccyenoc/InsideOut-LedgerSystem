@@ -32,7 +32,7 @@ public class PredictedDeposit {
        ArrayList<String> findUser=new ArrayList<>();
      try(BufferedReader reader=new BufferedReader(new FileReader(getBalanceFile))){
         while((line=reader.readLine())!=null){
-          if(header ==true){
+          if(header){
               header=false;
              continue;
           }
