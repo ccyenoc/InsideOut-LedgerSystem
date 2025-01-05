@@ -25,7 +25,6 @@ public class Savings {
     private double savingPerMonth=0.0;
     protected String savingFile="src/savings - Sheet1.csv";
     private String recorddebitandcredit="src/recorddebitandcredit.csv";
-    private boolean headerinfile=true;
     private Label lbl;
     private String transactionID="";
     
@@ -254,29 +253,15 @@ public class Savings {
     
     public void isEndOfMonth(String username) {
         this.username=username;
-      Calendar current = Calendar.getInstance(TimeZone.getTimeZone("Asia/Kuala_Lumpur"));
-        
-        // Set the current time to the last day of the current month (for testing)
-        current.set(Calendar.DAY_OF_MONTH, current.getActualMaximum(Calendar.DAY_OF_MONTH)); // Last day of the month
-        current.set(Calendar.HOUR_OF_DAY, 0);  // Midnight
-        current.set(Calendar.MINUTE, 0);
-        current.set(Calendar.SECOND, 0);
-        current.set(Calendar.MILLISECOND, 0);
-        
-        // Define the date format pattern
         SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
-        
-        // Format the current date (now set to the end of the month)
-        String formattedDate = sdf.format(current.getTime());
-        
-       Calendar endOfMonth = Calendar.getInstance(TimeZone.getTimeZone("Asia/Kuala_Lumpur"));
+        Calendar current = Calendar.getInstance(TimeZone.getTimeZone("Asia/Kuala_Lumpur")); 
+        Calendar endOfMonth = Calendar.getInstance(TimeZone.getTimeZone("Asia/Kuala_Lumpur"));
 
-      // Set the calendar to the last day of the current month
-      endOfMonth.set(Calendar.DAY_OF_MONTH, endOfMonth.getActualMaximum(Calendar.DAY_OF_MONTH));
-      endOfMonth.set(Calendar.HOUR_OF_DAY, 0);
-      endOfMonth.set(Calendar.MINUTE, 0);
-      endOfMonth.set(Calendar.SECOND, 0);
-      endOfMonth.set(Calendar.MILLISECOND, 0);
+        endOfMonth.set(Calendar.DAY_OF_MONTH, endOfMonth.getActualMaximum(Calendar.DAY_OF_MONTH));
+        endOfMonth.set(Calendar.HOUR_OF_DAY, 0);
+        endOfMonth.set(Calendar.MINUTE, 0);
+        endOfMonth.set(Calendar.SECOND, 0);
+        endOfMonth.set(Calendar.MILLISECOND, 0);
 
         ArrayList<String> findUser=new ArrayList<>();
         // Check if current is strictly after the due date
@@ -375,7 +360,7 @@ public class Savings {
            readLastTransactionID();
            StringBuilder line=new StringBuilder();
            Date date = new Date();
-           line.append(username).append(",").append(transactionID).append(",").append("Savings").append(",").append(savings).append(",")
+           line.append(username).append(",").append(transactionID).append(",").append("Savings").append(",").append(String.format("%.2f",totalSavings)).append(",")
                    .append("Savings").append(",").append(date).append(",").append(bd).append(",").append("Savings");
            
            store(recorddebitandcredit,String.valueOf(line));

@@ -1,6 +1,8 @@
 package insideout;
 import java.io.*;
-import javafx.scene.*;
+import java.net.URL;
+import java.text.SimpleDateFormat;
+import javafx.scene.*; 
 import javafx.scene.control.*; 
 import javafx.stage.*;  
 import javafx.util.*; 
@@ -10,6 +12,7 @@ import java.util.ArrayList;
 import java.util.function.Consumer;
 import javafx.animation.*; 
 import javafx.application.Application;
+import javafx.collections.*;
 import javafx.scene.chart.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.*;  
@@ -18,14 +21,19 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.scene.text.Font;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 public class InsideOut extends Application {
     
+    private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
     private static final double ASPECT_RATIO = 16.0 / 9.0;
     public static boolean isUser=false;
     public static String Username="";
     public static double debitTotal=0.0;
     public static double creditTotal=0.0;
-
+    private static boolean debitcategorySelected=false;
+    private static boolean creditcategorySelected=false;
+    
     private static TableView<Transaction> tableViewOverview = new TableView<>();
     private static TableView<Transaction> tableViewDebit = new TableView<>();
     private static TableView<Transaction> tableViewCredit = new TableView<>();
@@ -33,10 +41,28 @@ public class InsideOut extends Application {
 
     private static ArrayList<Node> clearNodes=new ArrayList<>();
     
+    protected static boolean userStatus=false;
     private boolean overdue=false;
     
     @Override
     public void start(Stage primaryStage) {
+        URL hourglass = getClass().getResource("/hourglass.png");
+        URL clover = getClass().getResource("/clover.png");
+        URL coin = getClass().getResource("/coin.png");
+        URL comp = getClass().getResource("/comp.png");
+        URL file = getClass().getResource("/file.png");
+        URL logo = getClass().getResource("/insideoutlogo.png");
+        URL key = getClass().getResource("/key.png");
+        URL lock = getClass().getResource("/lock.png");
+        URL money = getClass().getResource("/money.png");
+        URL moneybag = getClass().getResource("/moneybag.png");
+        URL moneyfly = getClass().getResource("/moneyfly.png");
+        URL piggybank = getClass().getResource("/piggybank.png");
+        URL purse = getClass().getResource("/purse.png");
+        URL questionmark = getClass().getResource("/questionmark.png");
+        URL star = getClass().getResource("/star.png");
+        URL tree = getClass().getResource("/tree.png");
+        
         
 // anchorpane and scene
         StackPane stackpane = new StackPane();
@@ -45,46 +71,59 @@ public class InsideOut extends Application {
         
         AnchorPane registration=new AnchorPane();
         Scene pageregistration=new Scene (registration,700,400);
-
+        StackPane spRegistration = new StackPane();
+         
         AnchorPane logIn=new AnchorPane();
         Scene pagelogin=new Scene(logIn,700,400);
-
+        StackPane spLogIn = new StackPane();
+         
         AnchorPane mainPage=new AnchorPane();
         Scene pagemainPage= new Scene (mainPage,700,400);
-
+        StackPane spMain = new StackPane();
+        
         AnchorPane debit=new AnchorPane();
         Scene pagedebit=new Scene(debit,700,400);
-
+        StackPane spDebit = new StackPane();
+        
         AnchorPane credit=new AnchorPane();
         Scene pagecredit=new Scene(credit,700,400);
-
+        StackPane spCredit = new StackPane();
+        
+        StackPane spHistory = new StackPane();
         AnchorPane history=new AnchorPane();
         Scene pagehistory=new Scene (history,700,400);
         
         AnchorPane saving=new AnchorPane();
         Scene pagesaving=new Scene(saving,700,400);
-
+        StackPane spSaving = new StackPane();
+        
         AnchorPane creditloan=new AnchorPane();
         Scene pagecreditloan=new Scene(creditloan,700,400);
-
+        StackPane spCreditLoan = new StackPane();
+        
          AnchorPane applyLoan=new AnchorPane();
          Scene pageapplyLoan=new Scene(applyLoan,700,400);
-
+         StackPane spApply = new StackPane();
+          
          AnchorPane repay=new AnchorPane();
          Scene pagerepay=new Scene(repay,700,400);
-
+         StackPane spRepay = new StackPane();
+        
         AnchorPane predicteddeposit=new AnchorPane();
         Scene pagedeposit=new Scene(predicteddeposit,700,400);
         StackPane spDeposit = new StackPane();
         
         AnchorPane viewGraph=new AnchorPane();
         Scene pageViewGraph=new Scene(viewGraph,700,400);
-
+        StackPane spGraph = new StackPane();
+        
         AnchorPane viewBalance=new AnchorPane();
         Scene pageViewBalance=new Scene(viewBalance,700,400);
-
+        StackPane spBalance=new StackPane();
+        
         AnchorPane viewLoanHistory=new AnchorPane();
-
+        Scene pageviewLoanHistory=new Scene(viewLoanHistory,700,400);
+        StackPane spLoanHistory=new StackPane();
         
         
         
@@ -108,20 +147,21 @@ public class InsideOut extends Application {
         AnchorPane.setLeftAnchor(insideout,160.0);
         pagehomepage.setFill(Color.web("#a8c4f4"));
         
-        Image piggybank = new Image("file:/Users/cye/NewFolder/InsideOut/src/piggybank.png"); 
-        ImageView piggybankview=new ImageView(piggybank);
+        
+        Image piggybankimg = new Image(piggybank.toString());
+        ImageView piggybankview=new ImageView(piggybankimg);
         piggybankview.setFitWidth(75);  
         piggybankview.setFitHeight(75); 
-        Image money=new Image("file:/Users/cye/NewFolder/InsideOut/src/money.png");
-        ImageView moneyview=new ImageView(money);
+        Image moneyimg=new Image(money.toString());
+        ImageView moneyview=new ImageView(moneyimg);
         moneyview.setFitWidth(75);  
         moneyview.setFitHeight(75); 
-        Image moneybag=new Image("file:/Users/cye/NewFolder/InsideOut/src/moneybag.png");
-        ImageView moneybagview=new ImageView(moneybag);
+        Image moneybagimg=new Image(moneybag.toString());
+        ImageView moneybagview=new ImageView(moneybagimg);
         moneybagview.setFitWidth(75);  
         moneybagview.setFitHeight(75); 
-        Image coin=new Image("file:/Users/cye/NewFolder/InsideOut/src/coin.png");
-        ImageView coinview=new ImageView(coin);
+        Image coinimg=new Image(coin.toString());
+        ImageView coinview=new ImageView(coinimg);
         coinview.setFitWidth(75);  
         coinview.setFitHeight(75); 
       
@@ -144,16 +184,16 @@ public class InsideOut extends Application {
         whiterec(registration);
         Label steps = new Label("STEPS TO REGISTER :");
         steps.setFont(Font.font("Anton", 23)); 
-        Label step1 = new Label ("1. ENTER USERNAME BY CLICKING ON "+"\nType your username...");
+        Label step1 = new Label ("1. SET USERNAME BY CLICKING ON "+"\nType your username...");
         step1.setFont(Font.font("Anton", 16)) ;
-        Label step2 = new Label ("2. ENTER YOUR EMAIL BY CLICKING ON "+"\nType your email...");
+        Label step2 = new Label ("2. SET EMAIL BY CLICKING ON "+"\nType your email...");
         step2.setFont(Font.font("Anton", 16));
-        Label step3 = new Label ("3. ENTER YOUR PASSWORD BY CLICKING ON "+"\nType your password...");
+        Label step3 = new Label ("3. SET PASSWORD BY CLICKING ON "+"\nType your password...");
         step3.setFont(Font.font("Anton", 16));
         Label step4 = new Label ("4. CLICK THE Confirm BUTTON BELOW TO SAVE ");
         step4.setFont(Font.font("Anton", 16));
-        Label step5=new Label ("5.CLICK THE Log In BUTTON TO LOG IN");
-        step5.setFont(Font.font("Anton", 16));
+        Label step5=new Label ("*PASSWORD SHOULD CONSIST OF\n1 UPPERCASE 1 SPECIAL CHARACTER AND LENGTH OF 8*");
+        step5.setFont(Font.font("Anton", 13));
         steps.setLayoutX(360);
         steps.setLayoutY(50);
         step1.setLayoutX(360);
@@ -173,10 +213,11 @@ public class InsideOut extends Application {
         yellowrec(registration);
         
         Button tologinpage=new Button("Confirm");
-        buttonfontsize(tologinpage);
-        tologinpage.setLayoutX(400);
-        tologinpage.setLayoutY(300);
-        tologinpage.setPrefSize(100,18);
+        tologinpage.setStyle("-fx-background-color:#FED760;-fx-text-fill:black;");
+        tologinpage.setFont(Font.font("Anton", 17)); 
+        tologinpage.setLayoutX(435);
+        tologinpage.setLayoutY(305);
+        tologinpage.setPrefSize(100,15);
         
         
         // method call
@@ -217,8 +258,8 @@ public class InsideOut extends Application {
         AnchorPane.setTopAnchor(loginbtn,300.0);
         AnchorPane.setLeftAnchor(loginbtn,400.0);
         
-        Image key=new Image("file:/Users/cye/NewFolder/InsideOut/src/key.png");
-        ImageView keyview=new ImageView(key);
+        Image keyimg=new Image(key.toString());
+        ImageView keyview=new ImageView(keyimg);
         keyview.setFitWidth(50);    
         keyview.setFitHeight(50); 
         keyview.setLayoutX(185);
@@ -263,7 +304,7 @@ public class InsideOut extends Application {
         
         tologinpage.setOnAction(e->{
                 register(registername[0],registeremail[0],registerpassword[0]);
-                if(registrationValid){
+                if(registrationValid==true){
                 primaryStage.setScene(pagelogin);
                 }
         }); // registration to log in page
@@ -271,40 +312,37 @@ public class InsideOut extends Application {
          Label usernamelbl[]=new Label[1];
          usernamelbl[0]=new Label();
         loginbtn.setOnAction(e-> {
-          Username=logIn(name[0], useremail[0], userpassword[0]);
-          // send reminder if there is loan dueing
-   //      try {
-   // Reminder reminder = new Reminder();
- //   reminder.notification(Username);  // Trigger the notification method
-   // Label lbl = reminder.getLabel(); // Get the Label to display
-
-    // Check if the label is not null before calling popupMessage
- //  if (lbl != null) {
-  //      popupMessage(lbl);
- //   } else {
-  //      System.out.println("No label to display.");
-  //  }
-// } catch (NullPointerException ex) {
- //   System.err.println("Null value encountered: " + ex.getMessage());
-//} catch (Exception c) {
- //   System.err.println("An unexpected error occurred: " + c.getMessage());
-//}
-          
-          // add savings into balance when reaches end of month
-          Savings endmonth=new Savings(Username);
-          endmonth.isEndOfMonth(Username);
-          // update loan status
-          if(isUser){
+          Username=logIn(name[0], useremail[0], userpassword[0],mainPage);
+          if(isUser==true){
             primaryStage.setScene(pagemainPage);
             Repayment check = new Repayment(Username);
             check.updateStatus();
             check.checkDeduction();
             check.checkOverdue();
             this.overdue=check.getOverdue(); // check if there is any overdue loan
-            if(overdue){
+            if(overdue==true){
               Label overdued=new Label("Overdue Loan Found!\nPlease make repayment now.\nDebit and Credit function will be disabled\nuntil the loan is fully paid!");
               popupMessage(overdued);
           }
+          // send reminder if there is loan dueing
+       
+          
+          // add savings into balance when reaches end of month
+          Savings endmonth=new Savings(Username);
+          endmonth.isEndOfMonth(Username);
+          
+           try {
+               Reminder reminder = new Reminder(Username);
+               if (!reminder.getLabel().getText().isEmpty()) {
+                  popupMessage(reminder.getLabel());
+                } 
+        } catch (NullPointerException ex) {
+               System.err.println("Null value encountered: " + ex.getMessage());
+        } catch (Exception c) {
+               System.err.println("An unexpected error occurred: " + c.getMessage());
+        }
+          // update loan status
+          
            usernamelbl[0]=new Label(Username);
             
         usernamelbl[0].setFont(Font.font("Anton", 50));
@@ -395,7 +433,7 @@ public class InsideOut extends Application {
         
     
        confirmdebit.setOnAction(e -> {
-       if(overdue){
+       if(overdue==true){
          Label overdueLoan=new Label("Clear Loan Repayment Before Making any Transaction");
          popupMessage(overdueLoan);
        }
@@ -409,7 +447,7 @@ public class InsideOut extends Application {
                descriptionword=true;
            }
            
-          if(!descriptionword){
+          if(descriptionword==false){
           double debitamount =Double.parseDouble(input); 
           Debit(debitamount, descriptiondstr[0], "Debit",category);}
           else{
@@ -426,19 +464,19 @@ public class InsideOut extends Application {
        }
          }});
 
-         ImageView piggybankdebit=new ImageView(piggybank);
-         piggybankdebit.setLayoutX(150);
-         piggybankdebit.setLayoutY(40);
-         piggybankdebit.setFitWidth(50);
-         piggybankdebit.setFitHeight(50);
-         ImageView coindebit=new ImageView(coin);
-         coindebit.setLayoutX(185);
-         coindebit.setLayoutY(42);
-         coindebit.setFitWidth(60);
-         coindebit.setFitHeight(60);
+         ImageView piggybankdebitimg=new ImageView(piggybank.toString());
+         piggybankdebitimg.setLayoutX(150);
+         piggybankdebitimg.setLayoutY(40);
+         piggybankdebitimg.setFitWidth(50);
+         piggybankdebitimg.setFitHeight(50);
+         ImageView coindebitimg=new ImageView(coin.toString());
+         coindebitimg.setLayoutX(185);
+         coindebitimg.setLayoutY(42);
+         coindebitimg.setFitWidth(60);
+         coindebitimg.setFitHeight(60);
          
          
-         debit.getChildren().addAll(categoryselected,select,confirmdebit,amountdebit,descriptiond,debittitle,amountinstruction,descriptioninstruction,piggybankdebit,coindebit);
+         debit.getChildren().addAll(categoryselected,select,confirmdebit,amountdebit,descriptiond,debittitle,amountinstruction,descriptioninstruction,piggybankdebitimg,coindebitimg);
       
          
 // credit page
@@ -450,14 +488,14 @@ public class InsideOut extends Application {
          amountinstruction=instruction(100,"Credit Amount");
          descriptioninstruction=instruction( 160,"Description");
          
-         Image moneyfly=new Image("file:/Users/cye/NewFolder/InsideOut/src/moneyfly.png");
-         ImageView moneyflyview=new ImageView(moneyfly);
+         Image moneyflyimg=new Image(moneyfly.toString());
+         ImageView moneyflyview=new ImageView(moneyflyimg);
          moneyflyview.setLayoutX(160);
          moneyflyview.setLayoutY(40);
          moneyflyview.setFitWidth(60);
          moneyflyview.setFitHeight(50);
          
-         ImageView coincredit=new ImageView(coin);
+         ImageView coincredit=new ImageView(coin.toString());
          coincredit.setLayoutX(205);
          coincredit.setLayoutY(40);
          coincredit.setFitWidth(60);
@@ -497,7 +535,7 @@ public class InsideOut extends Application {
        confirmcredit.setLayoutX(500);
        confirmcredit.setLayoutY(300);
        
-       if(overdue){
+       if(overdue==true){
           confirmcredit.setDisable(true);
         }
        else{
@@ -509,7 +547,7 @@ public class InsideOut extends Application {
            if(descriptiondstr[0].split(" ").length>200){
                descriptionword=true;
            }
-           if(!descriptionword){
+           if(descriptionword==false){
               double creditamount =Double.parseDouble(input); 
               Credit(creditamount, descriptioncstr[0], "Credit",categoryCredit);
            }
@@ -541,8 +579,8 @@ public class InsideOut extends Application {
         historytitle.setVisible(true);
         history.getChildren().add(historytitle);
         
-        Image hourglass=new Image("file:/Users/cye/NewFolder/InsideOut/src/hourglass.png");
-        ImageView hourglassview=new ImageView(hourglass);
+        Image hourglassimg=new Image(hourglass.toString());
+        ImageView hourglassview=new ImageView(hourglassimg);
         hourglassview.setLayoutX(200);
         hourglassview.setLayoutY(40);
         hourglassview.setFitWidth(60);
@@ -683,8 +721,8 @@ public class InsideOut extends Application {
         enterSavingPercentagelbl.setVisible(false);
         enterSavingPercentagelbl.setManaged(false);
         
-         Image tree=new Image("file:/Users/cye/NewFolder/InsideOut/src/tree.png");
-         ImageView treeview=new ImageView(tree);
+         Image treeimg=new Image(tree.toString());
+         ImageView treeview=new ImageView(treeimg);
          treeview.setLayoutX(200);
          treeview.setLayoutY(40);
          treeview.setFitWidth(60);
@@ -848,18 +886,18 @@ public class InsideOut extends Application {
         bank.setStyle("-fx-background-color:#FFFFFF; -fx-text-fill: black; -fx-border-radius: 5px;");
         bank.setFont(Font.font("Anton", 30));  // Set the font family and size here
         
-        Image questionmark=new Image("file:/Users/cye/NewFolder/InsideOut/src/questionmark.png");
-        ImageView questionmarkview=new ImageView(questionmark);
+        Image questionmarkimg=new Image(questionmark.toString());
+        ImageView questionmarkview=new ImageView(questionmarkimg);
         questionmarkview.setLayoutX(400);
         questionmarkview.setLayoutY(50);
         questionmarkview.setFitWidth(40);
         questionmarkview.setFitHeight(40);
         
-        ImageView coinpredict=new ImageView(coin);
-        coinpredict.setFitWidth(60);    
-        coinpredict.setFitHeight(60); 
-        coinpredict.setLayoutX(430);
-        coinpredict.setLayoutY(40);
+        ImageView coinpredictimg=new ImageView(coin.toString());
+        coinpredictimg.setFitWidth(60);    
+        coinpredictimg.setFitHeight(60); 
+        coinpredictimg.setLayoutX(430);
+        coinpredictimg.setLayoutY(40);
 
         bankSelection(predicteddeposit,spDeposit);
         
@@ -878,7 +916,7 @@ public class InsideOut extends Application {
         Button displayPredictedDepositbtn=new Button("Calculate Predicted Deposit");
         clearNodes.add(displayDeposit);
         
-        predicteddeposit.getChildren().addAll(deposittitle,arrow,bank,coinpredict,questionmarkview);
+        predicteddeposit.getChildren().addAll(deposittitle,arrow,bank,coinpredictimg,questionmarkview);
  // bar chart
         
         viewGraph.setStyle("-fx-background-color: #a8c4f4;");
@@ -1081,7 +1119,7 @@ public class InsideOut extends Application {
         });
 
         primaryStage.show();
-        Image icon = new Image("file:/Users/cye/NewFolder/InsideOut/src/insideout/insideoutlogo.png"); 
+        Image icon = new Image("file:/Users/cye/NewFolder/InsideOut/src/insideoutlogo.png"); 
         primaryStage.getIcons().add(icon);
         
        
@@ -1618,7 +1656,11 @@ public class InsideOut extends Application {
         btn.toFront();
     }
     
-
+    
+    public static void setLabelVisibility(Label label) {
+    label.setVisible(false);
+    label.setManaged(false);  // Initially set the label to not be visible or managed
+    }
     
     public static void label(Label label){
        label.setStyle("-fx-background-color:#FFFFFF; -fx-text-fill: black; -fx-border-radius: 5px;");
@@ -1646,14 +1688,33 @@ public class InsideOut extends Application {
         debitTotal=barchart.getDebitTotal();
         creditTotal=barchart.getCreditTotal();
     }
+    
+    public static void viewBarChartbtn(Button btn){
+        btn.setStyle("-fx-background-color:#fff8e3;-fx-text-fill:black;");
+        btn.setFont(Font.font("Anton", 15));
+        btn.setPrefSize(150,20);
+ 
+        AnchorPane.setTopAnchor(btn, 30.0); 
+        AnchorPane.setLeftAnchor(btn, 250.0); 
+        btn.setOnAction(e-> viewBarChart());
+    }
 
 // functions
 // log in page
-    public String logIn(String name,String email,String password){
+    public String logIn(String name,String email,String password,AnchorPane pane){
+
        LogIn userLogIn=new LogIn(name,email,password);
        Label lbl=userLogIn.login();
        name=userLogIn.getName();
+       
+       Label userid=userLogIn.getID();
+       userid.setFont(Font.font("Anton", 20));
+       AnchorPane.setTopAnchor(userid, 33.0);
+       AnchorPane.setLeftAnchor(userid, 550.0);
+       
+       pane.getChildren().addAll(userid);
        popupMessage(lbl);
+       
        return name;
     }  
     
@@ -2058,7 +2119,7 @@ public class InsideOut extends Application {
         btn.setPrefWidth(150); 
         buttonBox.getChildren().add(btn);
         
-        String[] loanID ={LoanID.get(i)};
+        String loanID[]={LoanID.get(i)};
       
         btn.setOnAction(c -> { getID.setText(loanID[0]);
                                scroll.setVisible(false);
@@ -2087,7 +2148,7 @@ public class InsideOut extends Application {
         savingPercentage[0] = newValue.trim();
         });
         
-        boolean[] status =new boolean[1];
+        boolean status[]=new boolean[1];
         Button confirm=new Button("Confirm");
         confirm.setStyle("-fx-background-color:#FED760;-fx-text-fill:black;");
         confirm.setFont(Font.font("Anton", 15));

@@ -45,7 +45,7 @@ public class Repayment {
         this.username=username;
     }
     
-    public void checkDeduction() {
+    public void checkDeduction(){
     String line = "";
     boolean header = true;
     SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
@@ -90,6 +90,9 @@ public void MonthlyDeduction(ArrayList<String> list, ArrayList<String> fileConte
         String row[] = list.get(i).split(",");
         double monthlyPayment = Double.parseDouble(row[12]);
         double outstandingBalance = Double.parseDouble(row[5]);
+        if(outstandingBalance<monthlyPayment){
+          monthlyPayment=outstandingBalance; // condition where the outstanding Balance is less then monthly payment 
+        } 
         double balance = deductBalance(monthlyPayment);
         this.LoanID=row[1];
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
@@ -101,7 +104,7 @@ public void MonthlyDeduction(ArrayList<String> list, ArrayList<String> fileConte
         }
         row[11]=nextMonthPaymentDate;
         if (balance>=0) { 
-            double newOutstandingBalance = outstandingBalance - monthlyPayment;
+            double newOutstandingBalance = outstandingBalance-monthlyPayment;
             row[5] = String.valueOf(newOutstandingBalance);
             if (Math.abs(newOutstandingBalance) < 0.01) {
                 row[10] = "Paid";
