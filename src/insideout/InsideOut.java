@@ -20,6 +20,8 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.scene.text.Font;
+import javafx.scene.layout.StackPane;
+import javafx.scene.text.Font;
 
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -46,24 +48,7 @@ public class InsideOut extends Application {
     
     @Override
     public void start(Stage primaryStage) {
-        URL hourglass = getClass().getResource("/hourglass.png");
-        URL clover = getClass().getResource("/clover.png");
-        URL coin = getClass().getResource("/coin.png");
-        URL comp = getClass().getResource("/comp.png");
-        URL file = getClass().getResource("/file.png");
-        URL logo = getClass().getResource("/insideoutlogo.png");
-        URL key = getClass().getResource("/key.png");
-        URL lock = getClass().getResource("/lock.png");
-        URL money = getClass().getResource("/money.png");
-        URL moneybag = getClass().getResource("/moneybag.png");
-        URL moneyfly = getClass().getResource("/moneyfly.png");
-        URL piggybank = getClass().getResource("/piggybank.png");
-        URL purse = getClass().getResource("/purse.png");
-        URL questionmark = getClass().getResource("/questionmark.png");
-        URL star = getClass().getResource("/star.png");
-        URL tree = getClass().getResource("/tree.png");
-        
-        
+       
 // anchorpane and scene
         StackPane stackpane = new StackPane();
         AnchorPane homepage = new AnchorPane();
@@ -148,19 +133,19 @@ public class InsideOut extends Application {
         pagehomepage.setFill(Color.web("#a8c4f4"));
         
         
-        Image piggybankimg = new Image(piggybank.toString());
+        Image piggybankimg =new Image("file:/Users/cye/NewFolder/InsideOut/src/images/piggybank.png");
         ImageView piggybankview=new ImageView(piggybankimg);
         piggybankview.setFitWidth(75);  
         piggybankview.setFitHeight(75); 
-        Image moneyimg=new Image(money.toString());
+        Image moneyimg=new Image("file:/Users/cye/NewFolder/InsideOut/src/images/money.png"); 
         ImageView moneyview=new ImageView(moneyimg);
         moneyview.setFitWidth(75);  
         moneyview.setFitHeight(75); 
-        Image moneybagimg=new Image(moneybag.toString());
+        Image moneybagimg=new Image("file:/Users/cye/NewFolder/InsideOut/src/images/moneybag.png"); 
         ImageView moneybagview=new ImageView(moneybagimg);
         moneybagview.setFitWidth(75);  
         moneybagview.setFitHeight(75); 
-        Image coinimg=new Image(coin.toString());
+        Image coinimg=new Image("file:/Users/cye/NewFolder/InsideOut/src/images/coin.png"); 
         ImageView coinview=new ImageView(coinimg);
         coinview.setFitWidth(75);  
         coinview.setFitHeight(75); 
@@ -173,7 +158,6 @@ public class InsideOut extends Application {
         moneybagview.setLayoutY(200);
         coinview.setLayoutX(410);
         coinview.setLayoutY(200);
-        
         
         stackpane.getChildren().addAll(register,login,insideout,piggybankview,moneybagview,moneyview);
         homepage.getChildren().addAll(insideout,register,login,piggybankview,moneybagview,moneyview,coinview);
@@ -242,8 +226,7 @@ public class InsideOut extends Application {
         clearNodes.add(inputusername);
         clearNodes.add(inputemail);
         clearNodes.add(inputpassword);
-        
-        stackpane.getChildren().add(tologinpage);      
+   
         registration.getChildren().addAll(inputusername,inputpassword,inputemail,tologinpage,steps,step1,step2,step3,step4,step5
         ,registrationtitle,username,email,password);
         pageregistration.setFill(Color.web("#a8c4f4"));
@@ -258,7 +241,7 @@ public class InsideOut extends Application {
         AnchorPane.setTopAnchor(loginbtn,300.0);
         AnchorPane.setLeftAnchor(loginbtn,400.0);
         
-        Image keyimg=new Image(key.toString());
+        Image keyimg=new Image("file:/Users/cye/NewFolder/InsideOut/src/images/key.png"); 
         ImageView keyview=new ImageView(keyimg);
         keyview.setFitWidth(50);    
         keyview.setFitHeight(50); 
@@ -464,12 +447,12 @@ public class InsideOut extends Application {
        }
          }});
 
-         ImageView piggybankdebitimg=new ImageView(piggybank.toString());
+         ImageView piggybankdebitimg=new ImageView(piggybankimg);
          piggybankdebitimg.setLayoutX(150);
          piggybankdebitimg.setLayoutY(40);
          piggybankdebitimg.setFitWidth(50);
          piggybankdebitimg.setFitHeight(50);
-         ImageView coindebitimg=new ImageView(coin.toString());
+         ImageView coindebitimg=new ImageView(coinimg);
          coindebitimg.setLayoutX(185);
          coindebitimg.setLayoutY(42);
          coindebitimg.setFitWidth(60);
@@ -488,14 +471,14 @@ public class InsideOut extends Application {
          amountinstruction=instruction(100,"Credit Amount");
          descriptioninstruction=instruction( 160,"Description");
          
-         Image moneyflyimg=new Image(moneyfly.toString());
+         Image moneyflyimg=new Image("file:/Users/cye/NewFolder/InsideOut/src/images/moneyfly.png"); 
          ImageView moneyflyview=new ImageView(moneyflyimg);
          moneyflyview.setLayoutX(160);
          moneyflyview.setLayoutY(40);
          moneyflyview.setFitWidth(60);
          moneyflyview.setFitHeight(50);
          
-         ImageView coincredit=new ImageView(coin.toString());
+         ImageView coincredit=new ImageView(coinimg);
          coincredit.setLayoutX(205);
          coincredit.setLayoutY(40);
          coincredit.setFitWidth(60);
@@ -579,7 +562,7 @@ public class InsideOut extends Application {
         historytitle.setVisible(true);
         history.getChildren().add(historytitle);
         
-        Image hourglassimg=new Image(hourglass.toString());
+        Image hourglassimg=new Image("file:/Users/cye/NewFolder/InsideOut/src/images/hourglass.png"); 
         ImageView hourglassview=new ImageView(hourglassimg);
         hourglassview.setLayoutX(200);
         hourglassview.setLayoutY(40);
@@ -592,6 +575,7 @@ public class InsideOut extends Application {
         AnchorPane.setTopAnchor(tabPane, 107.0);
         AnchorPane.setLeftAnchor(tabPane, 30.0);
 
+        // overview
         Tab overviewTab = new Tab("Overview");
         overviewTab.setClosable(false); // Disables the close button
         
@@ -612,14 +596,15 @@ public class InsideOut extends Application {
         DescriptionOverview.setPrefWidth(230); 
         overviewTab.setContent(tableViewOverview);
         
+        // debit
         Tab debitTab = new Tab("Debit");
         debitTab.setClosable(false); // Disables the close button
         TableColumn<Transaction, String> TransactionIDDebit = new TableColumn<>("TransactionID");
         TransactionIDDebit.setCellValueFactory(new PropertyValueFactory<>("transactionID"));
         TransactionIDDebit.setPrefWidth(113);
 
-        TableColumn<Transaction, String> TimeDebit = new TableColumn<>("Time");
-        TimeDebit.setCellValueFactory(new PropertyValueFactory<>("time"));
+        TableColumn<Transaction, String> TimeDebit = new TableColumn<>("Date");
+        TimeDebit.setCellValueFactory(new PropertyValueFactory<>("date"));
         TimeDebit.setPrefWidth(183);
         
         TableColumn<Transaction, String> AmountDebit = new TableColumn<>("Amount");
@@ -629,8 +614,14 @@ public class InsideOut extends Application {
         TableColumn<Transaction, String> DescriptionDebit = new TableColumn<>("Description");
         DescriptionDebit.setCellValueFactory(new PropertyValueFactory<>("description"));
         DescriptionDebit.setPrefWidth(230); 
+        
+        TableColumn<Transaction, String> deductstatus = new TableColumn<>("Deducted");
+        deductstatus.setCellValueFactory(new PropertyValueFactory<>("deducted"));
+        deductstatus.setPrefWidth(230); 
+        
         debitTab.setContent(tableViewDebit);
         
+        // credit
         Tab creditTab = new Tab("Credit");
         creditTab.setClosable(false); // Disables the close button
         TableColumn<Transaction, String> TransactionIDCredit = new TableColumn<>("TransactionID");
@@ -638,8 +629,8 @@ public class InsideOut extends Application {
         TransactionIDCredit.setPrefWidth(113);
 
 
-        TableColumn<Transaction, String> TimeCredit = new TableColumn<>("Time");
-        TimeCredit.setCellValueFactory(new PropertyValueFactory<>("time"));
+        TableColumn<Transaction, String> TimeCredit = new TableColumn<>("Date");
+        TimeCredit.setCellValueFactory(new PropertyValueFactory<>("date"));
         TimeCredit.setPrefWidth(183);
         
         TableColumn<Transaction, String> AmountCredit = new TableColumn<>("Amount");
@@ -649,8 +640,14 @@ public class InsideOut extends Application {
         TableColumn<Transaction, String> DescriptionCredit = new TableColumn<>("Description");
         DescriptionCredit.setCellValueFactory(new PropertyValueFactory<>("description"));
         DescriptionCredit.setPrefWidth(230); 
+        
+        TableColumn<Transaction, String> categoryCredit = new TableColumn<>("Category");
+        categoryCredit.setCellValueFactory(new PropertyValueFactory<>("category"));
+        categoryCredit.setPrefWidth(230); 
+        
         creditTab.setContent(tableViewCredit);
         
+        // loan applied
         Tab appliedloanTab = new Tab("Loan Applied");
         appliedloanTab.setClosable(false); // Disables the close button
         TableColumn<Transaction, String> LoanID = new TableColumn<>("LoanID");
@@ -721,7 +718,7 @@ public class InsideOut extends Application {
         enterSavingPercentagelbl.setVisible(false);
         enterSavingPercentagelbl.setManaged(false);
         
-         Image treeimg=new Image(tree.toString());
+         Image treeimg=new Image("file:/Users/cye/NewFolder/InsideOut/src/images/tree.png"); 
          ImageView treeview=new ImageView(treeimg);
          treeview.setLayoutX(200);
          treeview.setLayoutY(40);
@@ -886,14 +883,14 @@ public class InsideOut extends Application {
         bank.setStyle("-fx-background-color:#FFFFFF; -fx-text-fill: black; -fx-border-radius: 5px;");
         bank.setFont(Font.font("Anton", 30));  // Set the font family and size here
         
-        Image questionmarkimg=new Image(questionmark.toString());
+        Image questionmarkimg=new Image("file:/Users/cye/NewFolder/InsideOut/src/images/questionmark.png"); 
         ImageView questionmarkview=new ImageView(questionmarkimg);
         questionmarkview.setLayoutX(400);
         questionmarkview.setLayoutY(50);
         questionmarkview.setFitWidth(40);
         questionmarkview.setFitHeight(40);
         
-        ImageView coinpredictimg=new ImageView(coin.toString());
+        ImageView coinpredictimg=new ImageView(coinimg);
         coinpredictimg.setFitWidth(60);    
         coinpredictimg.setFitHeight(60); 
         coinpredictimg.setLayoutX(430);
@@ -1119,7 +1116,7 @@ public class InsideOut extends Application {
         });
 
         primaryStage.show();
-        Image icon = new Image("file:/Users/cye/NewFolder/InsideOut/src/insideoutlogo.png"); 
+        Image icon = new Image("file:/Users/cye/NewFolder/InsideOut/src/images/insideoutlogo.png"); 
         primaryStage.getIcons().add(icon);
         
        
@@ -2387,8 +2384,8 @@ public class InsideOut extends Application {
      label.setLayoutX(110);
      label.setLayoutY(50);
     Stage popupStage = new Stage();
-    StackPane root = new StackPane(label);
-
+    StackPane root = new StackPane();
+    root.getChildren().add(label); // Add label to StackPane
     Scene scene = new Scene(root,300,100);
     popupStage.setScene(scene);
     popupStage.show();

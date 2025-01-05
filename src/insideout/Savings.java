@@ -382,7 +382,7 @@ public class Savings {
                 }
             
             }
-            
+  
            String content[]=Saving.get(lastIndexSaving).split(",");
            if(content.length<=3){
              lastIndexSaving--;
@@ -566,7 +566,6 @@ public class Savings {
             if(lastIndex<0){ // meaning that no username matches 
               deductdebit = false; 
             }else{ // username match
-                System.out.println(addLine.get(lastIndex));
                 String[] check=addLine.get(lastIndex).split(","); // get the content of user last line
                 if(check.length<4){
                     deductdebit = true; 

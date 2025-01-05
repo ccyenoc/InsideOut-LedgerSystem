@@ -36,8 +36,7 @@ public class Credit {
         this.category=category;
         updateCredit();
     }
-    
-    
+
     private void updateCredit(){
         String line="";
         creditID();

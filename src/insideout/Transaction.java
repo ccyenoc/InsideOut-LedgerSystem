@@ -11,20 +11,21 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
 
 public class Transaction {
+    private double debitTotal=0.0;
+    private double creditTotal=0.0;
+    // for overView
     private StringProperty transactionID = new SimpleStringProperty("");
     private StringProperty time = new SimpleStringProperty("");
     private StringProperty amount = new SimpleStringProperty("");
     private StringProperty description = new SimpleStringProperty("");
     private StringProperty username = new SimpleStringProperty("");
-    private String filepath = "src/recorddebitandcredit.csv";
+    private StringProperty balance = new SimpleStringProperty("");
+    private String overview = "src/recorddebitandcredit.csv";
    
-    private double balance=0.0;
     private ObservableList<Transaction> debitData = FXCollections.observableArrayList();
     private ObservableList<Transaction> creditData = FXCollections.observableArrayList();
     private ObservableList<Transaction> overviewData = FXCollections.observableArrayList();
-    private double debitTotal=0.0;
     private ObservableList<Transaction> appliedLoanData=FXCollections.observableArrayList();
-    private double creditTotal=0.0;
    
     // for loan applied
      private String loanApplied="src/creditloan-apply.csv";
@@ -37,21 +38,53 @@ public class Transaction {
      private final StringProperty applyTime = new SimpleStringProperty("");
      private final StringProperty dueTime = new SimpleStringProperty("");
      private final StringProperty status = new SimpleStringProperty("");
+     private final StringProperty date = new SimpleStringProperty("");
+     
+     // for debit
+     private String debitFile="src/recorddebit.csv";
+     private final StringProperty deducted = new SimpleStringProperty("");
+     
+     // for credit
+     private String creditFile="src/recordcredit.csv";
+     private final StringProperty category = new SimpleStringProperty("");
      
     public Transaction(String name) {
         this.username.set(name);
         readFile();
     }
 
-    // Constructor with transaction details
-    public Transaction(String name, String transactionID, String time, String amount, String description) {
+    //constructor for overview
+    public Transaction(String name, String transactionID, String time, String amount, String description,double balance) {
         this.username.set(name);
         this.transactionID.set(transactionID);
         this.time.set(time);
         this.amount.set(amount);
         this.description.set(description);
+        this.balance.set(String.valueOf(balance));
     }
     
+    // constructor for dbeit
+     public Transaction(String name, String transactionID, String time, String amount, String description,String deducted) {
+        this.username.set(name);
+        this.transactionID.set(transactionID);
+        this.time.set(time);
+        this.amount.set(amount);
+        this.description.set(description);
+        this.deducted.set(deducted);
+    }
+     
+   // constructor for credit
+     public Transaction(String name, String transactionID, String time, double amount, String description,String category) {
+        this.username.set(name);
+        this.transactionID.set(transactionID);
+        this.time.set(time);
+        this.amount.set(String.valueOf(amount));
+        this.description.set(description);
+        this.category.set(category);
+    }
+     
+    
+    // constructor for loan applied
     public Transaction(String loanID,String principal,String interest,String totalLoan,String outstandingBalance,String period,String applyTime,String dueTime,String status){
     this.loanID.set(loanID);
     this.principal.set(principal);
@@ -85,20 +118,76 @@ public class Transaction {
 
     // Method to read CSV and populate the data lists
     public void readFile() {
-        try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(debitFile));
+                BufferedReader br=new BufferedReader(new FileReader(creditFile));
+                BufferedReader read=new BufferedReader(new FileReader(loanApplied));
+                BufferedReader breader=new BufferedReader(new FileReader(overview))) {
+            String readDebit;
+            String readCredit;
+            String readLoan;
             String line;
-            ArrayList<Transaction> debitList = new ArrayList<>();
-            ArrayList<Transaction> creditList = new ArrayList<>();
-            ArrayList<Transaction> overviewList = new ArrayList<>();
-           
-            boolean header = true;
+            
+            ArrayList<Transaction> debitList = new ArrayList<>(); // for debit 
+            ArrayList<Transaction> creditList = new ArrayList<>();  // for credit
+            ArrayList<Transaction> overviewList = new ArrayList<>(); // for overview
+            ArrayList<Transaction> LoanApply=new ArrayList<>(); // for loan apply
 
-            while ((line = reader.readLine()) != null) {
+            // for debit
+            boolean header = true;
+            while ((readDebit = reader.readLine()) != null) {
                 if (header) {
                     header = false;
                     continue;
                 }
 
+                String[] columns = readDebit.split(",");
+                String name=columns[0];
+                String debitID=columns[1];
+                String amount=columns[3];
+                String description=columns[4];
+                String date=columns[5];
+                String deducted=columns[8];
+                
+
+                if (username.get().equals(name)) {
+                    debitTotal+=Double.parseDouble(amount);
+                   debitList.add(new Transaction(name,debitID,date,amount,description,deducted));
+               }
+
+            debitData.setAll(debitList);
+            }
+            
+            // for credit
+            boolean head=true;
+            while((readCredit=br.readLine())!=null){
+              if(head==true){
+                head=false;
+                continue;
+              }
+              
+              String []row=readCredit.split(",");
+              String name=row[0];
+              String creditID=row[1];
+              String amount=row[3];
+              String description=row[4];
+              String date=row[5];
+              String category=row[7];
+            
+               if (username.get().equals(name)) {
+                   creditTotal+=Double.parseDouble(amount);
+                   creditList.add(new Transaction(name,creditID,date,amount,description,category));
+               }
+                creditData.setAll(creditList);
+            }
+            
+            // for overview 
+            boolean skipheader=true;
+            while((line=breader.readLine())!=null){
+              if(skipheader==true){
+                skipheader=false;
+                continue;
+              }
+              
                 String[] columns = line.split(",");
                 String type = columns[2];
                 String amount = columns[3];
@@ -106,42 +195,22 @@ public class Transaction {
                 String transactionID = columns[1];
                 String time = columns[5];
                 String name = columns[0];
+                double balance=Double.parseDouble(columns[6]);
                 
-
-                if (username.get().equals(name)) {
-                    balance=Double.parseDouble(columns[6]);
-                    overviewList.add(new Transaction(name, transactionID, time, amount, description));
-                    if ("debit".equalsIgnoreCase(type)) {
-                        debitTotal+=Double.parseDouble(amount);
-                        debitList.add(new Transaction(name, transactionID, time, amount, description));
-                    } else if ("credit".equalsIgnoreCase(type)) {
-                        creditTotal+=Double.parseDouble(amount);
-                        creditList.add(new Transaction(name, transactionID, time, amount, description));
-                    }
-                }
+            
+               if (username.get().equals(name)) {
+                    overviewList.add(new Transaction(name, transactionID, time, amount, description,balance));
+               }
+                 overviewData.setAll(overviewList);
             }
-
-            debitData.setAll(debitList);
-            creditData.setAll(creditList);
-            overviewData.setAll(overviewList);
-           
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        
-        String str;
-        boolean head=true;
-        try(BufferedReader br=new BufferedReader(new FileReader(loanApplied))){
-          ArrayList<Transaction> LoanApply=new ArrayList<>();
-          while((str=br.readLine())!=null){
+            
+            while((readLoan=read.readLine())!=null){
             if(head==true){
                head=false;
                continue;
             }
-            
-            
-            String lines[]=str.split(",");
+
+            String lines[]=readLoan.split(",");
             String user= lines[0];
             String loanID= lines[1];
             String principal = lines[2];
@@ -158,10 +227,14 @@ public class Transaction {
           }
           
           appliedLoanData.setAll(LoanApply);
+           
+           
+           
             
-        }catch(IOException ex){
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
+        
     }
 
     // Getter methods for ObservableLists
@@ -181,12 +254,17 @@ public class Transaction {
         return appliedLoanData;
     }
     
-    public double getDebitTotal(){
-        return debitTotal;
+  
+    public Label getBalance(){
+      return new Label(String.valueOf(balance));
     }
     
-    public double getCreditTotal(){
-        return creditTotal;
+    public String getDeducted(){
+      return deducted.get();
+    }
+    
+    public String getCategory(){
+      return category.get();
     }
     
     // Property methods for JavaFX binding
@@ -210,12 +288,32 @@ public class Transaction {
         return username;
     }
     
+    public StringProperty balanceProperty(){
+      return balance;
+    }
+    
+    public StringProperty deductedProperty(){
+        return deducted;
+    }
+    
+    public StringProperty categoryProperty(){
+      return category;
+    }
+    
+    public StringProperty loanIDProperty(){
+        return loanID;
+    }
+    
+    public StringProperty dateProperty() {
+    return date;
+}
+
+    
+    
      public String getLoanID(){ 
          return loanID.get(); }
      
-     public StringProperty loanIDProperty(){
-        return loanID; }
-
+   
     public String getPrincipal() { 
         return principal.get(); }
     
@@ -264,7 +362,15 @@ public class Transaction {
     public StringProperty statusProperty(){
         return status; }
 
-    public Label getBalance(){
+    public double getDebitTotal(){
+     return debitTotal;
+    }
+    
+    public double getCreditTotal(){
+      return creditTotal;
+    }
+    
+    public Label balance(){
        Label lbl=new Label("RM "+String.valueOf(balance));
        return lbl;
     }

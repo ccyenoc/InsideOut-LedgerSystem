@@ -46,3 +46,7 @@ ccyenoc,TS000042,Savings,0.0,Savings,Sun Jan 05 00:41:23 MYT 2025,26657.90000000
 ccyenoc,TS000043,Savings,100.0,Savings,Sun Jan 05 18:31:39 MYT 2025,26757.9000000000014551915228366851806640625,Savings
 ccyenoc,TS000044,Debit,10000.000000,food food food,Sun Jan 05 18:32:13 MYT 2025,35757.90,Food
 ccyenoc,TS000045,Debit,200.000000,transport,Sun Jan 05 18:34:01 MYT 2025,35937.90,Transportation
+ccyenoc,TS000046,Debit,1000.00,liivng,Sun Jan 05 21:07:36 MYT 2025,36937.90,Food
+ccyenoc,TS000047,Credit,500.00,livimg,Sun Jan 05 21:07:44 MYT 2025,36437.90,Food
+ccyenoc,TS000048,Credit,1000.00,happy,Sun Jan 05 21:07:56 MYT 2025,35437.90,Food
+ccyenoc,TS000049,Credit,3.50,ice cream,Sun Jan 05 21:08:10 MYT 2025,35434.40,Food
