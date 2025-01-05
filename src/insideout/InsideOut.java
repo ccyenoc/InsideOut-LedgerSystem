@@ -129,7 +129,8 @@ public class InsideOut extends Application {
         AnchorPane.setLeftAnchor(insideout,160.0);
         pagehomepage.setFill(Color.web("#a8c4f4"));
         
-        Image piggybank = new Image("file:/Users/cye/NewFolder/InsideOut/src/piggybank.png"); 
+        
+         Image piggybank = new Image("file:/Users/cye/NewFolder/InsideOut/src/piggybank.png"); 
         ImageView piggybankview=new ImageView(piggybank);
         piggybankview.setFitWidth(75);  
         piggybankview.setFitHeight(75); 
@@ -165,16 +166,16 @@ public class InsideOut extends Application {
         whiterec(registration);
         Label steps = new Label("STEPS TO REGISTER :");
         steps.setFont(Font.font("Anton", 23)); 
-        Label step1 = new Label ("1. ENTER USERNAME BY CLICKING ON "+"\nType your username...");
+        Label step1 = new Label ("1. SET USERNAME BY CLICKING ON "+"\nType your username...");
         step1.setFont(Font.font("Anton", 16)) ;
-        Label step2 = new Label ("2. ENTER YOUR EMAIL BY CLICKING ON "+"\nType your email...");
+        Label step2 = new Label ("2. SET EMAIL BY CLICKING ON "+"\nType your email...");
         step2.setFont(Font.font("Anton", 16));
-        Label step3 = new Label ("3. ENTER YOUR PASSWORD BY CLICKING ON "+"\nType your password...");
+        Label step3 = new Label ("3. SET PASSWORD BY CLICKING ON "+"\nType your password...");
         step3.setFont(Font.font("Anton", 16));
         Label step4 = new Label ("4. CLICK THE Confirm BUTTON BELOW TO SAVE ");
         step4.setFont(Font.font("Anton", 16));
-        Label step5=new Label ("5.CLICK THE Log In BUTTON TO LOG IN");
-        step5.setFont(Font.font("Anton", 16));
+        Label step5=new Label ("*PASSWORD SHOULD CONSIST OF\n1 UPPERCASE 1 SPECIAL CHARACTER AND LENGTH OF 8*");
+        step5.setFont(Font.font("Anton", 13));
         steps.setLayoutX(360);
         steps.setLayoutY(50);
         step1.setLayoutX(360);
@@ -194,10 +195,11 @@ public class InsideOut extends Application {
         yellowrec(registration);
         
         Button tologinpage=new Button("Confirm");
-        buttonfontsize(tologinpage);
-        tologinpage.setLayoutX(400);
-        tologinpage.setLayoutY(300);
-        tologinpage.setPrefSize(100,18);
+        tologinpage.setStyle("-fx-background-color:#FED760;-fx-text-fill:black;");
+        tologinpage.setFont(Font.font("Anton", 17)); 
+        tologinpage.setLayoutX(435);
+        tologinpage.setLayoutY(305);
+        tologinpage.setPrefSize(100,15);
         
         
         // method call
@@ -293,28 +295,7 @@ public class InsideOut extends Application {
          usernamelbl[0]=new Label();
         loginbtn.setOnAction(e-> {
           Username=logIn(name[0], useremail[0], userpassword[0]);
-          // send reminder if there is loan dueing
-   //      try {
-   // Reminder reminder = new Reminder();
- //   reminder.notification(Username);  // Trigger the notification method
-   // Label lbl = reminder.getLabel(); // Get the Label to display
-
-    // Check if the label is not null before calling popupMessage
- //  if (lbl != null) {
-  //      popupMessage(lbl);
- //   } else {
-  //      System.out.println("No label to display.");
-  //  }
-// } catch (NullPointerException ex) {
- //   System.err.println("Null value encountered: " + ex.getMessage());
-//} catch (Exception c) {
- //   System.err.println("An unexpected error occurred: " + c.getMessage());
-//}
-          
-          // add savings into balance when reaches end of month
-          Savings endmonth=new Savings(Username);
-          endmonth.isEndOfMonth(Username);
-          // update loan status
+          System.out.println(isUser);
           if(isUser==true){
             primaryStage.setScene(pagemainPage);
             Repayment check = new Repayment(Username);
@@ -326,6 +307,27 @@ public class InsideOut extends Application {
               Label overdued=new Label("Overdue Loan Found!\nPlease make repayment now.\nDebit and Credit function will be disabled\nuntil the loan is fully paid!");
               popupMessage(overdued);
           }
+          // send reminder if there is loan dueing
+       
+          
+          // add savings into balance when reaches end of month
+          Savings endmonth=new Savings(Username);
+          endmonth.isEndOfMonth(Username);
+          
+           try {
+               Reminder reminder = new Reminder(Username);
+               Label lbl = reminder.getLabel(); // Get the Label to display
+
+               if (!lbl.getText().isEmpty()) {
+                  popupMessage(lbl);
+                } 
+        } catch (NullPointerException ex) {
+               System.err.println("Null value encountered: " + ex.getMessage());
+        } catch (Exception c) {
+               System.err.println("An unexpected error occurred: " + c.getMessage());
+        }
+          // update loan status
+          
            usernamelbl[0]=new Label(Username);
             
         usernamelbl[0].setFont(Font.font("Anton", 50));
@@ -1102,7 +1104,7 @@ public class InsideOut extends Application {
         });
 
         primaryStage.show();
-        Image icon = new Image("file:/Users/cye/NewFolder/InsideOut/src/insideout/insideoutlogo.png"); 
+        Image icon = new Image("file:/Users/cye/NewFolder/InsideOut/src/insideoutlogo.png"); 
         primaryStage.getIcons().add(icon);
         
        
