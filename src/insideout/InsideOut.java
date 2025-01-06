@@ -133,7 +133,7 @@ public class InsideOut extends Application {
         pagehomepage.setFill(Color.web("#a8c4f4"));
         
         
-        Image piggybankimg =new Image("file:/Users/cye/NewFolder/InsideOut/src/images/piggybank.png");
+        Image piggybankimg =new Image("/src/images/piggybank.png");
         ImageView piggybankview=new ImageView(piggybankimg);
         piggybankview.setFitWidth(75);  
         piggybankview.setFitHeight(75); 
@@ -316,7 +316,8 @@ public class InsideOut extends Application {
           
            try {
                Reminder reminder = new Reminder(Username);
-               if (!reminder.getLabel().getText().isEmpty()) {
+               String reminderlbl=reminder.getLabel().getText();
+               if (!reminderlbl.isEmpty()) {
                   popupMessage(reminder.getLabel());
                 } 
         } catch (NullPointerException ex) {
@@ -426,16 +427,24 @@ public class InsideOut extends Application {
            int descriptiondlength=descriptiondstr[0].split(" ").length;
            String category=getCat();
            boolean descriptionword=false;
+           boolean nodescriptiond=false;
            if(descriptiondlength>200){
                descriptionword=true;
            }
+           else if(descriptiondstr[0].isEmpty()){
+              nodescriptiond=true;
+           }
            
-          if(descriptionword==false){
+          if(descriptionword==false && nodescriptiond==false){
           double debitamount =Double.parseDouble(input); 
           Debit(debitamount, descriptiondstr[0], "Debit",category);}
-          else{
+          else if(descriptionword==true){
               Label wordcount=new Label("Description need to be less than 200 word!");
               popupMessage(wordcount);
+          }
+          else if(nodescriptiond==true){
+              Label enterd=new Label("Enter Description!");
+              popupMessage(enterd);
           }
        
           clearAllNodes(clearNodes);
@@ -527,16 +536,25 @@ public class InsideOut extends Application {
        try{
            String categoryCredit=getCat();
            boolean descriptionword=false;
-           if(descriptiondstr[0].split(" ").length>200){
+           boolean nodecriptionc=false;
+           if(descriptioncstr[0].split(" ").length>200){
                descriptionword=true;
            }
-           if(descriptionword==false){
+           else if(descriptioncstr[0].isEmpty()){
+               nodecriptionc=true;
+           }
+           
+           if(descriptionword==false && nodecriptionc==false){
               double creditamount =Double.parseDouble(input); 
               Credit(creditamount, descriptioncstr[0], "Credit",categoryCredit);
            }
-           else{
+           else if(descriptionword==true){
               Label wordcount=new Label("Description need to be less than 200 word!");
               popupMessage(wordcount);
+           }
+           else if(nodecriptionc==true){
+              Label enterdes=new Label("Enter Description!");
+              popupMessage(enterdes);
            }
            
            clearAllNodes(clearNodes);
@@ -689,8 +707,8 @@ public class InsideOut extends Application {
         appliedloanTab.setContent(tableViewLoanApplied);
 
         tableViewOverview.getColumns().addAll(TransactionIDOverview, TimeOverview, AmountOverview, DescriptionOverview);
-        tableViewDebit.getColumns().addAll(TransactionIDDebit, TimeDebit, AmountDebit, DescriptionDebit);
-        tableViewCredit.getColumns().addAll(TransactionIDCredit, TimeCredit, AmountCredit, DescriptionCredit);
+        tableViewDebit.getColumns().addAll(TransactionIDDebit, TimeDebit, AmountDebit, DescriptionDebit,deductstatus);
+        tableViewCredit.getColumns().addAll(TransactionIDCredit, TimeCredit, AmountCredit, DescriptionCredit,categoryCredit);
         tableViewLoanApplied.getColumns().addAll(LoanID,Principal,Interest,TotalLoan,outstandingBalance,period,appliedTime,dueTime,status);
         tabPane.getTabs().addAll(overviewTab,debitTab,creditTab,appliedloanTab);
       

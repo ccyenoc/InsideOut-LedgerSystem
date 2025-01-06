@@ -64,20 +64,20 @@ public class Transaction {
     }
     
     // constructor for dbeit
-     public Transaction(String name, String transactionID, String time, String amount, String description,String deducted) {
+     public Transaction(String name, String transactionID, String date, String amount, String description,String deducted) {
         this.username.set(name);
         this.transactionID.set(transactionID);
-        this.time.set(time);
+        this.date.set(date);
         this.amount.set(amount);
         this.description.set(description);
         this.deducted.set(deducted);
     }
      
    // constructor for credit
-     public Transaction(String name, String transactionID, String time, double amount, String description,String category) {
+     public Transaction(String name, String transactionID, String date, double amount, String description,String category) {
         this.username.set(name);
         this.transactionID.set(transactionID);
-        this.time.set(time);
+        this.date.set(date);
         this.amount.set(String.valueOf(amount));
         this.description.set(description);
         this.category.set(category);
@@ -168,13 +168,13 @@ public class Transaction {
               String []row=readCredit.split(",");
               String name=row[0];
               String creditID=row[1];
-              String amount=row[3];
+              double amount=Double.parseDouble(row[3]);
               String description=row[4];
               String date=row[5];
               String category=row[7];
             
                if (username.get().equals(name)) {
-                   creditTotal+=Double.parseDouble(amount);
+                   creditTotal+=amount;
                    creditList.add(new Transaction(name,creditID,date,amount,description,category));
                }
                 creditData.setAll(creditList);
