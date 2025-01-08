@@ -1,5 +1,4 @@
 package insideout;
-
 import static insideout.InsideOut.store; // method to store in main class
 import insideout.InsideOut;
 import java.io.BufferedReader;

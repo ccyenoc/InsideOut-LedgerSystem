@@ -16,8 +16,6 @@
             <name>InsideOut</name>
             <explicit-platform explicit-source-supported="true"/>
             <source-roots>
-                <root id="src.images.dir"/>
-                <root id="src.dir" name="src"/>
                 <root id="src.dir" name="src"/>
             </source-roots>
             <test-roots>

@@ -22,6 +22,7 @@ import javafx.scene.shape.*;
 import javafx.scene.text.Font;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
+import javax.imageio.ImageIO;
 
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -48,7 +49,7 @@ public class InsideOut extends Application {
     
     @Override
     public void start(Stage primaryStage) {
-
+   
 // anchorpane and scene
         StackPane stackpane = new StackPane();
         AnchorPane homepage = new AnchorPane();
@@ -132,20 +133,19 @@ public class InsideOut extends Application {
         AnchorPane.setLeftAnchor(insideout,160.0);
         pagehomepage.setFill(Color.web("#a8c4f4"));
         
-        
-        Image piggybankimg =new Image("/src/images/piggybank.png");
+        Image piggybankimg =new Image("file:/Users/cye/NewFolder/InsideOut/src/resources/piggybank.png"); 
         ImageView piggybankview=new ImageView(piggybankimg);
         piggybankview.setFitWidth(75);  
         piggybankview.setFitHeight(75); 
-        Image moneyimg=new Image("file:/Users/cye/NewFolder/InsideOut/src/images/money.png"); 
+        Image moneyimg=new Image("file:/Users/cye/NewFolder/InsideOut/src/resources/money.png"); 
         ImageView moneyview=new ImageView(moneyimg);
         moneyview.setFitWidth(75);  
         moneyview.setFitHeight(75); 
-        Image moneybagimg=new Image("file:/Users/cye/NewFolder/InsideOut/src/images/moneybag.png"); 
+        Image moneybagimg=new Image("file:/Users/cye/NewFolder/InsideOut/src/resources/moneybag.png"); 
         ImageView moneybagview=new ImageView(moneybagimg);
         moneybagview.setFitWidth(75);  
         moneybagview.setFitHeight(75); 
-        Image coinimg=new Image("file:/Users/cye/NewFolder/InsideOut/src/images/coin.png"); 
+        Image coinimg=new Image("file:/Users/cye/NewFolder/InsideOut/src/resources/coin.png"); 
         ImageView coinview=new ImageView(coinimg);
         coinview.setFitWidth(75);  
         coinview.setFitHeight(75); 
@@ -241,7 +241,7 @@ public class InsideOut extends Application {
         AnchorPane.setTopAnchor(loginbtn,300.0);
         AnchorPane.setLeftAnchor(loginbtn,400.0);
         
-        Image keyimg=new Image("file:/Users/cye/NewFolder/InsideOut/src/images/key.png"); 
+        Image keyimg=new Image("file:/Users/cye/NewFolder/InsideOut/src/resources/key.png"); 
         ImageView keyview=new ImageView(keyimg);
         keyview.setFitWidth(50);    
         keyview.setFitHeight(50); 
@@ -437,6 +437,10 @@ public class InsideOut extends Application {
            
           if(descriptionword==false && nodescriptiond==false){
           double debitamount =Double.parseDouble(input); 
+          if(descriptiondstr[0].contains(",")){
+            descriptiondstr[0]=formatCSV(descriptiondstr[0]);
+          }
+        
           Debit(debitamount, descriptiondstr[0], "Debit",category);}
           else if(descriptionword==true){
               Label wordcount=new Label("Description need to be less than 200 word!");
@@ -480,7 +484,7 @@ public class InsideOut extends Application {
          amountinstruction=instruction(100,"Credit Amount");
          descriptioninstruction=instruction( 160,"Description");
          
-         Image moneyflyimg=new Image("file:/Users/cye/NewFolder/InsideOut/src/images/moneyfly.png"); 
+         Image moneyflyimg=new Image("file:/Users/cye/NewFolder/InsideOut/src/resources/moneyfly.png"); 
          ImageView moneyflyview=new ImageView(moneyflyimg);
          moneyflyview.setLayoutX(160);
          moneyflyview.setLayoutY(40);
@@ -545,6 +549,9 @@ public class InsideOut extends Application {
            }
            
            if(descriptionword==false && nodecriptionc==false){
+              if(descriptioncstr[0].contains(",")){
+                descriptioncstr[0]=formatCSV(descriptioncstr[0]);
+             }
               double creditamount =Double.parseDouble(input); 
               Credit(creditamount, descriptioncstr[0], "Credit",categoryCredit);
            }
@@ -580,7 +587,7 @@ public class InsideOut extends Application {
         historytitle.setVisible(true);
         history.getChildren().add(historytitle);
         
-        Image hourglassimg=new Image("file:/Users/cye/NewFolder/InsideOut/src/images/hourglass.png"); 
+        Image hourglassimg=new Image("file:/Users/cye/NewFolder/InsideOut/src/resources/hourglass.png"); 
         ImageView hourglassview=new ImageView(hourglassimg);
         hourglassview.setLayoutX(200);
         hourglassview.setLayoutY(40);
@@ -736,7 +743,7 @@ public class InsideOut extends Application {
         enterSavingPercentagelbl.setVisible(false);
         enterSavingPercentagelbl.setManaged(false);
         
-         Image treeimg=new Image("file:/Users/cye/NewFolder/InsideOut/src/images/tree.png"); 
+         Image treeimg=new Image("file:/Users/cye/NewFolder/InsideOut/src/resources/tree.png"); 
          ImageView treeview=new ImageView(treeimg);
          treeview.setLayoutX(200);
          treeview.setLayoutY(40);
@@ -901,7 +908,7 @@ public class InsideOut extends Application {
         bank.setStyle("-fx-background-color:#FFFFFF; -fx-text-fill: black; -fx-border-radius: 5px;");
         bank.setFont(Font.font("Anton", 30));  // Set the font family and size here
         
-        Image questionmarkimg=new Image("file:/Users/cye/NewFolder/InsideOut/src/images/questionmark.png"); 
+        Image questionmarkimg=new Image("file:/Users/cye/NewFolder/InsideOut/src/resources/questionmark.png"); 
         ImageView questionmarkview=new ImageView(questionmarkimg);
         questionmarkview.setLayoutX(400);
         questionmarkview.setLayoutY(50);
@@ -1134,7 +1141,7 @@ public class InsideOut extends Application {
         });
 
         primaryStage.show();
-        Image icon = new Image("file:/Users/cye/NewFolder/InsideOut/src/images/insideoutlogo.png"); 
+        Image icon = new Image("file:/Users/cye/NewFolder/InsideOut/src/resources/insideoutlogo.png"); 
         primaryStage.getIcons().add(icon);
         
        
@@ -1717,22 +1724,20 @@ public class InsideOut extends Application {
 // functions
 // log in page
     public String logIn(String name,String email,String password,AnchorPane pane){
-
        LogIn userLogIn=new LogIn(name,email,password);
        Label lbl=userLogIn.login();
        name=userLogIn.getName();
-       
-       Label userid=userLogIn.getID();
-       userid.setFont(Font.font("Anton", 20));
-       AnchorPane.setTopAnchor(userid, 33.0);
-       AnchorPane.setLeftAnchor(userid, 550.0);
-       
-       pane.getChildren().addAll(userid);
+       if(userLogIn.getID()!=null){
+       userLogIn.getID().setFont(Font.font("Anton", 20));
+       AnchorPane.setTopAnchor(userLogIn.getID(), 33.0);
+       AnchorPane.setLeftAnchor(userLogIn.getID(), 550.0);
+       pane.getChildren().add(userLogIn.getID());
+       }
        popupMessage(lbl);
+       
        
        return name;
     }  
-    
     
 // registration page
     static boolean registrationValid=false;
@@ -1768,7 +1773,6 @@ public class InsideOut extends Application {
         }
     }
     
- 
     public static ArrayList<String> getBalance=new ArrayList<>();
     public static void Debit(double amount,String description,String type,String category){
         Debit debit=new Debit(Username,amount,description,type,category);
@@ -2411,10 +2415,19 @@ public class InsideOut extends Application {
     PauseTransition delay = new PauseTransition(Duration.seconds(2));
     delay.setOnFinished(event -> popupStage.close());
     delay.play();
-}
-     
+     }
+    
+     public static String formatCSV(String value) {
+        if (value == null) return ""; // Handle null values
+        value = value.replace("\"", "\"\""); // Escape double quotes
+        if (value.contains(",") || value.contains("\"") || value.contains("\n")) {
+            return "\"" + value + "\""; // Wrap in quotes if necessary
+        }
+        return value;
+    }
+
    
- // main method
+ //   main method
     public static void main (String[] args){
         launch(args);
     }

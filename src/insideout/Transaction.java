@@ -112,7 +112,7 @@ public class Transaction {
     }
 
     public String getDescription() {
-        return description.get();
+        return unformatCSV(description.get());
     }
 
 
@@ -189,16 +189,21 @@ public class Transaction {
               }
               
                 String[] columns = line.split(",");
-                String type = columns[2];
-                String amount = columns[3];
-                String description = columns[4];
-                String transactionID = columns[1];
-                String time = columns[5];
+                for(int i=0;i<columns.length;i++){
+                 System.out.println(columns[i]);;
+                }
+               
                 String name = columns[0];
-                double balance=Double.parseDouble(columns[6]);
-                
-            
+              
                if (username.get().equals(name)) {
+                    String lines[]=splitCSVLine(line);
+                    String type = lines[2];
+                    String amount = lines[3];
+                    String description = lines[4];
+                    String transactionID = lines[1];
+                    String time = lines[5];
+                    double balance=Double.parseDouble(lines[6]);
+                
                     overviewList.add(new Transaction(name, transactionID, time, amount, description,balance));
                }
                  overviewData.setAll(overviewList);
@@ -374,5 +379,35 @@ public class Transaction {
        Label lbl=new Label("RM "+String.valueOf(balance));
        return lbl;
     }
+    
+    private static String[] splitCSVLine(String line) {
+        // Split CSV into exactly 10 parts
+        String[] result = new String[10];
+        StringBuilder currentField = new StringBuilder();
+        boolean inQuotes = false;
+        int index = 0;
+
+        for (int i = 0; i < line.length(); i++) {
+            char c = line.charAt(i);
+            if (c == '"') {
+                inQuotes = !inQuotes; // Toggle quotes
+            } else if (c == ',' && !inQuotes) {
+                result[index++] = unformatCSV(currentField.toString());
+                currentField.setLength(0); // Clear the field
+            } else {
+                currentField.append(c);
+            }
+        }
+        result[index] = unformatCSV(currentField.toString()); // Add last field
+        return result;
+    }
+    
+    public static String unformatCSV(String value) {
+           if (value == null || value.isEmpty()) return ""; // Handle empty values
+           if (value.startsWith("\"") && value.endsWith("\"")) {
+                value = value.substring(1, value.length() - 1); // Remove surrounding quotes
+           }
+        return value.replace("\"\"", "\""); // Unescape double quotes
+       }
     
 }
