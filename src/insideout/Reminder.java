@@ -115,7 +115,7 @@ public class Reminder {
             message.setText("You are not allowed to use the function of credit and debit.");
             message.setText("LoanID : "+ overdue.get(i)+"RM" + overdue.get(i+1) + " required to pay ASAP.");
             Transport.send(message);
-        
+
             }
     }
 

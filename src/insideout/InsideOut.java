@@ -25,6 +25,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.scene.text.Font;
 import javafx.scene.layout.StackPane;
+import javafx.concurrent.Task;
 import javafx.scene.text.Font;
 
 import javax.imageio.ImageIO;
@@ -342,10 +343,14 @@ public class InsideOut extends Application {
         Label usernamelbl[] = new Label[1];
         usernamelbl[0] = new Label();
         loginbtn.setOnAction(e -> {
+
             removeLabelById(mainPage, "usernameLabel");
             Username = logIn(name[0], useremail[0], userpassword[0], mainPage);
             if (isUser == true) {
                 primaryStage.setScene(pagemainPage);
+
+
+                // send reminder if there is loan dueing
                 Repayment check = new Repayment(Username);
                 check.updateStatus();
                 check.checkDeduction();
@@ -355,25 +360,28 @@ public class InsideOut extends Application {
                     Label overdued = new Label("Overdue Loan Found!\nPlease make repayment now.\nDebit and Credit function will be disabled\nuntil the loan is fully paid!");
                     popupMessage(overdued);
                 }
-                // send reminder if there is loan dueing
-
 
                 // add savings into balance when reaches end of month
                 Savings endmonth = new Savings(Username);
                 endmonth.isEndOfMonth(Username);
 
-                try {
-                    Reminder reminder = new Reminder(Username);
-                    String reminderlbl = reminder.getLabel().getText();
-                    if (!reminderlbl.isEmpty()) {
-                        popupMessage(reminder.getLabel());
+                Task<Void> reminderTask = new Task<>() {
+                    @Override
+                    protected Void call() throws Exception {
+                        Reminder reminder = new Reminder(Username);
+                        return null; // Task<Void> requires a return value
                     }
-                } catch (NullPointerException ex) {
-                    System.err.println("Null value encountered: " + ex.getMessage());
-                } catch (Exception c) {
-                    System.err.println("An unexpected error occurred: " + c.getMessage());
-                }
-                // update loan status
+
+                    @Override
+                    protected void failed() {
+                        // Handle failure
+                        System.err.println("Failed to send reminder email: " + getException().getMessage());
+                    }
+                };
+
+                // Run the task in a new thread
+                new Thread(reminderTask).start();
+
 
                 usernamelbl[0] = new Label(Username);
 
