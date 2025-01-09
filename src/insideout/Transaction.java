@@ -48,6 +48,9 @@ public class Transaction {
      private String creditFile="src/recordcredit.csv";
      private final StringProperty category = new SimpleStringProperty("");
      
+     public Transaction() {
+    }
+     
     public Transaction(String name) {
         this.username.set(name);
         readFile();
@@ -260,10 +263,6 @@ public class Transaction {
     }
     
   
-    public Label getBalance(){
-      return new Label(String.valueOf(balance));
-    }
-    
     public String getDeducted(){
       return deducted.get();
     }
@@ -375,21 +374,42 @@ public class Transaction {
       return creditTotal;
     }
     
-    public Label balance(){
-       Label lbl=new Label("RM "+String.valueOf(balance));
-       return lbl;
+    public String balance(String username){
+        String str="";
+        String lastBalance="";
+        boolean header=true;
+        try(BufferedReader reader=new BufferedReader(new FileReader(overview))){
+            while((str=reader.readLine())!=null){
+          if(header==true){
+           header=false;
+           continue;
+          }
+          
+          String row[]=str.split(",");
+          if(row[0].equals(username)){
+            System.out.println("equals");
+            lastBalance=row[6];
+            System.out.println("Last Balance "+lastBalance);
+            System.out.println("row[6] "+row[6]);
+          }
+            }
+          
+        }catch(IOException ex){
+          ex.printStackTrace();
+        }
+       String viewBalance="RM "+lastBalance;
+       return viewBalance;
     }
     
     private static String[] splitCSVLine(String line) {
-        // Split CSV into exactly 10 parts
-        String[] result = new String[10];
+        String[] result = new String[7];
         StringBuilder currentField = new StringBuilder();
-        boolean inQuotes = false;
-        int index = 0;
+        boolean inQuotes=false;
+        int index=0;
 
-        for (int i = 0; i < line.length(); i++) {
-            char c = line.charAt(i);
-            if (c == '"') {
+        for (int i=0; i < line.length(); i++) {
+            char c=line.charAt(i);
+            if (c=='"') {
                 inQuotes = !inQuotes; // Toggle quotes
             } else if (c == ',' && !inQuotes) {
                 result[index++] = unformatCSV(currentField.toString());

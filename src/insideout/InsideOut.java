@@ -2247,8 +2247,9 @@ public class InsideOut extends Application {
     }
     
     public static void getBalancelbl(AnchorPane pane){
-        Transaction viewbalance=new Transaction(Username);
-        Label lbl=viewbalance.getBalance();
+        Transaction viewbalance=new Transaction();
+        String label=viewbalance.balance(Username);
+        Label lbl=new Label(label);
         AnchorPane.setTopAnchor(lbl,130.0);
         AnchorPane.setLeftAnchor(lbl, 50.0);
         lbl.setStyle("-fx-text-fill:black;");
