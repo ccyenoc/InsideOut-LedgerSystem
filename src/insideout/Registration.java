@@ -3,7 +3,9 @@ package insideout;
 import static insideout.InsideOut.registrationValid;
 import static insideout.InsideOut.store;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
@@ -52,17 +54,6 @@ public class Registration{
                     lines.add(line);
                 }
 
-                // generate userID
-                String[] findLastID = lines.get(lineIndex).split(",");
-                // id without IO
-                String[] numID = findLastID[1].split("");
-                String ID = "";
-                for (int i = 2; i < numID.length; i++) {
-                    ID += numID[i];
-                }
-                int lastID = Integer.parseInt(ID);
-                int newID = lastID + 1;
-                String userID = "IO" + String.format("%7s", newID).replace(" ", "0");
 
                 // when it is a new user and username is unique, check password and email format
                 String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{3,}$";
@@ -74,7 +65,8 @@ public class Registration{
                         !password.matches(".*[A-Z].*") || // requirement 2: consist atleast 1 Uppercase
                         ! password.matches(".*[a-z].*") || // requirement 3: consist atleast 1 lowercase
                         !password.matches(".*\\d.*") || // requirement 4: consist atleast 1 digit
-                        !password.matches(".*[@$!%*?&^#_+=[\\\\]{}|;:',<>./].*"))) { // requirement 5: consist at least 1 special character
+                        !password.matches(".*[@$!%*?&^#_+=[\\\\]{}|;:',<>./].*"))) // requirement 5: consist at least 1 special character
+                {
                     lbl = new Label("Enter a Strong Password!");
                     break userFound;
                 }
@@ -82,6 +74,20 @@ public class Registration{
 
                 registrationValid = true;
                 if (registrationValid) {
+                    // generate userID
+                    int ID = 0;
+                    System.out.println(lines.size());
+                    if (lines.size() == 0) {
+                        ID = 1;
+                    } else {
+                        System.out.println("Line Index " + lineIndex);
+                        String[] findLastID = lines.get(lineIndex).split(",");
+                        // id without IO
+                        int numID = Integer.parseInt(findLastID[1].replace("IO", ""));
+                        ID = numID + 1;
+                    }
+                    String userID = "IO" + String.format("%7s", ID).replace(" ", "0");
+
                     String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
                     newUserInfo = username + "," + userID + "," + email + "," + hashedPassword;
                     store(userinfo,newUserInfo);

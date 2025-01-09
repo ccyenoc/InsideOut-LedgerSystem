@@ -233,8 +233,6 @@ public void MonthlyDeduction(ArrayList<String> list, ArrayList<String> fileConte
                       try{
                           String dateString = data[9].replace("Asia/Kuala_Lumpur", "MYT");
                           dueDate = dateFormat.parse(dateString);
-                          System.out.println(data[9]);
-                          System.out.println(dueDate);
 
                       } catch (ParseException e) {
                            e.printStackTrace();}
@@ -503,10 +501,8 @@ public void MonthlyDeduction(ArrayList<String> list, ArrayList<String> fileConte
          
          String row[]=line.split(",");
          StringBuilder builder=new StringBuilder();
-           System.out.println(username);
-           System.out.println(row[1]);
-           System.out.println(loanID);
-         if(row[0].equals(username) && row[1].equals(loanID)){
+
+           if(row[0].equals(username) && row[1].equals(loanID)){
              System.out.println(row[5]);
              double outstanding=Double.parseDouble(row[5])-repayment;
              System.out.println("Outstanding " + outstanding);

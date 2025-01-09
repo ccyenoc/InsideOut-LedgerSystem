@@ -35,16 +35,13 @@ public class Reminder {
     private Label lbl;
     static final String EMAIL_FROM = "lojingyang051104@gmail.com";
     static final String APP_PASSWORD = "hcaz vsjh ngsx eixs";
+
     Properties props = new Properties();
       
 
 
     public Reminder(String username){
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", "587");
-        props.put("mail.smtp.ssl.protocols", "TLSv1.2");
+
         this.username=username;
         try {
             Scanner reader = new Scanner(new FileReader(this.loanFile));
@@ -78,10 +75,7 @@ public class Reminder {
             } 
 
         }
-            System.out.println(this.username);
-            System.out.println(overdue.size());
-            System.out.println(active.size());
-            
+
             if(overdue.size()!=0){
               overdueLoanNotification();
               
@@ -124,25 +118,24 @@ public class Reminder {
         
             }
     }
-   
-    private static Session getEmailSession(Properties props){
-    return Session.getInstance(props, new Authenticator() {
-        protected PasswordAuthentication getPasswordAuthentication(){
-            return new PasswordAuthentication(EMAIL_FROM , APP_PASSWORD);
-        }
-    });
-}
 
-
-    private static Properties getGmailProperties(){
+    private static Session getEmailSession(Properties props) {
         Properties prop = new Properties();
-        prop.put("mail.smtp.auth" , "true");
-        prop.put("mail.smtp.starttls.enable" , "true");
-        prop.put("mail.smtp.host" , "smtp.gmail.com");
-        prop.put("mail.smtp.port" , "587");
-        prop.put("mail.smtp.ssl.trust" , "smtp.gmail.com");
-        return prop;
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+        props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+        props.put("mail.smtp.ssl.protocols", "TLSv1.2");
+
+        return Session.getInstance(props, new Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(EMAIL_FROM, APP_PASSWORD);
+            }
+        });
     }
+
+
 
     public void getUserEmail(String username){
         try{

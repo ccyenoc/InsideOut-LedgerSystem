@@ -389,8 +389,6 @@ public class Transaction {
           if(row[0].equals(username)){
             System.out.println("equals");
             lastBalance=row[6];
-            System.out.println("Last Balance "+lastBalance);
-            System.out.println("row[6] "+row[6]);
           } else {
               lastBalance = String.valueOf(0.00);
 

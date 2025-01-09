@@ -1,4 +1,11 @@
 Username,Transaction ID,Transaction Type,Amount,Description,Date,Balance,Category
-ccyenoc,TS000001,Debit,1000.00,loan,Wed Jan 08 19:49:56 MYT 2025,1000.00,Food
-ccyenoc,TS000002,Debit,1000.00,living,Wed Jan 08 19:52:14 MYT 2025,2000.00,Food
-ccyenoc,TS000003,Credit,100.00,food,Wed Jan 08 20:15:44 MYT 2025,1900.00,Food
+ccyenoc,TS000001,Debit,1000.00,loan,Wed Jan 08 19:49:56 GMT+08:00 2025,1000.00,Food
+ccyenoc,TS000002,Debit,1000.00,living,Wed Jan 08 19:52:14 GMT+08:00 2025,2000.00,Food
+ccyenoc,TS000003,Credit,100.00,food,Wed Jan 08 20:15:44 GMT+08:00 2025,1900.00,Food
+ccyenoc,TS000004,Debit,100.00,food,Thu Jan 09 15:16:13 GMT+08:00 2025,2000.00,Food
+ccyenoc,TS000005,Debit,100.00,food,Thu Jan 09 15:54:35 GMT+08:00 2025,2100.00,Food
+CCyenoc,TS000006,Debit,100.00,living,Thu Jan 09 16:03:16 GMT+08:00 2025,100.00,Food
+CCyenoc,TS000007,Debit,2000.00,living,Thu Jan 09 16:09:21 GMT+08:00 2025,2100.00,Food
+ccyenoc,TS000008,Debit,1000.00,living,Thu Jan 09 16:37:11 GMT+08:00 2025,3100.00,Food
+ccyenoc,TS000009,Credit,100.00,lving,Thu Jan 09 16:37:23 GMT+08:00 2025,3000.00,Food
+ccyenoc,TS000010,Debit,1000.00,living,Thu Jan 09 16:44:26 GMT+08:00 2025,4000.00,Food
