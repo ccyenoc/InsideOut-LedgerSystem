@@ -391,6 +391,9 @@ public class Transaction {
             lastBalance=row[6];
             System.out.println("Last Balance "+lastBalance);
             System.out.println("row[6] "+row[6]);
+          } else {
+              lastBalance = String.valueOf(0.00);
+
           }
             }
           
@@ -402,7 +405,7 @@ public class Transaction {
     }
     
     private static String[] splitCSVLine(String line) {
-        String[] result = new String[7];
+        String[] result = new String[8];
         StringBuilder currentField = new StringBuilder();
         boolean inQuotes=false;
         int index=0;

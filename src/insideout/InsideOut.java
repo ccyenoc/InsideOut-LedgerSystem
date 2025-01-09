@@ -154,8 +154,6 @@ public class InsideOut extends Application {
         AnchorPane viewLoanHistory = new AnchorPane();
         Scene pageviewLoanHistory = new Scene(viewLoanHistory, 700, 400);
         StackPane spLoanHistory = new StackPane();
-
-
 // homepage (registration && login page)
 
         homepage.setStyle("-fx-background-color: #a8c4f4;");
@@ -344,6 +342,7 @@ public class InsideOut extends Application {
         Label usernamelbl[] = new Label[1];
         usernamelbl[0] = new Label();
         loginbtn.setOnAction(e -> {
+            removeLabelById(mainPage, "usernameLabel");
             Username = logIn(name[0], useremail[0], userpassword[0], mainPage);
             if (isUser == true) {
                 primaryStage.setScene(pagemainPage);
@@ -1156,7 +1155,7 @@ public class InsideOut extends Application {
             loginusername.clear();
             loginemail.clear();
             loginpassword.clear();
-
+            removeLabelById(viewGraph, "balanceLabel");
             // Clear any other user-related data
             isUser = false; // Set user status to false
 
@@ -1475,7 +1474,7 @@ public class InsideOut extends Application {
         logoutbtn.setOnAction(e -> {
             Username = null;
             clearAllNodes(clearNodes);
-
+            removeLabelById(pane, "balanceLabel");
             isUser = false; // Set user status to false
             Label logOut = new Label("LogOut Succesfully");
             popupMessage(logOut);
@@ -1777,6 +1776,7 @@ public class InsideOut extends Application {
     public String logIn(String name, String email, String password, AnchorPane pane) {
         LogIn userLogIn = new LogIn(name, email, password);
         Label lbl = userLogIn.login();
+        lbl.setId("usernameLabel");
         name = userLogIn.getName();
         if (userLogIn.getID() != null) {
             userLogIn.getID().setFont(Font.font("Anton", 20));
@@ -2285,51 +2285,60 @@ public class InsideOut extends Application {
         AnchorPane.setTopAnchor(btn, 50.0);
         AnchorPane.setLeftAnchor(btn, 270.0);
         btn.setOnAction(e -> {
-            getBalancelbl(vbpane);
-            getSavingslbl(vbpane);
-            getOutstandingBalancelbl(vbpane);
-            stage.setScene(scene);
+            viewBalanceSavingsLoan(stage, scene, vbpane);
         });
 
         pane.getChildren().add(btn);
     }
 
-    public static void getBalancelbl(AnchorPane pane) {
+
+    public static void viewBalanceSavingsLoan(Stage stage, Scene scene, AnchorPane pane) {
+        stage.setScene(scene);
+        removeLabelById(pane, "balanceLabel");
+        removeLabelById(pane, "savingLabel");
+        removeLabelById(pane, "loanLabel");
         Transaction viewbalance = new Transaction();
         String label = viewbalance.balance(Username);
         Label lbl = new Label(label);
+        lbl.setId("balanceLabel");
         AnchorPane.setTopAnchor(lbl, 130.0);
         AnchorPane.setLeftAnchor(lbl, 50.0);
         lbl.setStyle("-fx-text-fill:black;");
         lbl.setFont(Font.font("Anton", 30));
 
-
-        pane.getChildren().add(lbl);
-    }
-
-    public static void getSavingslbl(AnchorPane pane) {
         Savings viewsaving = new Savings(Username);
         double totalsavings = viewsaving.getTotalSavings(Username);
-        Label lbl = new Label(String.valueOf(totalsavings));
-        AnchorPane.setTopAnchor(lbl, 220.0);
-        AnchorPane.setLeftAnchor(lbl, 50.0);
-        lbl.setStyle("-fx-text-fill:black;");
-        lbl.setFont(Font.font("Anton", 30));
+        Label savinglbl = new Label(String.valueOf(totalsavings));
+        savinglbl.setId("savingLabel");
+        AnchorPane.setTopAnchor(savinglbl, 220.0);
+        AnchorPane.setLeftAnchor(savinglbl, 50.0);
+        savinglbl.setStyle("-fx-text-fill:black;");
+        savinglbl.setFont(Font.font("Anton", 30));
 
-        pane.getChildren().add(lbl);
+        ApplyLoan getoutstandingbalance = new ApplyLoan();
+        String labels = getoutstandingbalance.getTotalOustandingBalance(Username);
+        Label loanlbl = new Label(labels);
+        loanlbl.setId("loanLabel");
+
+        AnchorPane.setTopAnchor(loanlbl, 310.0);
+        AnchorPane.setLeftAnchor(loanlbl, 50.0);
+        loanlbl.setStyle("-fx-text-fill:black;");
+        loanlbl.setFont(Font.font("Anton", 30));
+
+
+        pane.getChildren().addAll(lbl, savinglbl, loanlbl);
 
     }
 
-    public static void getOutstandingBalancelbl(AnchorPane pane) {
-        ApplyLoan getoutstandingbalance = new ApplyLoan();
-        String label = getoutstandingbalance.getTotalOustandingBalance(Username);
-        Label lbl = new Label(label);
-        AnchorPane.setTopAnchor(lbl, 310.0);
-        AnchorPane.setLeftAnchor(lbl, 50.0);
-        lbl.setStyle("-fx-text-fill:black;");
-        lbl.setFont(Font.font("Anton", 30));
 
-        pane.getChildren().add(lbl);
+    public static void removeLabelById(AnchorPane pane, String labelId) {
+        // Iterate through the children of the pane and find the label with the matching ID
+        for (Node node : pane.getChildren()) {
+            if (node instanceof Label && node.getId() != null && node.getId().equals(labelId)) {
+                pane.getChildren().remove(node); // Remove the label
+                break; // Stop after removing the label
+            }
+        }
     }
 
     // logout

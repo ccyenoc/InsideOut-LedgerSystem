@@ -231,8 +231,12 @@ public void MonthlyDeduction(ArrayList<String> list, ArrayList<String> fileConte
                         if(indexUser.get(j)==i){
                       String[] data = lines.get(i).split(",");
                       try{
-                        dueDate=dateFormat.parse(data[9]);
-                       }catch(ParseException e){ 
+                          String dateString = data[9].replace("Asia/Kuala_Lumpur", "MYT");
+                          dueDate = dateFormat.parse(dateString);
+                          System.out.println(data[9]);
+                          System.out.println(dueDate);
+
+                      } catch (ParseException e) {
                            e.printStackTrace();}
 
                       if (!data[10].equalsIgnoreCase("paid")) { // loan active
@@ -499,8 +503,14 @@ public void MonthlyDeduction(ArrayList<String> list, ArrayList<String> fileConte
          
          String row[]=line.split(",");
          StringBuilder builder=new StringBuilder();
+           System.out.println(username);
+           System.out.println(row[1]);
+           System.out.println(loanID);
          if(row[0].equals(username) && row[1].equals(loanID)){
+             System.out.println(row[5]);
              double outstanding=Double.parseDouble(row[5])-repayment;
+             System.out.println("Outstanding " + outstanding);
+             System.out.println(Math.abs(outstanding));
              if(Math.abs(outstanding)< 0.01){
                  row[10]="Paid";
              }

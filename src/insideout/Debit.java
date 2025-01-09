@@ -97,11 +97,11 @@ public class Debit {
         BigDecimal bd = new BigDecimal(balance);
         bd=bd.setScale(2, RoundingMode.HALF_UP);
         Date date = new Date();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd:MM:yyyy");
-        lbl=new Label("Succesfully Debited");       
-        transactioninfoDebitcsv = username + "," + debitID + ","+type+","+String.format("%.2f",amount)+"," +description+","+ date + "," + bd+","+category+","+yesno;
+            SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+        lbl=new Label("Succesfully Debited");
+            transactioninfoDebitcsv = username + "," + debitID + "," + type + "," + String.format("%.2f", amount) + "," + description + "," + String.valueOf(dateFormat.format(date)) + "," + bd + "," + category + "," + yesno;
         store(recorddebit,transactioninfoDebitcsv); // record for debit csv
-        transactioninfo = username + "," + transactionID + ","+type+","+String.format("%.2f",amount)+"," +description+","+ date + "," + bd+","+category;
+            transactioninfo = username + "," + transactionID + "," + type + "," + String.format("%.2f", amount) + "," + description + "," + String.valueOf(dateFormat.format(date)) + "," + bd + "," + category;
         store(recorddebitandcredit,transactioninfo); 
         }
  

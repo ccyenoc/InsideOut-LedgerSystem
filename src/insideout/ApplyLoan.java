@@ -1,9 +1,12 @@
 package insideout;
 
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
+
 import static insideout.InsideOut.store;
 import javafx.scene.control.Label;
 
@@ -78,8 +81,11 @@ public class ApplyLoan{
    }
    
    public void CurrentDate(){
-      date = new Date();
-      this.currentDate=String.valueOf(date);
+       SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+       formatter.setTimeZone(TimeZone.getTimeZone("Asia/Kuala_Lumpur")); // Set time zone to MYT
+       date = new Date();
+       String formattedDate = formatter.format(date);
+       this.currentDate = formattedDate;
    }
    
    public void calculateDueDate(){

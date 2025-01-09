@@ -304,7 +304,8 @@ public class Savings {
              String rows[]=ln.split(",");
              if(rows[0].equals(username)){
                  try{
-                 Date lastTransactionDate=sdf.parse(rows[5]);
+                     Date lastTransactionDate = sdf.parse(rows[5]);
+                     lastTransaction.setTime(lastTransactionDate);
                  lastTransaction.setTime(lastTransactionDate);
                  }catch(ParseException c){
                    c.printStackTrace();
