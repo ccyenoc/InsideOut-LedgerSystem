@@ -487,6 +487,7 @@ public void MonthlyDeduction(ArrayList<String> list, ArrayList<String> fileConte
      String line="";
      boolean header=true;
      String totalLoan="";
+        String date = "";
      try(BufferedReader reader =new BufferedReader(new FileReader(applyFile))){
          quit:{
        while((line=reader.readLine())!=null){
@@ -521,6 +522,10 @@ public void MonthlyDeduction(ArrayList<String> list, ArrayList<String> fileConte
              
              row[5]=String.format("%.2f",outstanding);
              totalLoan=row[4];
+               if (row[10].equalsIgnoreCase("Paid")) {
+                   date = row[11];
+                   date = calculateNextPaymentDate(date);
+               }
              for(int i=0;i<row.length;i++){
                  if(i==row.length-1){
                    builder.append(row[i]);
@@ -586,7 +591,24 @@ public void MonthlyDeduction(ArrayList<String> list, ArrayList<String> fileConte
     String nextPaymentDate = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").format(nextPayment);
     return String.valueOf(nextPayment);
     }
-    
-    
-    
+
+    public String calculateNextPaymentDate(String date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+        String nextPaymentDate = "";
+        try {
+            Date parsedDate = sdf.parse(date);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(parsedDate);
+            calendar.add(Calendar.MONTH, 1);
+            Date nextPayment = calendar.getTime();
+            nextPaymentDate = String.valueOf(nextPayment);
+        } catch (ParseException ex) {
+            ex.printStackTrace();
+        }
+
+        return nextPaymentDate;
+    }
+
+
+
 }

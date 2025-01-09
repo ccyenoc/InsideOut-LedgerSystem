@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.TimeZone;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -49,16 +50,20 @@ public class Reminder {
             while (reader.hasNextLine()){
              String line=reader.nextLine();
              SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
-            
-        
+                dateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Kuala_Lumpur"));
+
              String row[]=line.split(",");
-             Date date=new Date();
+                // this is to test the logic String current = "Sat Feb 08 18:41:16 GMT+08:00 2025";
+                // Date date=dateFormat.parse(current)
+
+                Date date = new Date();
+                date = dateFormat.parse(String.valueOf(date));
              Date nextPaymentDate=dateFormat.parse(row[11]);
-             Date sendEmailDate=nextPaymentDate;
              Calendar calendar = Calendar.getInstance();
-             calendar.setTime(sendEmailDate);
+                calendar.setTime(nextPaymentDate);
              calendar.add(Calendar.DATE, -1);
-             sendEmailDate = calendar.getTime();
+                Date sendEmailDate = calendar.getTime();
+                sendEmailDate = dateFormat.parse(String.valueOf(sendEmailDate));
 
              if(row[0].equals(this.username)){
              if(row[10].equalsIgnoreCase("Overdue")){

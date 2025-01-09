@@ -9,3 +9,6 @@ CCyenoc,TS000007,Debit,2000.00,living,Thu Jan 09 16:09:21 GMT+08:00 2025,2100.00
 ccyenoc,TS000008,Debit,1000.00,living,Thu Jan 09 16:37:11 GMT+08:00 2025,3100.00,Food
 ccyenoc,TS000009,Credit,100.00,lving,Thu Jan 09 16:37:23 GMT+08:00 2025,3000.00,Food
 ccyenoc,TS000010,Debit,1000.00,living,Thu Jan 09 16:44:26 GMT+08:00 2025,4000.00,Food
+ccyenoc,TS000011,Repayment,334.45,Loan ID: ,Fri Jan 10 00:23:05 GMT+08:00 2025,3665.55,Monthly Repayment
+ccyenoc,TS000012,Repayment,334.45,Loan ID: ,Fri Jan 10 00:24:24 GMT+08:00 2025,3331.10,Monthly Repayment
+ccyenoc,TS000013,Repayment,334.45,Loan ID: ,Fri Jan 10 00:27:45 GMT+08:00 2025,2996.65,Monthly Repayment
