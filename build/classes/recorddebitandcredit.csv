@@ -1,4 +1,0 @@
-Username,Transaction ID,Transaction Type,Amount,Description,Date,Balance,Category
-ccyenoc,TS000001,Debit,1000.00,loan,Wed Jan 08 19:49:56 MYT 2025,1000.00,Food
-ccyenoc,TS000002,Debit,1000.00,living,Wed Jan 08 19:52:14 MYT 2025,2000.00,Food
-ccyenoc,TS000003,Credit,100.00,food,Wed Jan 08 20:15:44 MYT 2025,1900.00,Food
