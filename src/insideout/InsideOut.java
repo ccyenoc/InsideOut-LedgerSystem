@@ -35,7 +35,6 @@ import org.mindrot.jbcrypt.BCrypt;
 public class InsideOut extends Application {
 
     private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-    private static final double ASPECT_RATIO = 16.0 / 9.0;
     public static boolean isUser = false;
     public static String Username = "";
     public static double debitTotal = 0.0;
@@ -49,6 +48,7 @@ public class InsideOut extends Application {
     private static TableView<Transaction> tableViewLoanApplied = new TableView<>();
 
     private static ArrayList<Node> clearNodes = new ArrayList<>();
+    private static final double ASPECT_RATIO = 7 / 4;
 
     protected static boolean userStatus = false;
     private boolean overdue = false;
@@ -95,6 +95,7 @@ public class InsideOut extends Application {
                 purse == null || questionmark == null || star == null || tree == null) {
             System.err.println("One or more resources are missing. Please check the resources folder.");
         }
+
 // anchorpane and scene
         StackPane stackpane = new StackPane();
         AnchorPane homepage = new AnchorPane();
@@ -102,25 +103,19 @@ public class InsideOut extends Application {
 
         AnchorPane registration = new AnchorPane();
         Scene pageregistration = new Scene(registration, 700, 400);
-        StackPane spRegistration = new StackPane();
 
         AnchorPane logIn = new AnchorPane();
         Scene pagelogin = new Scene(logIn, 700, 400);
-        StackPane spLogIn = new StackPane();
 
         AnchorPane mainPage = new AnchorPane();
         Scene pagemainPage = new Scene(mainPage, 700, 400);
-        StackPane spMain = new StackPane();
 
         AnchorPane debit = new AnchorPane();
         Scene pagedebit = new Scene(debit, 700, 400);
-        StackPane spDebit = new StackPane();
 
         AnchorPane credit = new AnchorPane();
         Scene pagecredit = new Scene(credit, 700, 400);
-        StackPane spCredit = new StackPane();
 
-        StackPane spHistory = new StackPane();
         AnchorPane history = new AnchorPane();
         Scene pagehistory = new Scene(history, 700, 400);
 
@@ -146,15 +141,13 @@ public class InsideOut extends Application {
 
         AnchorPane viewGraph = new AnchorPane();
         Scene pageViewGraph = new Scene(viewGraph, 700, 400);
-        StackPane spGraph = new StackPane();
 
         AnchorPane viewBalance = new AnchorPane();
         Scene pageViewBalance = new Scene(viewBalance, 700, 400);
-        StackPane spBalance = new StackPane();
 
         AnchorPane viewLoanHistory = new AnchorPane();
         Scene pageviewLoanHistory = new Scene(viewLoanHistory, 700, 400);
-        StackPane spLoanHistory = new StackPane();
+
 // homepage (registration && login page)
 
         homepage.setStyle("-fx-background-color: #a8c4f4;");
@@ -278,13 +271,21 @@ public class InsideOut extends Application {
 
 // log in page
         whiterec(logIn);
+        loginrec(logIn);
         logIn.setStyle("-fx-background-color: #a8c4f4;");
         Label logintitle = new Label("LOG IN");
         logintitle = header(logintitle, logIn);
+
         Button loginbtn = new Button("Log In");
         buttonfontsize(loginbtn);
-        AnchorPane.setTopAnchor(loginbtn, 300.0);
-        AnchorPane.setLeftAnchor(loginbtn, 400.0);
+        AnchorPane.setTopAnchor(loginbtn, 295.0);
+        AnchorPane.setLeftAnchor(loginbtn, 350.0);
+
+        Button backtoMainPage = new Button("Home Page");
+        buttonfontsize(backtoMainPage);
+        AnchorPane.setTopAnchor(backtoMainPage, 295.0);
+        AnchorPane.setLeftAnchor(backtoMainPage, 480.0);
+        backtoMainPage.setOnAction(e -> primaryStage.setScene(pagehomepage));
 
         Image keyimg = new Image(key.toString());
         ImageView keyview = new ImageView(keyimg);
@@ -325,7 +326,7 @@ public class InsideOut extends Application {
         });
 
 
-        logIn.getChildren().addAll(loginbtn, username, loginusername, loginpassword, password, loginemail, email, logintitle, keyview);
+        logIn.getChildren().addAll(loginbtn, username, loginusername, loginpassword, password, loginemail, email, logintitle, keyview, backtoMainPage);
 
 
 // main page
@@ -345,11 +346,10 @@ public class InsideOut extends Application {
         loginbtn.setOnAction(e -> {
 
             removeLabelById(mainPage, "usernameLabel");
+            removeLabelById(mainPage, "useridLabel");
             Username = logIn(name[0], useremail[0], userpassword[0], mainPage);
             if (isUser == true) {
                 primaryStage.setScene(pagemainPage);
-
-
                 // send reminder if there is loan dueing
                 Repayment check = new Repayment(Username);
                 check.updateStatus();
@@ -357,19 +357,29 @@ public class InsideOut extends Application {
                 check.checkOverdue();
                 this.overdue = check.getOverdue(); // check if there is any overdue loan
                 if (overdue == true) {
-                    Label overdued = new Label("Overdue Loan Found!\nPlease make repayment now.\nDebit and Credit function will be disabled\nuntil the loan is fully paid!");
-                    popupMessage(overdued);
+                    alertMessage("OverdueLoan", "Overdue Loan Found", "Please make repayment now.\nDebit and Credit function will be disabled\nuntil the loan is fully paid!");
                 }
 
                 // add savings into balance when reaches end of month
                 Savings endmonth = new Savings(Username);
                 endmonth.isEndOfMonth(Username);
+                Reminder reminder = new Reminder(Username);
+                reminder.checkLoan();
+                if (reminder.getActiveLoanSize() > 0) {
+                    alertMessage("Loan Repayment", "Auto Monthly Loan Repayment", "Reminder!\nAuto-deduction from balance will be taken to pay for loan(s)");
+                }
 
                 Task<Void> reminderTask = new Task<>() {
                     @Override
                     protected Void call() throws Exception {
-                        Reminder reminder = new Reminder(Username);
-                        return null; // Task<Void> requires a return value
+                        if (reminder.getActiveLoanSize() > 0) {
+                            reminder.reminderNotification();
+                        }
+
+                        if (reminder.getOverdueLoansSize() > 0) {
+                            reminder.overdueLoanNotification();
+                        }
+                        return null;  // Task<Void> requires a return value
                     }
 
                     @Override
@@ -382,13 +392,15 @@ public class InsideOut extends Application {
                 // Run the task in a new thread
                 new Thread(reminderTask).start();
 
-
                 usernamelbl[0] = new Label(Username);
-
+                usernamelbl[0].setId("usernameLabel");
+                System.out.println("Username label " + usernamelbl[0]);
                 usernamelbl[0].setFont(Font.font("Anton", 50));
                 AnchorPane.setTopAnchor(usernamelbl[0], 100.0);
                 AnchorPane.setLeftAnchor(usernamelbl[0], 100.0);
                 mainPage.getChildren().add(usernamelbl[0]);
+
+
             }
         }); //from login to mainpage
 
@@ -926,7 +938,7 @@ public class InsideOut extends Application {
 
         Label amountRepaylbl = new Label("Amount");
         AnchorPane.setTopAnchor(amountRepaylbl, 250.0);
-        AnchorPane.setLeftAnchor(amountRepaylbl, 500.0);
+        AnchorPane.setLeftAnchor(amountRepaylbl, 50.0);
         amountRepaylbl.setStyle("-fx-text-fill:black;");
         amountRepaylbl.setFont(Font.font("Anton", 20));
 
@@ -1164,18 +1176,13 @@ public class InsideOut extends Application {
             loginemail.clear();
             loginpassword.clear();
             removeLabelById(viewGraph, "balanceLabel");
-            // Clear any other user-related data
-            isUser = false; // Set user status to false
-
-            // Reset the arrayList for clearing nodes
+            isUser = false;
             clearNodes.clear();
-
-            // Add the nodes again to clearNodes after clearing
             clearNodes.add(loginusername);
             clearNodes.add(loginemail);
             clearNodes.add(loginpassword);
 
-            Label logOut = new Label("LogOut Succesfully");
+            Label logOut = new Label("Log Out Successfully!");
             popupMessage(logOut);
             primaryStage.setScene(pagehomepage);
         });
@@ -1183,17 +1190,6 @@ public class InsideOut extends Application {
         primaryStage.setTitle("InsideOut");
         primaryStage.show();
         // Add listener to maintain aspect ratio
-        primaryStage.widthProperty().addListener((obs, oldWidth, newWidth) -> {
-            double newHeight = newWidth.doubleValue() / ASPECT_RATIO;
-            primaryStage.setHeight(newHeight);
-        });
-
-        primaryStage.heightProperty().addListener((obs, oldHeight, newHeight) -> {
-            double newWidth = newHeight.doubleValue() * ASPECT_RATIO;
-            primaryStage.setWidth(newWidth);
-        });
-
-        primaryStage.show();
         Image icon = new Image(logo.toString());
         primaryStage.getIcons().add(icon);
 
@@ -1224,6 +1220,44 @@ public class InsideOut extends Application {
         AnchorPane.setTopAnchor(yellowrec, 45.0);
         AnchorPane.setLeftAnchor(yellowrec, 325.0);
         pane.getChildren().add(yellowrec);
+    }
+
+    public void loginrec(AnchorPane pane) {
+        Rectangle loginrec = new Rectangle(360, 300);  // Width, Height
+        loginrec.setFill(Color.web("#FEEBA8"));  // Fill the rectangle with blue color
+        loginrec.setArcWidth(20);     // Horizontal radius of the corner
+        loginrec.setArcHeight(20);    // Vertical radius of the corner
+        AnchorPane.setTopAnchor(loginrec, 45.0);
+        AnchorPane.setLeftAnchor(loginrec, 285.0);
+        pane.getChildren().add(loginrec);
+
+        Label main = new Label("InsideOut");
+        main.setFont(Font.font("Anton", 35));
+        Label slogan = new Label("\"more money                   less money           side\"");
+        Label Inside = new Label("INSIDE");
+        Label Out = new Label("OUT");
+        Inside.setFont(Font.font("Anton", 25));
+        Out.setFont(Font.font("Anton", 25));
+        slogan.setFont(Font.font("Anton", 18));
+        Label forgotpassword = new Label("Forgot Password ?");
+        forgotpassword.setFont(Font.font("Anton", 20));
+        Label tips = new Label("Tips : Pasword required to be\n1. At Least 1 UpperCase\n2. At Least 1 LowerCase\n3. At Least 1 Special Character");
+        tips.setFont(Font.font("Anton", 16));
+
+        main.setLayoutX(400);
+        main.setLayoutY(50);
+        slogan.setLayoutX(295);
+        slogan.setLayoutY(105);
+        Inside.setLayoutX(405);
+        Inside.setLayoutY(100);
+        Out.setLayoutX(565);
+        Out.setLayoutY(100);
+        forgotpassword.setLayoutX(300);
+        forgotpassword.setLayoutY(150);
+        tips.setLayoutX(300);
+        tips.setLayoutY(185);
+
+        pane.getChildren().addAll(main, slogan, forgotpassword, tips, Inside, Out);
     }
 
     public Label header(Label label, AnchorPane pane) {
@@ -1329,7 +1363,7 @@ public class InsideOut extends Application {
         // user input section
         TextField textField = new TextField();
         textField.setPromptText("Type your " + type + " here...");
-        textField.setPrefColumnCount(19);
+        textField.setPrefColumnCount(15);
         textField.setStyle("-fx-font-size: 14px; -fx-background-color:#FFFFFF ;-fx-text-fill: black; -fx-border-radius: 5px;");
         textField.setFont(Font.font("Anton", 12));
         AnchorPane.setTopAnchor(textField, top + 25);
@@ -1784,14 +1818,27 @@ public class InsideOut extends Application {
     public String logIn(String name, String email, String password, AnchorPane pane) {
         LogIn userLogIn = new LogIn(name, email, password);
         Label lbl = userLogIn.login();
-        lbl.setId("usernameLabel");
         name = userLogIn.getName();
-        if (userLogIn.getID() != null) {
-            userLogIn.getID().setFont(Font.font("Anton", 20));
-            AnchorPane.setTopAnchor(userLogIn.getID(), 33.0);
-            AnchorPane.setLeftAnchor(userLogIn.getID(), 550.0);
-            pane.getChildren().add(userLogIn.getID());
+        lbl.setId("usernameLabel");
+
+        Rectangle rec = new Rectangle(180, 35);  // Width, Height
+        rec.setFill(Color.web("#f1dadb"));
+        rec.setArcWidth(20);
+        rec.setArcHeight(20);
+        AnchorPane.setTopAnchor(rec, 30.0);
+        AnchorPane.setLeftAnchor(rec, 485.0);
+        pane.getChildren().add(rec);
+        Label userID = userLogIn.getID();
+        if (userID != null) {
+            userID.setId("useridLabel");
+            String userIDstr = userID.getText();
+            Label useridlbl = new Label("UserID:" + userIDstr);
+            useridlbl.setFont(Font.font("Anton", 20));
+            AnchorPane.setTopAnchor(useridlbl, 33.0);
+            AnchorPane.setLeftAnchor(useridlbl, 510.0);
+            pane.getChildren().add(useridlbl);
         }
+
         popupMessage(lbl);
 
 
@@ -1864,6 +1911,7 @@ public class InsideOut extends Application {
         enterprincipal.setLayoutY(130);
         enterprincipal.setFont(Font.font("Anton", 15));
         enterprincipal.setPrefWidth(180);
+        clearNodes.add(enterprincipal);
 
         String[] principal = {""};
         enterprincipal.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -1884,6 +1932,7 @@ public class InsideOut extends Application {
         enterrate.setLayoutY(190);
         enterrate.setFont(Font.font("Anton"));
         enterrate.setPrefWidth(180);
+        clearNodes.add(enterrate);
 
         String[] rate = {""};
         enterrate.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -1903,6 +1952,7 @@ public class InsideOut extends Application {
         entermonth.setLayoutY(260);
         entermonth.setFont(Font.font("Anton"));
         entermonth.setPrefWidth(180);
+        clearNodes.add(entermonth);
 
         String[] month = {""};
         entermonth.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -1976,6 +2026,7 @@ public class InsideOut extends Application {
 
 
         confirmapply.setOnAction(c -> {
+
             if (principal[0].matches("\\d*\\.?\\d+")
                     && rate[0].matches("\\d*\\.?\\d+") && month[0].matches("\\d*\\.?\\d+")) {
 
@@ -1995,6 +2046,8 @@ public class InsideOut extends Application {
                 Label lbl = new Label("Enter a Number\neg.whole number/decimal number");
                 popupMessage(lbl);
             }
+
+            clearAllNodes(clearNodes);
         });
         pane.getChildren().addAll(monthly, monthlylbl, quarterly, quarterlylbl, semiannual, semiannuallbl, annual, anuallylbl, confirmapply,
                 interestRatelbl, periodlbl, enterprincipal, enterrate, selectPeriodlbl, entermonth);
@@ -2150,6 +2203,7 @@ public class InsideOut extends Application {
         amountRepay.setFont(Font.font("Anton", 12));
         AnchorPane.setTopAnchor(amountRepay, 300.0);
         AnchorPane.setLeftAnchor(amountRepay, 50.0);
+        clearNodes.add(amountRepay);
 
         String[] repayamount = {""};
         amountRepay.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -2178,7 +2232,7 @@ public class InsideOut extends Application {
                 }
             }
 
-
+            clearAllNodes(clearNodes);
         });
 
         pane.getChildren().addAll(getID[0], activeloanbtn, overdueloanbtn, confirmrepay, amountRepay);
@@ -2223,6 +2277,7 @@ public class InsideOut extends Application {
         enterPercentage.textProperty().addListener((observable, oldValue, newValue) -> {
             savingPercentage[0] = newValue.trim();
         });
+        clearNodes.add(enterPercentage);
 
         boolean status[] = new boolean[1];
         Button confirm = new Button("Confirm");
@@ -2316,7 +2371,7 @@ public class InsideOut extends Application {
 
         Savings viewsaving = new Savings(Username);
         double totalsavings = viewsaving.getTotalSavings(Username);
-        Label savinglbl = new Label(String.valueOf(totalsavings));
+        Label savinglbl = new Label("RM " + totalsavings);
         savinglbl.setId("savingLabel");
         AnchorPane.setTopAnchor(savinglbl, 220.0);
         AnchorPane.setLeftAnchor(savinglbl, 50.0);
@@ -2325,7 +2380,7 @@ public class InsideOut extends Application {
 
         ApplyLoan getoutstandingbalance = new ApplyLoan();
         String labels = getoutstandingbalance.getTotalOustandingBalance(Username);
-        Label loanlbl = new Label(labels);
+        Label loanlbl = new Label("RM " + labels);
         loanlbl.setId("loanLabel");
 
         AnchorPane.setTopAnchor(loanlbl, 310.0);
@@ -2465,6 +2520,7 @@ public class InsideOut extends Application {
 
     // pop up message
     public static void popupMessage(Label label) {
+        System.out.println("Popup should have been shown");
         label.setStyle("-fx-text-fill:black;");
         label.setFont(Font.font("Anton", 15));
         label.setLayoutX(110);
@@ -2475,10 +2531,19 @@ public class InsideOut extends Application {
         Scene scene = new Scene(root, 300, 100);
         popupStage.setScene(scene);
         popupStage.show();
+        popupStage.setAlwaysOnTop(true);
 
         PauseTransition delay = new PauseTransition(Duration.seconds(2));
         delay.setOnFinished(event -> popupStage.close());
         delay.play();
+    }
+
+    public static void alertMessage(String title, String headerText, String content) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(headerText);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 
     public static String formatCSV(String value) {

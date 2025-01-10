@@ -37,7 +37,7 @@ public class SavingGrowth {
         XYChart.Series<String, Number> monthlySavingsSeries = new XYChart.Series<>();
         monthlySavingsSeries.setName("Total Savings");
 
-        String filePath = "src/savings - Sheet1.csv";
+        String filePath = "src/savings.csv";
 
          boolean userFound = false;
 

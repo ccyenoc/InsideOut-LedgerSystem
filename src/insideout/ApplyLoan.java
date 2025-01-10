@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
+import javafx.scene.control.Label;
 
 import static insideout.InsideOut.store;
-import javafx.scene.control.Label;
 
 public class ApplyLoan{
     private String username="";
@@ -131,7 +131,7 @@ public class ApplyLoan{
       append(annualInterest).append(",").append(String.format("%.2f,",totalRepaymentAmount)).append(String.format("%.2f,",totalRepaymentAmount)).
       append(month).append(",").append(paymentFrequency).append(",").append(currentDate).append(",").append(dueDate).append(",").append("Active").
       append(",").append(nextPaymentDate).append(",").append(monthlyRepayment); // status will change once outstanding balance is 0 (controlled by repayment class too)
-      store(applyFile,String.valueOf(str));
+       store(applyFile, String.valueOf(str));
       lbl=new Label("Loan Has Been Applied\nNote:"+String.format("%.2f",totalRepaymentAmount)+" should be paid before\n"+dueDate);
    }
    
@@ -194,8 +194,17 @@ public class ApplyLoan{
 
    return String.valueOf(totaloutstandingbalance);
    }
-   
+
+    public void appendFile(String filepath, String line) {
+        ArrayList<String> str = new ArrayList<>();
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filepath, true))) {
+            writer.newLine();
+            writer.write(line);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
    
    
 
-}

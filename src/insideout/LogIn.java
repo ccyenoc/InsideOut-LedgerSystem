@@ -13,7 +13,7 @@ public class LogIn {
     private String name="";
     private String email="";
     private String password="";
-    private static String userinfo="src/userinfo - Sheet1.csv";
+    private static String userinfo = "src/userinfo.csv";
     private boolean UserFound=false;
     private Label userID;
     

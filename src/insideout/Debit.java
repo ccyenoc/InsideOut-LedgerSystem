@@ -15,9 +15,9 @@ import java.math.RoundingMode;
 
 public class Debit {
     private String username="";
-    private String recorddebitandcredit="src/recorddebitandcredit.csv";
+    private String recorddebitandcredit = "src/transactions.csv";
     private String recorddebit="src/recorddebit.csv";
-    private String savingFile="src/savings - Sheet1.csv";
+    private String savingFile = "src/savings.csv";
     private double amount=0.0;
     private String description="";
     private String type="";

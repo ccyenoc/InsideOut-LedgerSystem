@@ -31,19 +31,22 @@ public class Reminder {
     ArrayList<String> active=new ArrayList<>();
     private String username;
     final String loanFile = "src/creditloan-apply.csv";
-    final String userFileName = "src/userinfo - Sheet1.csv";
+    final String userFileName = "src/userinfo.csv";
     public String EMAIL_TO;
-    private Label lbl;
+    private boolean activeloanfound = false;
+    private int overdueloansize = 0;
+    private int activeloansize = 0;
     static final String EMAIL_FROM = "lojingyang051104@gmail.com";
     static final String APP_PASSWORD = "hcaz vsjh ngsx eixs";
 
     Properties props = new Properties();
-      
 
 
-    public Reminder(String username){
-
+    public Reminder(String username) {
         this.username=username;
+    }
+
+    public void checkLoan() {
         try {
             Scanner reader = new Scanner(new FileReader(this.loanFile));
             reader.nextLine();
@@ -53,8 +56,8 @@ public class Reminder {
                 dateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Kuala_Lumpur"));
 
              String row[]=line.split(",");
-                // this is to test the logic String current = "Sat Feb 08 18:41:16 GMT+08:00 2025";
-                // Date date=dateFormat.parse(current)
+                // String current = "Sat Feb 08 18:41:16 GMT+08:00 2025"; // for testing
+                //  Date date=dateFormat.parse(current); // for testing
 
                 Date date = new Date();
                 date = dateFormat.parse(String.valueOf(date));
@@ -77,21 +80,15 @@ public class Reminder {
              active.add(row[5]); // add remaining Payment
              active.add(row[11]); // add dueDate of loan
              }
-            } 
+             }
 
         }
 
-            if(overdue.size()!=0){
-              overdueLoanNotification();
-              
-            }
-            else if(active.size()!=0){
-              reminderNotification();
-            }
+            overdueloansize = overdue.size();
+            activeloansize = active.size();
         }catch (Exception e){
             e.printStackTrace();
         }
-
 
     }
     public void reminderNotification() throws Exception{
@@ -106,7 +103,7 @@ public class Reminder {
             Transport.send(message);
         
             }
-            lbl=new Label("Reminder!\nAuto-deduction from balance will be taken to pay for loan(s)");
+
     }
     
     public void overdueLoanNotification() throws Exception{
@@ -162,8 +159,12 @@ public class Reminder {
         }
     }
 
-    public Label getLabel(){
-        return lbl;   
+    public int getActiveLoanSize() {
+        return activeloansize;
+    }
+
+    public int getOverdueLoansSize() {
+        return overdueloansize;
     }
 
 }

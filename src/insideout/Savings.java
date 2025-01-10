@@ -21,12 +21,12 @@ import java.math.RoundingMode;
 public class Savings {
     private String username="";
     private double percentage=0.0;
-    private double debit=0.0;  // get debit from recorddebitandcredit
-    private double savings=0.0; // update the balance at recorddebitandcredit at the end of month
+    private double debit = 0.0;  // get debit from transaction
+    private double savings = 0.0; // update the balance at transaction at the end of month
     private double totalSavings=0.0; // for display purpose at view balance
     private double savingPerMonth=0.0;
-    protected String savingFile="src/savings - Sheet1.csv";
-    private String recorddebitandcredit="src/recorddebitandcredit.csv";
+    protected String savingFile = "src/savings.csv";
+    private String transaction = "src/transactions.csv";
     private Label lbl;
     private String transactionID="";
     
@@ -254,17 +254,23 @@ public class Savings {
         this.username=username;
         boolean lastday=false;
         SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
-        sdf.setTimeZone(TimeZone.getTimeZone("Asia/Kuala_Lumpur")); 
-        Calendar current = Calendar.getInstance(TimeZone.getTimeZone("Asia/Kuala_Lumpur")); 
-        
-        // last day of moth at 00.00.00
+        sdf.setTimeZone(TimeZone.getTimeZone("Asia/Kuala_Lumpur"));
+        Calendar current = Calendar.getInstance(TimeZone.getTimeZone("Asia/Kuala_Lumpur"));
+       /* current.set(Calendar.DAY_OF_MONTH, current.getActualMaximum(Calendar.DAY_OF_MONTH)); // testing
+        current.set(Calendar.HOUR_OF_DAY, 0);
+        current.set(Calendar.MINUTE, 0);
+        current.set(Calendar.SECOND, 0);
+        current.set(Calendar.MILLISECOND, 0);*/
+
+        //last day of moth at 00.00.00
         Calendar endOfMonth = Calendar.getInstance(TimeZone.getTimeZone("Asia/Kuala_Lumpur"));
         endOfMonth.set(Calendar.DAY_OF_MONTH, endOfMonth.getActualMaximum(Calendar.DAY_OF_MONTH));
         endOfMonth.set(Calendar.HOUR_OF_DAY, 0);
         endOfMonth.set(Calendar.MINUTE, 0);
         endOfMonth.set(Calendar.SECOND, 0);
         endOfMonth.set(Calendar.MILLISECOND, 0);
-        
+
+
         // next month first day
          Calendar nextMonth = Calendar.getInstance(TimeZone.getTimeZone("Asia/Kuala_Lumpur"));
         nextMonth.set(Calendar.DAY_OF_MONTH, endOfMonth.getActualMaximum(Calendar.DAY_OF_MONTH)+1);
@@ -288,6 +294,7 @@ public class Savings {
         // condition to handle :
         // user did not log in during end of month(auto debit to the acc next time he/she login)
        boolean addSaving=false;
+        // check whether today is the last day of current month
         if ((current.after(endOfMonth) || current.equals(endOfMonth)) && current.before(nextMonth)){
             lastday=true;
             addSaving=true;
@@ -297,11 +304,12 @@ public class Savings {
         // if not the last day of month check whether last transactin date is before last day of last month
         Calendar lastTransaction=Calendar.getInstance(TimeZone.getTimeZone("Asia/Kuala_Lumpur"));
         // if it is last day this part will skip
+        // if it is not last day it will check for last transaction day to check whether savings for last month updated
         if(lastday==false){
-         try(BufferedReader br=new BufferedReader(new FileReader(recorddebitandcredit))){
+            try (BufferedReader br = new BufferedReader(new FileReader(transaction))) {
            String ln="";
            while((ln=br.readLine())!=null){
-             String rows[]=ln.split(",");
+               String rows[] = splitCSVLine(ln, 8);
              if(rows[0].equals(username)){
                  try{
                      Date lastTransactionDate = sdf.parse(rows[5]);
@@ -325,8 +333,10 @@ public class Savings {
         // means that user does not login to the acc at the last day of month
         // since if user log in into acc at last day, it wil update saving
         // eg. lastTransaction 30 Jan 2025 , current 3 Feb 2025
-        
-        
+
+        System.out.println("Current date: " + sdf.format(current.getTime()));
+        System.out.println("End of month date: " + sdf.format(endOfMonth.getTime()));
+        System.out.println("Last transaction date: " + sdf.format(lastTransaction.getTime()));
         
         if(addSaving==true){
         String line="";
@@ -350,6 +360,7 @@ public class Savings {
                        shouldUpdate=true; // true when current month accumulated savings is less than last accumulated savings
                       lastSavings=Double.parseDouble(row[7]); // compare the lastSaving with current savings, if less that means it should be updated
                    }
+
                   
                     if (row[8].contains("|") && shouldUpdate==false) { // shouldUpdate is only for the last day of month which checks for whether savings updated on that day 
                         updated=true;
@@ -386,6 +397,7 @@ public class Savings {
         }
             
             this.totalSavings=Double.parseDouble(content[7]);
+                System.out.println("Total savings " + totalSavings);
             endOfMonthUpdateCsv(totalSavings,today);
           }
           }
@@ -409,15 +421,15 @@ public class Savings {
         String readline="";
         
         boolean header=true;
-        try(BufferedReader reader=new BufferedReader(new FileReader(recorddebitandcredit));
+        try (BufferedReader reader = new BufferedReader(new FileReader(transaction));
             BufferedReader br=new BufferedReader(new FileReader(savingFile))){
             while((readline=reader.readLine())!=null){
                 if(header){
                     header=false;
                     continue;
                 }
-                
-                String row[]=readline.split(",");
+
+                String row[] = splitCSVLine(readline, 8);
                 if(row[0].equals(username)){ 
                     balance=Double.parseDouble(row[6]); // get user last balance
                 }
@@ -433,8 +445,8 @@ public class Savings {
            Date date = new Date();
            line.append(username).append(",").append(transactionID).append(",").append("Savings").append(",").append(String.format("%.2f",totalSavings)).append(",")
                    .append("Savings").append(",").append(date).append(",").append(bd).append(",").append("Savings");
-           
-           store(recorddebitandcredit,String.valueOf(line));
+
+            store(transaction, String.valueOf(line));
            
            String str="";
            boolean head=true;
@@ -481,7 +493,7 @@ public class Savings {
     String line="";
     ArrayList<String> str=new ArrayList<>();
     String userLastInfo="";
-    try (BufferedReader reader = new BufferedReader(new FileReader(recorddebitandcredit))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(transaction))) {
         boolean header = true;
         while ((line = reader.readLine()) != null) {
             if (header) {
@@ -729,4 +741,35 @@ public class Savings {
     public Label getLabel(){
         return lbl;
     }
+
+    private static String[] splitCSVLine(String line, int z) {
+        String[] result = new String[z];
+        StringBuilder currentField = new StringBuilder();
+        boolean inQuotes = false;
+        int index = 0;
+
+        for (int i = 0; i < line.length(); i++) {
+            char c = line.charAt(i);
+            if (c == '"') {
+                inQuotes = !inQuotes; // Toggle quotes
+            } else if (c == ',' && !inQuotes) {
+                result[index++] = unformatCSV(currentField.toString());
+                currentField.setLength(0); // Clear the field
+            } else {
+                currentField.append(c);
+            }
+        }
+        result[index] = unformatCSV(currentField.toString()); // Add last field
+        return result;
+    }
+
+    public static String unformatCSV(String value) {
+        if (value == null || value.isEmpty()) return ""; // Handle empty values
+        if (value.startsWith("\"") && value.endsWith("\"")) {
+            value = value.substring(1, value.length() - 1); // Remove surrounding quotes
+        }
+        return value.replace("\"\"", "\""); // Unescape double quotes
+    }
+
+
 }

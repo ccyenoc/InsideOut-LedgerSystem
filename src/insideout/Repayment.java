@@ -7,7 +7,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import static insideout.InsideOut.store;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.time.LocalDateTime;
@@ -18,9 +17,9 @@ import javafx.scene.control.Label;
 
 
 public class Repayment {
-    private String balanceFile="src/recorddebitandcredit.csv";
+    private String balanceFile = "src/transactions.csv";
     private String applyFile="src/creditloan-apply.csv";
-    private String repaymentFile="src/creditloan-repay - Sheet1.csv";
+    private String repaymentFile = "src/creditloan-repay.csv";
     private ArrayList<Integer> userIndex=new ArrayList<>();
     private ArrayList<String> findUser=new ArrayList<>();
     private ArrayList<String> info=new ArrayList<>();
@@ -90,6 +89,7 @@ public void MonthlyDeduction(ArrayList<String> list, ArrayList<String> fileConte
         String row[] = list.get(i).split(",");
         double monthlyPayment = Double.parseDouble(row[12]);
         double outstandingBalance = Double.parseDouble(row[5]);
+        this.LoanID = row[1];
         if(outstandingBalance<monthlyPayment){
           monthlyPayment=outstandingBalance; // condition where the outstanding Balance is less then monthly payment 
         } 
@@ -177,7 +177,6 @@ public void MonthlyDeduction(ArrayList<String> list, ArrayList<String> fileConte
     }
     
     public void appendFile(String filepath,String line) {
-   
     ArrayList<String> str=new ArrayList<>();
     try(BufferedWriter writer=new BufferedWriter(new FileWriter(filepath,true))){
          writer.newLine();
@@ -193,7 +192,7 @@ public void MonthlyDeduction(ArrayList<String> list, ArrayList<String> fileConte
     }
     
     public void setUsername(){
-     this.username=username;
+        this.username = username;
     }
     
     
@@ -252,20 +251,23 @@ public void MonthlyDeduction(ArrayList<String> list, ArrayList<String> fileConte
                   }
                 }
 
-                try(BufferedWriter updater = new BufferedWriter(new FileWriter(applyFile))){
-                for (int i=0;i<lines.size();i++) {
-                    if(i==lines.size()-1){
-                       updater.write(lines.get(i));
-                     }
-                    else{
-                        updater.write(lines.get(i));
+                BufferedWriter updater = null;
+                try {
+                    updater = new BufferedWriter(new FileWriter(applyFile));
+                    for (String content : lines) {
+                        updater.write(content);
                         updater.newLine();
                     }
-                     
-                }
-                updater.close();
-                }catch(IOException ex){
-                  ex.printStackTrace();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                } finally {
+                    if (updater != null) {
+                        try {
+                            updater.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
             }catch (Exception e) {
                 System.err.println("Error updating the status in LoanCSV");
@@ -306,22 +308,21 @@ public void MonthlyDeduction(ArrayList<String> list, ArrayList<String> fileConte
          double remaining=outstandingBalance-repayment;
          return remaining;
       }
-    
-    
-    
-   public void updateOutstandingBalance(ArrayList<String> lines){
-     String line="";
-     try(BufferedWriter writer=new BufferedWriter(new FileWriter(applyFile))){
-         for(String content:lines){
-          writer.write(content);
-          writer.newLine();
-         }
-                 
-     }catch(IOException ex){
-      ex.printStackTrace();
-     }
+
+
+    public void updateOutstandingBalance(ArrayList<String> lines) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(applyFile))) {
+            for (int i = 0; i < lines.size(); i++) {
+                writer.write(lines.get(i));
+                // Only add newline if it's not the last line
+                if (i < lines.size() - 1) {
+                    writer.newLine();
+                }
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
-   
    public void readLastTransactionID() {
     String line="";
     ArrayList<String> str=new ArrayList<>();
@@ -469,7 +470,7 @@ public void MonthlyDeduction(ArrayList<String> list, ArrayList<String> fileConte
               
               String row[]=line.split(",");
               if(row[0].equals(username) && row[10].equalsIgnoreCase("Overdue")){
-                  activeLoan.add(row[1]);
+                  overdueLoan.add(row[1]);
                   continue;
               }
             }
@@ -477,8 +478,8 @@ public void MonthlyDeduction(ArrayList<String> list, ArrayList<String> fileConte
         }catch(IOException ex){
           ex.printStackTrace();
         }
-     
-        return activeLoan;
+
+        return overdueLoan;
 
    }
     
@@ -589,7 +590,7 @@ public void MonthlyDeduction(ArrayList<String> list, ArrayList<String> fileConte
     calendar.add(Calendar.MONTH, 1); // Add one month
     Date nextPayment = calendar.getTime();
     String nextPaymentDate = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").format(nextPayment);
-    return String.valueOf(nextPayment);
+        return String.valueOf(nextPaymentDate);
     }
 
     public String calculateNextPaymentDate(String date) {

@@ -32,7 +32,7 @@ public class LoanRepayment {
         PieChart pieChart = new PieChart();
         pieChart.setTitle("Loan Repayment Overtime");
 
-        String filePath = "src/creditloan-repay - Sheet1.csv";
+        String filePath = "src/creditloan-repay.csv";
         String loanFile="src/creditloan-apply.csv";
         double totalRepaymentAmount = 0;
         double totalLoanPaid = 0;

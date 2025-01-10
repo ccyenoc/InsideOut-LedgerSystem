@@ -15,7 +15,7 @@ import java.util.Date;
 import javafx.scene.control.Label;
 public class Credit {
     private static String username="";
-    private static String recorddebitandcredit="src/recorddebitandcredit.csv";
+    private static String recorddebitandcredit = "src/transactions.csv";
     private static String recordcredit="src/recordcredit.csv";
     private static double amount=0.0;
     private static String description="";
@@ -32,6 +32,7 @@ public class Credit {
         this.username=username;
         this.amount=amount;
         this.description=description;
+        System.out.println("Description in credit file :" + description);
         this.type=type;
         this.category=category;
         updateCredit();
@@ -61,11 +62,10 @@ public class Credit {
 
             // to find the last balance user hold
             if(!getBalance.isEmpty()){
-           int index = getBalance.size() - 1; 
-            String[] splitedrow = getBalance.get(index).split(",");
-            String balanceStr = splitedrow[6]; 
-            balance = Double.parseDouble(balanceStr); 
-            System.out.println("Balance "+balance);
+                int index = getBalance.size() - 1;
+                String unformatted[] = splitCSVLine(getBalance.get(index));
+                String balanceStr = unformatted[6];
+                balance = Double.parseDouble(balanceStr);
             }
         }catch (IOException ex){
             ex.printStackTrace();
@@ -156,5 +156,36 @@ public class Credit {
        e.printStackTrace();
     }
 }
-    
+
+    private static String[] splitCSVLine(String line) {
+        String[] result = new String[8];
+        StringBuilder currentField = new StringBuilder();
+        boolean inQuotes = false;
+        int index = 0;
+
+        for (int i = 0; i < line.length(); i++) {
+            char c = line.charAt(i);
+            if (c == '"') {
+                inQuotes = !inQuotes;
+            } else if (c == ',' && !inQuotes) {
+                result[index++] = unformatCSV(currentField.toString());
+                currentField.setLength(0);
+            } else {
+                currentField.append(c);
+            }
+        }
+        result[index] = unformatCSV(currentField.toString());
+        return result;
+    }
+
+    public static String unformatCSV(String value) {
+        if (value == null || value.isEmpty()) return ""; // Handle empty values
+        if (value.startsWith("\"") && value.endsWith("\"")) {
+            value = value.substring(1, value.length() - 1); // Remove surrounding quotes
+        }
+        return value.replace("\"\"", "\""); // Unescape double quotes
+    }
+
 }
+    
+

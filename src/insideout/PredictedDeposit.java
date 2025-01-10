@@ -14,7 +14,7 @@ public class PredictedDeposit {
    
     private String bank="";
     private String bankFile="src/bank.csv";
-    private String getBalanceFile="src/recorddebitandcredit.csv";
+    private String getBalanceFile = "src/transactions.csv";
     private String username="";
     private ArrayList<String> lines=new ArrayList<>();
     private ArrayList<String> addLine=new ArrayList<>();

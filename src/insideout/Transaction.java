@@ -20,7 +20,7 @@ public class Transaction {
     private StringProperty description = new SimpleStringProperty("");
     private StringProperty username = new SimpleStringProperty("");
     private StringProperty balance = new SimpleStringProperty("");
-    private String overview = "src/recorddebitandcredit.csv";
+    private String overview = "src/transactions.csv";
    
     private ObservableList<Transaction> debitData = FXCollections.observableArrayList();
     private ObservableList<Transaction> creditData = FXCollections.observableArrayList();
@@ -143,7 +143,7 @@ public class Transaction {
                     continue;
                 }
 
-                String[] columns = readDebit.split(",");
+                String[] columns = splitCSVLine(readDebit, 9);
                 String name=columns[0];
                 String debitID=columns[1];
                 String amount=columns[3];
@@ -167,8 +167,8 @@ public class Transaction {
                 head=false;
                 continue;
               }
-              
-              String []row=readCredit.split(",");
+
+                String[] row = splitCSVLine(readCredit, 8);
               String name=row[0];
               String creditID=row[1];
               double amount=Double.parseDouble(row[3]);
@@ -199,7 +199,7 @@ public class Transaction {
                 String name = columns[0];
               
                if (username.get().equals(name)) {
-                    String lines[]=splitCSVLine(line);
+                   String lines[] = splitCSVLine(line, 8);
                     String type = lines[2];
                     String amount = lines[3];
                     String description = lines[4];
@@ -220,16 +220,17 @@ public class Transaction {
 
             String lines[]=readLoan.split(",");
             String user= lines[0];
-            String loanID= lines[1];
-            String principal = lines[2];
-            String interest = lines[3];
-            String totalLoan = lines[4];
-            String outstandingBalance = lines[5];
-            String period=lines[6];
-            String applyTime=lines[8];
-            String dueTime=lines[9];
-            String status=lines[10];
-            if(username.get().equals(user)){
+
+                if (username.get().equals(user)) {
+                    String loanID = lines[1];
+                    String principal = lines[2];
+                    String interest = lines[3];
+                    String totalLoan = lines[4];
+                    String outstandingBalance = lines[5];
+                    String period = lines[6];
+                    String applyTime = lines[8];
+                    String dueTime = lines[9];
+                    String status = lines[10];
               LoanApply.add(new Transaction(loanID, principal,interest, totalLoan, outstandingBalance,period,applyTime,dueTime,status));
             }
           }
@@ -401,9 +402,9 @@ public class Transaction {
        String viewBalance="RM "+lastBalance;
        return viewBalance;
     }
-    
-    private static String[] splitCSVLine(String line) {
-        String[] result = new String[8];
+
+    private static String[] splitCSVLine(String line, int z) {
+        String[] result = new String[z];
         StringBuilder currentField = new StringBuilder();
         boolean inQuotes=false;
         int index=0;

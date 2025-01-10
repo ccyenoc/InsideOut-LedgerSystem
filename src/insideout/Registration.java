@@ -16,7 +16,7 @@ public class Registration{
     private static String username="";
     private static String email="";
     private static String password="";
-    private static String userinfo="src/userinfo - Sheet1.csv";
+    private static String userinfo = "src/userinfo.csv";
 
     public Registration(String username,String email,String password){
         this.username=username;
@@ -76,8 +76,7 @@ public class Registration{
                 if (registrationValid) {
                     // generate userID
                     int ID = 0;
-                    System.out.println(lines.size());
-                    if (lines.size() == 0) {
+                    if (lines.size() == 1) {
                         ID = 1;
                     } else {
                         System.out.println("Line Index " + lineIndex);

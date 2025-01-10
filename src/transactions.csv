@@ -1,0 +1,10 @@
+Username,Transaction ID,Transaction Type,Amount,Description,Date,Balance,Category
+ccyenoc,TS000001,Debit,1000.00,"living,and  happy",Fri Jan 10 14:48:40 GMT+08:00 2025,1000.00,Food
+ccyenoc,TS000002,Credit,20.00,"living, and happy",Fri Jan 10 14:55:52 GMT+08:00 2025,980.00,Food
+ccyenoc,TS000003,Debit,1000.00,food,Fri Jan 10 14:59:41 GMT+08:00 2025,1880.00,Food
+ccyenoc,TS000004,Debit,200.00,transport,Fri Jan 10 15:03:34 GMT+08:00 2025,2060.00,Food
+brayden,TS000005,Debit,1000.00,living,Fri Jan 10 15:17:32 GMT+08:00 2025,1000.00,Food
+brayden,TS000006,Credit,20.00,food,Fri Jan 10 15:17:40 GMT+08:00 2025,980.00,Food
+ccyenoc,TS000007,Savings,120.00,Savings,Fri Jan 10 16:54:31 GMT+08:00 2025,2180,Savings
+ccyenoc,TS000008,Savings,120.00,Savings,Fri Jan 10 16:58:05 GMT+08:00 2024,2300,Savings
+ccyenoc,TS000009,Savings,120.00,Savings,Fri Jan 10 17:01:54 GMT+08:00 2025,2420,Savings
