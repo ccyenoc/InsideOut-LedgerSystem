@@ -2496,7 +2496,7 @@ public class InsideOut extends Application {
         SpendingTrend spendingtrend = new SpendingTrend(Username, cat);
         node = spendingtrend.SpendingTrendGraph();
         Label lbl = spendingtrend.getLabel();
-        if (lbl.getText().isEmpty()) {
+        if (!lbl.getText().isEmpty()) {
             popupMessage(SpendingTrend.getLabel());
         } else {
             pane.getChildren().add(node);

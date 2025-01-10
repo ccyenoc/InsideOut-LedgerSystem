@@ -98,7 +98,7 @@ public class SpendingTrend{
     }
   
   public static Label getLabel(){
-    return lbl;
+      return lbl;
   }
 
    

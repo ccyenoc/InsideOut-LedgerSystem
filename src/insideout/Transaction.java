@@ -388,17 +388,18 @@ public class Transaction {
           
           String row[]=str.split(",");
           if(row[0].equals(username)){
-            System.out.println("equals");
             lastBalance=row[6];
-          } else {
-              lastBalance = String.valueOf(0.00);
-
           }
+            }
+
+            if (lastBalance.equals("")) {
+                lastBalance = "0.00";
             }
           
         }catch(IOException ex){
           ex.printStackTrace();
         }
+        System.out.println("Last Balance " + lastBalance);
        String viewBalance="RM "+lastBalance;
        return viewBalance;
     }
