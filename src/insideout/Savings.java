@@ -331,11 +331,6 @@ public class Savings {
         // means that user does not login to the acc at the last day of month
         // since if user log in into acc at last day, it wil update saving
         // eg. lastTransaction 30 Jan 2025 , current 3 Feb 2025
-
-        System.out.println("Current date: " + sdf.format(current.getTime()));
-        System.out.println("End of month date: " + sdf.format(endOfMonth.getTime()));
-        System.out.println("Last transaction date: " + sdf.format(lastTransaction.getTime()));
-
         if(addSaving==true){
         String line="";
         boolean header=true;

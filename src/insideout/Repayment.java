@@ -520,10 +520,7 @@ public void MonthlyDeduction(ArrayList<String> list, ArrayList<String> fileConte
          StringBuilder builder=new StringBuilder();
 
            if(row[0].equals(username) && row[1].equals(loanID)){
-             System.out.println(row[5]);
              double outstanding=Double.parseDouble(row[5])-repayment;
-             System.out.println("Outstanding " + outstanding);
-             System.out.println(Math.abs(outstanding));
              if(Math.abs(outstanding)< 0.01){
                  row[10]="Paid";
              }

@@ -79,7 +79,6 @@ public class Registration{
                     if (lines.size() == 1) {
                         ID = 1;
                     } else {
-                        System.out.println("Line Index " + lineIndex);
                         String[] findLastID = lines.get(lineIndex).split(",");
                         // id without IO
                         int numID = Integer.parseInt(findLastID[1].replace("IO", ""));

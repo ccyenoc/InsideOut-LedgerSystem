@@ -398,7 +398,6 @@ public class InsideOut extends Application {
 
                 usernamelbl[0] = new Label(Username);
                 usernamelbl[0].setId("usernameLabel");
-                System.out.println("Username label " + usernamelbl[0]);
                 usernamelbl[0].setFont(Font.font("Anton", 50));
                 AnchorPane.setTopAnchor(usernamelbl[0], 100.0);
                 AnchorPane.setLeftAnchor(usernamelbl[0], 100.0);
@@ -2533,7 +2532,6 @@ public class InsideOut extends Application {
 
     // pop up message
     public static void popupMessage(Label label) {
-        System.out.println("Popup should have been shown");
         label.setStyle("-fx-text-fill:black;");
         label.setFont(Font.font("Anton", 15));
         label.setLayoutX(110);

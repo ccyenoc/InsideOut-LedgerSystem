@@ -192,10 +192,6 @@ public class Transaction {
               }
               
                 String[] columns = line.split(",");
-                for(int i=0;i<columns.length;i++){
-                 System.out.println(columns[i]);;
-                }
-               
                 String name = columns[0];
               
                if (username.get().equals(name)) {
@@ -399,7 +395,6 @@ public class Transaction {
         }catch(IOException ex){
           ex.printStackTrace();
         }
-        System.out.println("Last Balance " + lastBalance);
        String viewBalance="RM "+lastBalance;
        return viewBalance;
     }

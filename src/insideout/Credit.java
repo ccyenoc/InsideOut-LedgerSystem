@@ -32,7 +32,6 @@ public class Credit {
         this.username=username;
         this.amount=amount;
         this.description=description;
-        System.out.println("Description in credit file :" + description);
         this.type=type;
         this.category=category;
         updateCredit();
