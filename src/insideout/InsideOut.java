@@ -1,6 +1,8 @@
 package insideout;
 
 import java.io.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 
@@ -2371,7 +2373,8 @@ public class InsideOut extends Application {
 
         Savings viewsaving = new Savings(Username);
         double totalsavings = viewsaving.getTotalSavings(Username);
-        Label savinglbl = new Label("RM " + totalsavings);
+        BigDecimal roundedSavings = new BigDecimal(totalsavings).setScale(2, RoundingMode.HALF_UP);  // Rounds to 2 decimal places
+        Label savinglbl = new Label("RM " + roundedSavings);
         savinglbl.setId("savingLabel");
         AnchorPane.setTopAnchor(savinglbl, 220.0);
         AnchorPane.setLeftAnchor(savinglbl, 50.0);

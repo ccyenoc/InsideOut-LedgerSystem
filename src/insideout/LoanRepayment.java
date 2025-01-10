@@ -32,13 +32,13 @@ public class LoanRepayment {
         PieChart pieChart = new PieChart();
         pieChart.setTitle("Loan Repayment Overtime");
 
-        String filePath = "src/creditloan-repay.csv";
+        String repayFile = "src/creditloan-repay.csv";
         String loanFile="src/creditloan-apply.csv";
         double totalRepaymentAmount = 0;
         double totalLoanPaid = 0;
 
         try (BufferedReader br = new BufferedReader(new FileReader(loanFile));
-             BufferedReader reader=new BufferedReader(new FileReader(filePath))) {
+             BufferedReader reader = new BufferedReader(new FileReader(repayFile))) {
             String line;
             boolean isHeader = true;
 

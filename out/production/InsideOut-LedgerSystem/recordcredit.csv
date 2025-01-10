@@ -1,3 +1,5 @@
 Username,Transaction ID,Transaction Type,Amount,Description,Date,Balance,Category
 ccyenoc,CD000001,Credit,20.00,"living, and happy",Fri Jan 10 14:55:52 GMT+08:00 2025,980.00,Food
 brayden,CD000002,Credit,20.00,food,Fri Jan 10 15:17:40 GMT+08:00 2025,980.00,Food
+ccyenoc,CD000003,Credit,20.00,living,Fri Jan 10 17:08:04 GMT+08:00 2025,2400.00,Food
+ccyenoc,CD000004,Credit,30.00,tesla,Fri Jan 10 17:08:19 GMT+08:00 2025,2370.00,Transportation

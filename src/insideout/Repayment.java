@@ -175,16 +175,31 @@ public void MonthlyDeduction(ArrayList<String> list, ArrayList<String> fileConte
       }
       return balance;
     }
-    
-    public void appendFile(String filepath,String line) {
-    ArrayList<String> str=new ArrayList<>();
-    try(BufferedWriter writer=new BufferedWriter(new FileWriter(filepath,true))){
-         writer.newLine();
-         writer.write(line);
-    
-    }catch (IOException e) {
-       e.printStackTrace();
-    }
+
+    public void appendFile(String filepath, String line) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
+            String lastLine = null;
+            String currentLine;
+
+            // Read through the file to get the last line
+            while ((currentLine = reader.readLine()) != null) {
+                lastLine = currentLine;  // Keep updating the lastLine until the end of the file
+            }
+
+            // Check if the last line contains the word "username"
+            boolean shouldAddNewline = lastLine == null || !lastLine.contains("Username");
+
+            // Now append the line, but first check if newline is required
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(filepath, true))) {
+                if (shouldAddNewline) {
+                    writer.write("\n");  // Add a newline if last line doesn't contain "username"
+                }
+                writer.write(line);  // Write the new line to the file
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     
     public Label getLabel(){
