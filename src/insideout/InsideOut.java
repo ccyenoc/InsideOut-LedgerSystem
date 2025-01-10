@@ -2034,7 +2034,7 @@ public class InsideOut extends Application {
 
                 if (period[0] != null) {
                     try {
-                        applyLoan(period[0], pane, principal[0], rate[0], month[0]);
+                        applyLoan(period[0], principal[0], rate[0], month[0]);
                     } catch (NumberFormatException ex) {
                         Label wrongformat = new Label("Wrong Number Format\nInterest :integer/decimal\nRepayment Period : Whole Number");
                         popupMessage(wrongformat);
@@ -2048,7 +2048,7 @@ public class InsideOut extends Application {
                 Label lbl = new Label("Enter a Number\neg.whole number/decimal number");
                 popupMessage(lbl);
             }
-
+            hideAllLabels(monthlylbl, quarterlylbl, semiannuallbl, anuallylbl);
             clearAllNodes(clearNodes);
         });
         pane.getChildren().addAll(monthly, monthlylbl, quarterly, quarterlylbl, semiannual, semiannuallbl, annual, anuallylbl, confirmapply,
@@ -2056,7 +2056,7 @@ public class InsideOut extends Application {
 
     }
 
-    public void applyLoan(String frequency, AnchorPane paneS, String principal, String rate, String month) {
+    public void applyLoan(String frequency, String principal, String rate, String month) {
         ApplyLoan apply = new ApplyLoan();
         apply.setPaymentFrequency(frequency);
         apply.setUsername(Username);
@@ -2102,6 +2102,7 @@ public class InsideOut extends Application {
         label.setVisible(true);
         label.setManaged(true);
     }
+
 
     public static void SelectPeriodbtn(Button btn, double x, double y, double height, double width) {
         btn.setStyle("-fx-background-color:#FEEBA8;-fx-text-fill:black;");
@@ -2233,7 +2234,7 @@ public class InsideOut extends Application {
                     ex.printStackTrace();
                 }
             }
-
+            getID[0].setText("Repay LoanID...");
             clearAllNodes(clearNodes);
         });
 
