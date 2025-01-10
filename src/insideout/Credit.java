@@ -1,6 +1,5 @@
 package insideout;
 import static insideout.InsideOut.getBalance;
-import static insideout.InsideOut.popupMessage;
 import static insideout.InsideOut.store;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

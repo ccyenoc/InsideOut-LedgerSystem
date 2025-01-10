@@ -230,13 +230,21 @@ public class InsideOut extends Application {
         Label registrationtitle = new Label("REGISTRATION");
         registrationtitle = header(registrationtitle, registration);
 
+        Button backtoMain = new Button("Home Page");
+        AnchorPane.setTopAnchor(backtoMain, 305.0);
+        AnchorPane.setLeftAnchor(backtoMain, 490.0);
+        backtoMain.setStyle("-fx-background-color:#FED760;-fx-text-fill:black;");
+        backtoMain.setFont(Font.font("Anton", 17));
+        backtoMain.setPrefSize(100, 15);
+        backtoMain.setOnAction(e -> primaryStage.setScene(pagehomepage));
+
         // registration guidelines
         yellowrec(registration);
 
         Button tologinpage = new Button("Confirm");
         tologinpage.setStyle("-fx-background-color:#FED760;-fx-text-fill:black;");
         tologinpage.setFont(Font.font("Anton", 17));
-        tologinpage.setLayoutX(435);
+        tologinpage.setLayoutX(375);
         tologinpage.setLayoutY(305);
         tologinpage.setPrefSize(100, 15);
 
@@ -268,7 +276,7 @@ public class InsideOut extends Application {
         clearNodes.add(inputpassword);
 
         registration.getChildren().addAll(inputusername, inputpassword, inputemail, tologinpage, steps, step1, step2, step3, step4, step5
-                , registrationtitle, username, email, password);
+                , registrationtitle, username, email, password, backtoMain);
         pageregistration.setFill(Color.web("#a8c4f4"));
 
 // log in page
@@ -495,6 +503,8 @@ public class InsideOut extends Application {
                 try {
                     int descriptiondlength = descriptiondstr[0].split(" ").length;
                     String category = getCat();
+
+                    boolean nocat = false;
                     boolean descriptionword = false;
                     boolean nodescriptiond = false;
                     if (descriptiondlength > 200) {
@@ -503,7 +513,11 @@ public class InsideOut extends Application {
                         nodescriptiond = true;
                     }
 
-                    if (descriptionword == false && nodescriptiond == false) {
+                    if (category.equals("")) {
+                        nocat = true;
+                    }
+
+                    if (descriptionword == false && nodescriptiond == false && nocat == false) {
                         double debitamount = Double.parseDouble(input);
                         if (descriptiondstr[0].contains(",")) {
                             descriptiondstr[0] = formatCSV(descriptiondstr[0]);
@@ -516,6 +530,9 @@ public class InsideOut extends Application {
                     } else if (nodescriptiond == true) {
                         Label enterd = new Label("Enter Description!");
                         popupMessage(enterd);
+                    } else if (nocat == true) {
+                        Label selectcat = new Label("Select Category");
+                        popupMessage(selectcat);
                     }
 
                     clearAllNodes(clearNodes);
@@ -566,7 +583,7 @@ public class InsideOut extends Application {
         coincredit.setFitHeight(60);
 
         // to enter amount of debit/credit
-        TextField amountcredit = input("Enter Debit Amount:", "Debit Amount", 100.0, 50.0);
+        TextField amountcredit = input("Enter Debit Amount:", "Credit Amount", 100.0, 50.0);
         TextArea descriptionc = description("Enter Description:", "Description", 185.0, 50.0);
 
         String[] descriptioncstr = {""};
@@ -608,13 +625,19 @@ public class InsideOut extends Application {
                     String categoryCredit = getCat();
                     boolean descriptionword = false;
                     boolean nodecriptionc = false;
+                    boolean nocategory = false;
+
                     if (descriptioncstr[0].split(" ").length > 200) {
                         descriptionword = true;
                     } else if (descriptioncstr[0].isEmpty()) {
                         nodecriptionc = true;
                     }
 
-                    if (descriptionword == false && nodecriptionc == false) {
+                    if (categoryCredit.equals("")) {
+                        nocategory = true;
+                    }
+
+                    if (descriptionword == false && nodecriptionc == false && nocategory == false) {
                         if (descriptioncstr[0].contains(",")) {
                             descriptioncstr[0] = formatCSV(descriptioncstr[0]);
                         }
@@ -626,6 +649,9 @@ public class InsideOut extends Application {
                     } else if (nodecriptionc == true) {
                         Label enterdes = new Label("Enter Description!");
                         popupMessage(enterdes);
+                    } else if (nocategory == true) {
+                        Label selectCategory = new Label("Select Category");
+                        popupMessage(selectCategory);
                     }
 
                     clearAllNodes(clearNodes);

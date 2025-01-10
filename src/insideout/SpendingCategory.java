@@ -1,19 +1,12 @@
 package insideout;
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.chart.PieChart;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
+import javafx.scene.chart.PieChart;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
 import static insideout.InsideOut.piechart;
 
 public class SpendingCategory {

@@ -1,22 +1,13 @@
 package insideout;
 
-import javax.swing.text.Style;
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.TimeZone;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Scanner;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.Properties;
-import javafx.scene.control.Label;
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.PasswordAuthentication;

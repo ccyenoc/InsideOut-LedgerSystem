@@ -2,7 +2,6 @@ package insideout;
 
 import static insideout.InsideOut.Username;
 import static insideout.InsideOut.isUser;
-import static insideout.InsideOut.popupMessage;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
