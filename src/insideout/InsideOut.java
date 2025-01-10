@@ -1858,26 +1858,32 @@ public class InsideOut extends Application {
 
     // record debit and credit
     public static void store(String file, String content) {
-        String line = "";
-        BufferedWriter bw = null;
-        try {
-            bw = new BufferedWriter(new FileWriter(file, true));
-            bw.newLine();
-            bw.write(content);
-            bw.close();
+        try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
+            String lastLine = null;
+            String currentLine;
+
+            // Read through the file to get the last line
+            while ((currentLine = reader.readLine()) != null) {
+                lastLine = currentLine;  // Keep updating the lastLine until the end of the file
+            }
+
+            // Check if the last line contains the word "username"
+            boolean shouldAddNewline = lastLine == null || !lastLine.contains("Username");
+
+            // Now append the line, but first check if newline is required
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(filepath, true))) {
+                if (shouldAddNewline) {
+                    writer.write("\n");  // Add a newline if last line doesn't contain "username"
+                }
+                writer.write(line);  // Write the new line to the file
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-
-            try {
-                if (bw != null) {
-                    bw.close(); // Close BufferedWriter
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
+
+}
 
     public static ArrayList<String> getBalance = new ArrayList<>();
 
