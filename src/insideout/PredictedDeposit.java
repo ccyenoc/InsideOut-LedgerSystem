@@ -1,4 +1,7 @@
 package insideout;
+
+import javafx.scene.control.Label;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -21,6 +24,7 @@ public class PredictedDeposit {
     private double balance=0.0;
     private double deposit=0.0;
     private double monthlyDeposit=0.0;
+    private Label lbl = new Label();
     
     public PredictedDeposit() {  
     }
@@ -42,12 +46,16 @@ public class PredictedDeposit {
               findUser.add(line); // add into findUser to seek for the last balance   
           }
         }
-        
-        int lastIndex=findUser.size()-1;
-        String findBalance[]=findUser.get(lastIndex).split(",");
-        balance=Double.parseDouble(findBalance[6]);
-        this.balance=balance;
-       
+
+         if (findUser.size() != 0) {
+             int lastIndex = findUser.size() - 1;
+             String findBalance[] = findUser.get(lastIndex).split(",");
+             balance = Double.parseDouble(findBalance[6]);
+             this.balance = balance;
+         } else {
+             lbl = new Label("No balance yet!");
+         }
+
      }catch (IOException ex){
        ex.printStackTrace();
      }
@@ -94,7 +102,10 @@ public class PredictedDeposit {
     public void setName(String username){
       this.username=username;
     }
-    
+
+    public Label getlbl() {
+        return lbl;
+    }
 }
 
     

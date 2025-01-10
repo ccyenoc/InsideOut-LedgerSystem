@@ -340,6 +340,8 @@ public class InsideOut extends Application {
             register(registername[0], registeremail[0], registerpassword[0]);
             if (registrationValid == true) {
                 primaryStage.setScene(pagelogin);
+                Label lbl = new Label("Registration Succesful.");
+                popupMessage(lbl);
             }
         }); // registration to log in page
 
@@ -1853,37 +1855,33 @@ public class InsideOut extends Application {
     public void register(String username, String email, String password) {
         Registration userRegister = new Registration(username, email, password);
         Label message = userRegister.register();
-        popupMessage(message);
+        if (message != null) {
+            popupMessage(message);
+        }
     }
 
     // record debit and credit
     public static void store(String file, String content) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
-            String lastLine = null;
-            String currentLine;
-
-            // Read through the file to get the last line
-            while ((currentLine = reader.readLine()) != null) {
-                lastLine = currentLine;  // Keep updating the lastLine until the end of the file
-            }
-
-            // Check if the last line contains the word "username"
-            boolean shouldAddNewline = lastLine == null || !lastLine.contains("Username");
-
-            // Now append the line, but first check if newline is required
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(filepath, true))) {
-                if (shouldAddNewline) {
-                    writer.write("\n");  // Add a newline if last line doesn't contain "username"
-                }
-                writer.write(line);  // Write the new line to the file
-            }
-
+        String line = "";
+        BufferedWriter bw = null;
+        try {
+            bw = new BufferedWriter(new FileWriter(file, true));
+            bw.newLine();
+            bw.write(content);
+            bw.close();
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+
+            try {
+                if (bw != null) {
+                    bw.close(); // Close BufferedWriter
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
-
-}
 
     public static ArrayList<String> getBalance = new ArrayList<>();
 
@@ -2318,8 +2316,13 @@ public class InsideOut extends Application {
         deposit.getBalance();
         deposit.setBank(bank);
         deposit.calculateDeposit();
+
         double predictedDeposit = deposit.getDeposit();
         double monthlyDeposit = deposit.getMonthlyDeposit();
+        Label lbl = deposit.getlbl();
+        if (lbl != null) {
+            popupMessage(lbl);
+        }
 
         showDeposit.setText("RM " + String.format("%.2f", predictedDeposit));
         showDeposit.setStyle("-fx-background-color:#FFFFFF; -fx-text-fill: black; -fx-border-radius: 5px;");
