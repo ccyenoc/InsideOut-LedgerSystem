@@ -412,8 +412,6 @@ public class InsideOut extends Application {
                 AnchorPane.setTopAnchor(usernamelbl[0], 100.0);
                 AnchorPane.setLeftAnchor(usernamelbl[0], 100.0);
                 mainPage.getChildren().add(usernamelbl[0]);
-
-
             }
         }); //from login to mainpage
 
