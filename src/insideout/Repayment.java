@@ -65,9 +65,9 @@ public class Repayment {
             String status = row[10];
             String monthlyDeductionDate = row[11];
 
-            // Date date = new Date();
-            String dateString = "Wed Feb 12 11:10:42 GMT+08:00 2025";
-            Date date = dateFormat.parse(dateString);
+            Date date = new Date();
+            //String dateString = "Wed Feb 12 11:10:42 GMT+08:00 2025";
+            //Date date = dateFormat.parse(dateString);
             Date monthlypaymentDate = dateFormat.parse(monthlyDeductionDate);
 
             int compare = date.compareTo(monthlypaymentDate);
