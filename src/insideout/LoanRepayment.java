@@ -94,7 +94,8 @@ public class LoanRepayment {
     }
     
     public static Label getLabel(){
-      return lbl;
+
+        return lbl;
     }
     
     public static void resetState() {

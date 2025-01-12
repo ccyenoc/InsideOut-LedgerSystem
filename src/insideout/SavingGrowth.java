@@ -14,9 +14,12 @@ import javafx.scene.control.Label;
 public class SavingGrowth {
    private static Label lbl=new Label();
    private static String targetUsername;
+
    public SavingGrowth(String targetUsername){
-     this.targetUsername=targetUsername;
+
+       this.targetUsername = targetUsername;
    }
+
     public static BarChart<String, Number>  SavingGrowthChart() {
         CategoryAxis xAxis = new CategoryAxis();
         xAxis.setLabel("Month");

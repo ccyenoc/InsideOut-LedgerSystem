@@ -617,7 +617,8 @@ public class InsideOut extends Application {
         confirmcredit.setLayoutY(300);
 
         if (overdue == true) {
-            confirmcredit.setDisable(true);
+            Label overdueLoan = new Label("Clear Loan Repayment Before Making any Transaction");
+            popupMessage(overdueLoan);
         } else {
             confirmcredit.setOnAction(e -> {
                 final String input = amountcredit.getText(); // Get the text entered by the user in amountdebit TextField

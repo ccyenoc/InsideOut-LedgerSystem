@@ -1,7 +1,2 @@
 Username,Transaction ID,Transaction Type,Amount,Description,Date,Balance,Category
-ccyenoc,CD000001,Credit,10.00,"food,living",Fri Jan 10 22:37:44 GMT+08:00 2025,990.00,Food
-ccyenoc,CD000002,Credit,20.00,living,Fri Jan 10 22:38:21 GMT+08:00 2025,970.00,Food
-ccyenoc,CD000003,Credit,20.00,living,Fri Jan 10 22:38:34 GMT+08:00 2025,950.00,Food
-ccyenoc,CD000004,Credit,20.00,living,Fri Jan 10 22:38:49 GMT+08:00 2025,930.00,Food
-ccyenoc,CD000005,Credit,20.00,living,Fri Jan 10 22:39:21 GMT+08:00 2025,910.00,Food
-ccyenoc,CD000006,Credit,20.00,LIVING,Fri Jan 10 22:39:32 GMT+08:00 2025,890.00,Food
+ccyenoc,CD000001,Credit,10.00,"transportation, food",Sun Jan 12 11:05:00 GMT+08:00 2025,990.00,Food

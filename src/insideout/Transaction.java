@@ -381,8 +381,8 @@ public class Transaction {
            header=false;
            continue;
           }
-          
-          String row[]=str.split(",");
+
+                String row[] = splitCSVLine(str, 8);
           if(row[0].equals(username)){
             lastBalance=row[6];
           }
