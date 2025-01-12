@@ -11,6 +11,8 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.util.Calendar;
 import javafx.scene.control.Label;
+
+import static insideout.InsideOut.store;
 // updatestatus first
 // then checkDecution
 
@@ -162,7 +164,7 @@ public void MonthlyDeduction(ArrayList<String> list, ArrayList<String> fileConte
            RepaymentID();
            getTotalLoan(LoanID);
            String updateRepayment=username+","+RepaymentID+","+LoanID+","+totalLoan+","+repayment+","+(getTotalPaid(LoanID)+repayment)+","+date;
-           appendFile(repaymentFile,updateRepayment.toString());
+             appendFile(repaymentFile, updateRepayment);
          }
          else{
          balance=-1.0;
@@ -185,13 +187,11 @@ public void MonthlyDeduction(ArrayList<String> list, ArrayList<String> fileConte
                 lastLine = currentLine;  // Keep updating the lastLine until the end of the file
             }
 
-            // Check if the last line contains the word "username"
-            boolean shouldAddNewline = lastLine == null || !lastLine.contains("Username");
-
-            // Now append the line, but first check if newline is required
+            // Now append the line
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(filepath, true))) {
-                if (shouldAddNewline) {
-                    writer.write("\n");  // Add a newline if last line doesn't contain "username"
+                // Check if we need to add a newline before appending
+                if (lastLine != null && !lastLine.isEmpty()) {
+                    writer.write(System.lineSeparator()); // Add a newline if the file is not empty
                 }
                 writer.write(line);  // Write the new line to the file
             }
@@ -591,7 +591,7 @@ public void MonthlyDeduction(ArrayList<String> list, ArrayList<String> fileConte
         
         builder.append(username).append(",").append(RepaymentID).append(",").append(loanID).append(",").append(totalrepaymentamount)
                 .append(",").append(String.format("%.2f",repaymentamount)).append(",").append(String.format("%.2f",totalLoanPaid)).append(",").append(date);
-       appendFile(repaymentFile,String.valueOf(builder));
+        store(repaymentFile, String.valueOf(builder));
     
     }
     
