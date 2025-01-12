@@ -1,2 +1,2 @@
 Username,Loan ID,Principal,Annual Interest,Total Repayment Amount,Outstanding Balance,Repayment Period,Payment Frequency,Apply Time,Due Date,Status ,Next Payment Date,Monthly Payment
-ccyenoc,AL000001,1000.0,2.0,1003.35,0.00,3,1,Sun Jan 12 11:10:42 GMT+08:00 2025,Sat Apr 12 11:10:42 GMT+08:00 2025,Paid,Wed Feb 12 11:10:42 GMT+08:00 2025,334.45
+ccyenoc,AL000001,1000.0,2.0,1003.35,668.9000000000001,3,1,Sun Jan 12 11:10:42 GMT+08:00 2025,Sat Apr 12 11:10:42 GMT+08:00 2025,Active,Wed Mar 12 11:10:42 GMT+08:00 2025,334.45
