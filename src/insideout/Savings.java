@@ -254,11 +254,11 @@ public class Savings {
         SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
         sdf.setTimeZone(TimeZone.getTimeZone("Asia/Kuala_Lumpur"));
         Calendar current = Calendar.getInstance(TimeZone.getTimeZone("Asia/Kuala_Lumpur"));
-       /* current.set(Calendar.DAY_OF_MONTH, current.getActualMaximum(Calendar.DAY_OF_MONTH)); // testing
+        current.set(Calendar.DAY_OF_MONTH, current.getActualMaximum(Calendar.DAY_OF_MONTH)); // testing
         current.set(Calendar.HOUR_OF_DAY, 0);
         current.set(Calendar.MINUTE, 0);
         current.set(Calendar.SECOND, 0);
-        current.set(Calendar.MILLISECOND, 0);*/
+        current.set(Calendar.MILLISECOND, 0);
 
         //last day of moth at 00.00.00
         Calendar endOfMonth = Calendar.getInstance(TimeZone.getTimeZone("Asia/Kuala_Lumpur"));
@@ -337,6 +337,8 @@ public class Savings {
         boolean updated=false;
         boolean shouldUpdate=false;
         double lastSavings=Double.MAX_VALUE;
+            String findLastSaving = "";
+            Calendar lastSaving = nextMonth;
         try(BufferedReader reader=new BufferedReader(new FileReader(savingFile))){
           while((line=reader.readLine())!=null){
               if(header){
@@ -349,19 +351,31 @@ public class Savings {
               // if not handled, then the monthly saving will be added everytime user login
               String row[]=line.split(",");
               if(row[0].equals(username) && row.length==9){
-                  if(Double.parseDouble(row[7])<lastSavings){
-                       shouldUpdate=true; // true when current month accumulated savings is less than last accumulated savings
-                      lastSavings=Double.parseDouble(row[7]); // compare the lastSaving with current savings, if less that means it should be updated
+                  if (Double.parseDouble(row[7]) < lastSavings && !row[8].contains("|")) {
+                      lastSavings = Double.parseDouble(row[7]); // compare the lastSaving with current savings, if less that means it should be updated
                    }
 
+                  if (row[8].contains("|")) { // shouldUpdate is only for the last day of month which checks for whether savings updated on that day
+                      findLastSaving = row[8].replace("Yes|", "").trim();
+                      System.out.println(findLastSaving);
+                      try {
+                          Date parsedDate = sdf.parse(findLastSaving);
+                          lastSaving.setTime(parsedDate);
+                      } catch (ParseException ex) {
+                          ex.printStackTrace();
+                      }
 
-                  if (row[8].contains("|") && shouldUpdate == false) { // shouldUpdate is only for the last day of month which checks for whether savings updated on that day
-                        updated=true;
                     }
 
                   findUser.add(line); // add user info into findUser arrayList once found
               }
           }
+
+            // let say user did not login at end of last month(so the one with | will definitely before this month so udpated==false definitely as
+            // if user did not login,(or do not have any savings updated record yet, the calendar will be nextMonth))
+            if ((lastSaving.after(endOfMonth) || lastSaving.equals(endOfMonth) && lastSaving.before(nextMonth))) {
+                updated = true;
+            }
 
             // user found baru can update
           // also the length should be exactly 8
@@ -372,6 +386,7 @@ public class Savings {
 
             if(findUser.size()!=0){ // if user is found in csv
           String today = sdf.format(new Date());
+                // String testing=""
           int index=0;
                 if (updated==false) { // if updated and it is not the same with current time
                      index = findUser.size() - 1;
@@ -390,7 +405,6 @@ public class Savings {
         }
 
                 this.totalSavings=Double.parseDouble(content[7]);
-                System.out.println("Total savings " + totalSavings);
             endOfMonthUpdateCsv(totalSavings,today);
           }
           }
@@ -430,6 +444,7 @@ public class Savings {
 
             balance+=totalSavings;
             BigDecimal bd = new BigDecimal(balance);
+            BigDecimal roundedbd = bd.setScale(2, RoundingMode.HALF_UP);
 
             userLastInfo=readLastTransactionID();
            String getLastTransactionDate[]=userLastInfo.split(",");
@@ -437,7 +452,7 @@ public class Savings {
             StringBuilder line=new StringBuilder();
            Date date = new Date();
            line.append(username).append(",").append(transactionID).append(",").append("Savings").append(",").append(String.format("%.2f",totalSavings)).append(",")
-                   .append("Savings").append(",").append(date).append(",").append(bd).append(",").append("Savings");
+                   .append("Savings").append(",").append(date).append(",").append(roundedbd).append(",").append("Savings");
 
             appendToFile(transaction, String.valueOf(line));
            
