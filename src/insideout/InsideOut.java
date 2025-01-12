@@ -6,6 +6,7 @@ import java.math.RoundingMode;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 
+import javafx.application.Platform;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.stage.*;
@@ -377,13 +378,11 @@ public class InsideOut extends Application {
                 endmonth.isEndOfMonth(Username);
                 Reminder reminder = new Reminder(Username);
                 reminder.checkLoan();
-                if (reminder.getActiveLoanSize() > 0) {
-                    alertMessage("Loan Repayment", "Auto Monthly Loan Repayment", "Reminder!\nAuto-deduction from balance will be taken to pay for loan(s)");
-                }
 
                 Task<Void> reminderTask = new Task<>() {
                     @Override
                     protected Void call() throws Exception {
+
                         if (reminder.getActiveLoanSize() > 0) {
                             reminder.reminderNotification();
                         }
@@ -391,18 +390,21 @@ public class InsideOut extends Application {
                         if (reminder.getOverdueLoansSize() > 0) {
                             reminder.overdueLoanNotification();
                         }
-                        return null;  // Task<Void> requires a return value
+
+                        return null;
                     }
 
                     @Override
                     protected void failed() {
-                        // Handle failure
                         System.err.println("Failed to send reminder email: " + getException().getMessage());
                     }
                 };
 
-                // Run the task in a new thread
                 new Thread(reminderTask).start();
+
+                if (reminder.getActiveLoanSize() > 0) {
+                    alertMessage("Loan Repayment", "Auto Monthly Loan Repayment", "Reminder!\nAuto-deduction from balance will be taken to pay for loan(s)");
+                }
 
                 usernamelbl[0] = new Label(Username);
                 usernamelbl[0].setId("usernameLabel");
