@@ -501,7 +501,7 @@ public class InsideOut extends Application {
             } else {
                 final String input = amountdebit.getText(); // Get the text entered by the user in amountdebit TextField
                 try {
-                    int descriptiondlength = descriptiondstr[0].split(" ").length;
+                    int descriptiondlength = descriptiondstr[0].split("\\s+").length;
                     String category = getCat();
 
                     boolean nocat = false;
@@ -628,7 +628,7 @@ public class InsideOut extends Application {
                     boolean nodecriptionc = false;
                     boolean nocategory = false;
 
-                    if (descriptioncstr[0].split(" ").length > 200) {
+                    if (descriptioncstr[0].split("\\s+").length > 200) {
                         descriptionword = true;
                     } else if (descriptioncstr[0].isEmpty()) {
                         nodecriptionc = true;
@@ -2591,6 +2591,35 @@ public class InsideOut extends Application {
             return "\"" + value + "\""; // Wrap in quotes if necessary
         }
         return value;
+    }
+
+    public static String[] splitCSVLine(String line, int x) {
+        String[] result = new String[x];
+        StringBuilder currentField = new StringBuilder();
+        boolean inQuotes = false;
+        int index = 0;
+
+        for (int i = 0; i < line.length(); i++) {
+            char c = line.charAt(i);
+            if (c == '"') {
+                inQuotes = !inQuotes;
+            } else if (c == ',' && !inQuotes) {
+                result[index++] = unformatCSV(currentField.toString());
+                currentField.setLength(0);
+            } else {
+                currentField.append(c);
+            }
+        }
+        result[index] = unformatCSV(currentField.toString());
+        return result;
+    }
+
+    public static String unformatCSV(String value) {
+        if (value == null || value.isEmpty()) return ""; // Handle empty values
+        if (value.startsWith("\"") && value.endsWith("\"")) {
+            value = value.substring(1, value.length() - 1); // Remove surrounding quotes
+        }
+        return value.replace("\"\"", "\""); // Unescape double quotes
     }
 
 

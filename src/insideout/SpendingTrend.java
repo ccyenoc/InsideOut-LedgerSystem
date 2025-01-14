@@ -15,6 +15,8 @@ import java.util.HashMap;
 import java.util.Map;
 import javafx.scene.control.Label;
 
+import static insideout.InsideOut.splitCSVLine;
+
 public class SpendingTrend{
     private static Label lbl=new Label();
     private String targetUsername;
@@ -25,6 +27,7 @@ public class SpendingTrend{
     }
     
   public BarChart<String, Number> SpendingTrendGraph(){
+      lbl = new Label();
         CategoryAxis xAxis = new CategoryAxis();
         xAxis.setLabel("Month");
 
@@ -45,57 +48,58 @@ public class SpendingTrend{
         
         barChart.setCategoryGap(50);
 
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            boolean isHeader = true;
+      try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+          String line;
+          boolean isHeader = true;
+          boolean dataFound = false;
+          while ((line = br.readLine()) != null) {
+              if (isHeader) {
+                  isHeader = false;
+                  continue;
+              }
 
-            while ((line = br.readLine()) != null) {
-                if (isHeader) {
-                    isHeader = false;
-                    continue;
-                }
+              String[] data = splitCSVLine(line, 8);
+              String username = data[0].trim();
+              String category = data[7].trim();
+              String date = data[5].trim();
+              double creditAmount = Double.parseDouble(data[3].trim());
 
-                String[] data = line.split(",");
-                String username = data[0];
-                String category = data[7];
-                String date = data[5];
-                double creditAmount = Double.parseDouble(data[3]);
+              if (username.equalsIgnoreCase(targetUsername) && category.equalsIgnoreCase(Category)) {
+                  dataFound = true;  // Data found for the category
+                  try {
+                      Date parsedDate = inputFormat.parse(date);
+                      String month = outputFormat.format(parsedDate);
 
-                if (username.equalsIgnoreCase(targetUsername) && category.equalsIgnoreCase(Category)) {
-                    try {
-                        Date parsedDate = inputFormat.parse(date);
-                        String month = outputFormat.format(parsedDate);
+                      monthlyCreditTotals.put(month, monthlyCreditTotals.getOrDefault(month, 0.0) + creditAmount);
 
-                        monthlyCreditTotals.put(month, monthlyCreditTotals.getOrDefault(month, 0.0) + creditAmount);
-                        
-        
-                    } catch (ParseException e) {
-                        System.out.println("Invalid date format: " + date);
-                    }
-                    
-                      for (Map.Entry<String, Double> entry : monthlyCreditTotals.entrySet()) {
-                          creditSeries.getData().add(new XYChart.Data<>(entry.getKey(), entry.getValue()));
-                       }
-                }
-                else{
-                  lbl=new Label("No Data For "+Category+" Category!");
-                }
-            }
-            
-            
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        graphs(barChart);
-        barChart.getData().add(creditSeries);
-        
-        return barChart;
-        
-    }
-  
-  public static Label getLabel(){
+                  } catch (ParseException e) {
+                      System.out.println("Invalid date format: " + date);
+                  }
+              }
+          }
+
+          // After processing all data, check if data was found and update the label
+          if (!dataFound) {
+              lbl = new Label("No Data For " + Category + " Category!");
+          } else {
+              for (Map.Entry<String, Double> entry : monthlyCreditTotals.entrySet()) {
+                  creditSeries.getData().add(new XYChart.Data<>(entry.getKey(), entry.getValue()));
+              }
+          }
+
+      } catch (IOException e) {
+          e.printStackTrace();
+      }
+
+      // Add the series data to the chart and return
+      graphs(barChart);
+      barChart.getData().add(creditSeries);
+      return barChart;
+  }
+
+    public static Label getLabel() {
       return lbl;
   }
 
-   
+
 }

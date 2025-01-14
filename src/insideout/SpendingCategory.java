@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javafx.scene.control.Label;
 import static insideout.InsideOut.piechart;
+import static insideout.InsideOut.splitCSVLine;
 
 public class SpendingCategory {
     private static Label lbl=new Label();
@@ -35,7 +36,7 @@ public class SpendingCategory {
                     continue;
                 }
 
-                String[] data = line.split(",");
+                String[] data = splitCSVLine(line, 8);
                 String name = data[0];
                 double amount = Double.parseDouble(data[3]);
                 String category = data[7];
@@ -70,7 +71,5 @@ public class SpendingCategory {
     public static Label getLabel(){
       return lbl;
     }
-    
-  
-   
+
 }

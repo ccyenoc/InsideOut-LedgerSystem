@@ -1,4 +1,6 @@
 package insideout;
+
+import static insideout.InsideOut.splitCSVLine;
 import static insideout.InsideOut.store; // method to store in main class
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -142,36 +144,34 @@ public class Debit {
        e.printStackTrace();
     }
 }
-    
-    public void debitID(){
-    String line="";
-    ArrayList<String> str=new ArrayList<>();
-    try (BufferedReader reader = new BufferedReader(new FileReader(recorddebit))) {
-        boolean header = true;
-        while ((line = reader.readLine()) != null) {
-            if (header) {
-                header = false;
-                continue;
-            }
-            
-            str.add(line);
-        }
-        
-        if(str.size()!=0){
-        int lastIndex=str.size()-1;
-        String row[]=str.get(lastIndex).split(",");
-        int ID=Integer.parseInt(row[1].replace("DB",""))+1;
-        debitID="DB"+String.format("%06d",ID);
-        } 
-        else{
-           debitID="DB"+String.format("%06d",1);
-        }
-    }catch (IOException e) {
-       e.printStackTrace();
-    }
 
+    public void debitID() {
+        String line = "";
+        ArrayList<String> str = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(recorddebit))) {
+            boolean header = true;
+            while ((line = reader.readLine()) != null) {
+                if (header) {
+                    header = false;
+                    continue;
+                }
+
+                str.add(line);
             }
-    
+
+            if (str.size() != 0) {
+                int lastIndex = str.size() - 1;
+                String row[] = splitCSVLine(str.get(lastIndex), 9);
+                int ID = Integer.parseInt(row[1].replace("DB", "")) + 1;
+                debitID = "DB" + String.format("%06d", ID);
+            } else {
+                debitID = "DB" + String.format("%06d", 1);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 }
     
