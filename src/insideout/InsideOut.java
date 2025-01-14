@@ -528,8 +528,6 @@ public class InsideOut extends Application {
                         popupMessage(selectcat);
                     }
 
-                    clearAllNodes(clearNodes);
-
                 } catch (Exception ex) {
                     Label wrongcashformat = new Label("Wrong Cash Format eg.1000");
                     popupMessage(wrongcashformat);
@@ -539,6 +537,7 @@ public class InsideOut extends Application {
                 Label lbl = new Label("Clear Loan Repayment Before Making other Transactions.");
                 popupMessage(lbl);
             }
+            clearAllNodes(clearNodes);
         });
 
         ImageView piggybankdebitimg = new ImageView(piggybankimg);
@@ -651,7 +650,6 @@ public class InsideOut extends Application {
                             popupMessage(selectCategory);
                         }
 
-                        clearAllNodes(clearNodes);
 
                     } catch (Exception ex) {
                         Label wrongcashformat = new Label("Wrong Cash Format eg.1000");
@@ -662,6 +660,7 @@ public class InsideOut extends Application {
                     Label lbl = new Label("Clear Loan Repayment Before Making other Transactions.");
                     popupMessage(lbl);
                 }
+                clearAllNodes(clearNodes);
             });
 
         credit.getChildren().addAll(amountcredit, descriptionc, credittitle, amountinstruction, descriptioninstruction,
