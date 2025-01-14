@@ -310,11 +310,9 @@ public class Savings {
            while((ln=br.readLine())!=null){
                String rows[] = splitCSVLine(ln, 8);
                for (int i = 0; i < rows.length; i++) {
-                   System.out.println("Row " + i + ": " + rows[i]);
                }
              if(rows[0].equals(username)){
                  try{
-                     System.out.println(rows[5]);
                      Date lastTransactionDate = sdf.parse(rows[5]);
                      lastTransaction.setTime(lastTransactionDate);
                  lastTransaction.setTime(lastTransactionDate);
