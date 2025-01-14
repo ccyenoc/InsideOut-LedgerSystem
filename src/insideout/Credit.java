@@ -39,60 +39,57 @@ public class Credit {
     }
 
     private void updateCredit(){
-        String line="";
+        String line = "";
         creditID();
         readLastTransactionID();
-        try(BufferedReader reader=new BufferedReader(new FileReader(recorddebitandcredit));){
+        try (BufferedReader reader = new BufferedReader(new FileReader(recorddebitandcredit));) {
             boolean header = true;
             while ((line = reader.readLine()) != null) {
-                if(header){
-                    header=false;
+                if (header) {
+                    header = false;
                     continue;
                 }
-                
-            String [] columns=line.split(",");
-           
-            if(columns[0].equals(username)){ // if username is not the target , then loop it again
+
+                String[] columns = line.split(",");
+
+                if (columns[0].equals(username)) { // if username is not the target , then loop it again
                     getBalance.add(line);
+                } else {
+                    continue;
                 }
-            else{
-                continue;
             }
-            } 
 
             // to find the last balance user hold
-            if(!getBalance.isEmpty()){
+            if (!getBalance.isEmpty()) {
                 int index = getBalance.size() - 1;
                 String unformatted[] = splitCSVLine(getBalance.get(index), 8);
                 String balanceStr = unformatted[6];
                 balance = Double.parseDouble(balanceStr);
             }
-        }catch (IOException ex){
+        } catch (IOException ex) {
             ex.printStackTrace();
-            }      
-        
-        if(amount<=0){
-            lbl=new Label("Cash Amount can't be negative or zero!");
         }
-        else{
-        balance-=amount;
-        Date date = new Date();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd:MM:yyyy");
-        
-        if(balance<0){
-        lbl=new Label("Balance less than 0!");
+
+        if (amount <= 0) {
+            lbl = new Label("Cash Amount can't be negative or zero!");
+        } else {
+            balance -= amount;
+            Date date = new Date();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd:MM:yyyy");
+
+            if (balance < 0) {
+                lbl = new Label("Balance less than 0!");
+            } else {
+                BigDecimal bd = new BigDecimal(balance);
+                bd = bd.setScale(2, RoundingMode.HALF_UP);
+                transactioninfo = username + "," + transactionID + "," + type + "," + String.format("%.2f", amount) + "," + description + "," + date + "," + bd + "," + category;
+                transactioninfoCreditcsv = username + "," + creditID + "," + type + "," + String.format("%.2f", amount) + "," + description + "," + date + "," + bd + "," + category;
+                lbl = new Label("Succesfully Credited");
+                store(recordcredit, transactioninfoCreditcsv);
+                store(recorddebitandcredit, transactioninfo);
+            }
+
         }
-        else{
-        BigDecimal bd = new BigDecimal(balance);
-        bd=bd.setScale(2, RoundingMode.HALF_UP);
-        transactioninfo=username + "," + transactionID + ","+type+","+String.format("%.2f",amount)+"," +description+","+ date + "," + bd+","+category;
-        transactioninfoCreditcsv = username + "," + creditID + ","+type+","+String.format("%.2f",amount)+"," +description+","+ date + "," + bd+","+category;
-        lbl=new Label("Succesfully Credited");
-        store(recordcredit,transactioninfoCreditcsv);
-        store(recorddebitandcredit,transactioninfo);
-        }
- 
-    }
     }
     public Label getLabel(){
         return lbl;

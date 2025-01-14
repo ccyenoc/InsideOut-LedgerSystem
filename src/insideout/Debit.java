@@ -41,70 +41,66 @@ public class Debit {
     
     
     private void updateDebit(){
-        Savings savings=new Savings(amount,username);
-        boolean status=savings.updateDeductStatus(); // get the status(true--debit need to be deducted)
+        Savings savings = new Savings(amount, username);
+        boolean status = savings.updateDeductStatus(); // get the status(true--debit need to be deducted)
 
-        String line="";
+        String line = "";
         debitID();
         readLastTransactionID();
-        try(BufferedReader reader=new BufferedReader(new FileReader(recorddebitandcredit));){
+        try (BufferedReader reader = new BufferedReader(new FileReader(recorddebitandcredit));) {
             boolean header = true;
             while ((line = reader.readLine()) != null) {
-                if(header){
-                    header=false;
+                if (header) {
+                    header = false;
                     continue;
                 }
-                
-            String [] columns=line.split(",");
-           
-            if(columns[0].equals(username)){ // if username is not the target , then loop it again
+
+                String[] columns = line.split(",");
+
+                if (columns[0].equals(username)) { // if username is not the target , then loop it again
                     getBalance.add(line);
+                } else {
+                    continue;
                 }
-            else{
-                continue;
             }
-            } 
 
             // to find the last balance user hold
-            if(!getBalance.isEmpty()){
-            int index=getBalance.size()-1;
-            String []splitedrow=getBalance.get(index).split(",");
-            int balanceIndex=splitedrow.length-2;
-            balance=Double.parseDouble(splitedrow[balanceIndex]);
+            if (!getBalance.isEmpty()) {
+                int index = getBalance.size() - 1;
+                String[] splitedrow = getBalance.get(index).split(",");
+                int balanceIndex = splitedrow.length - 2;
+                balance = Double.parseDouble(splitedrow[balanceIndex]);
             }
-            
-            
-        }catch (IOException ex){
+
+
+        } catch (IOException ex) {
             ex.printStackTrace();
-            }     
-        
-        String yesno="";
-        if(amount<=0){
-            lbl=new Label("Cash Amount can't be negative or zero!");
         }
-        else{
-            if(status==false){
-                balance+=amount;
-                yesno="No";
-            }
-            else{
+
+        String yesno = "";
+        if (amount <= 0) {
+            lbl = new Label("Cash Amount can't be negative or zero!");
+        } else {
+            if (status == false) {
+                balance += amount;
+                yesno = "No";
+            } else {
                 savings.findPercentage();
-                double saving=savings.getSavings();
-                balance+=(amount-saving); // note : savings will only be added to balance at end of month eg (31 august);   
-                yesno="Yes";              
+                double saving = savings.getSavings();
+                balance += (amount - saving); // note : savings will only be added to balance at end of month eg (31 august);
+                yesno = "Yes";
             }
-        
-        BigDecimal bd = new BigDecimal(balance);
-        bd=bd.setScale(2, RoundingMode.HALF_UP);
-        Date date = new Date();
+
+            BigDecimal bd = new BigDecimal(balance);
+            bd = bd.setScale(2, RoundingMode.HALF_UP);
+            Date date = new Date();
             SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-        lbl=new Label("Succesfully Debited");
+            lbl = new Label("Succesfully Debited");
             transactioninfoDebitcsv = username + "," + debitID + "," + type + "," + String.format("%.2f", amount) + "," + description + "," + String.valueOf(dateFormat.format(date)) + "," + bd + "," + category + "," + yesno;
-        store(recorddebit,transactioninfoDebitcsv); // record for debit csv
+            store(recorddebit, transactioninfoDebitcsv); // record for debit csv
             transactioninfo = username + "," + transactionID + "," + type + "," + String.format("%.2f", amount) + "," + description + "," + String.valueOf(dateFormat.format(date)) + "," + bd + "," + category;
-        store(recorddebitandcredit,transactioninfo); 
+            store(recorddebitandcredit, transactioninfo);
         }
- 
     }
     
     public Label getLabel(){

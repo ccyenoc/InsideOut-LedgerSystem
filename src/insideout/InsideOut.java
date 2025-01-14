@@ -4,9 +4,7 @@ import java.io.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 
-import javafx.application.Platform;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.stage.*;
@@ -29,11 +27,6 @@ import javafx.scene.shape.*;
 import javafx.scene.text.Font;
 import javafx.scene.layout.StackPane;
 import javafx.concurrent.Task;
-import javafx.scene.text.Font;
-
-import javax.imageio.ImageIO;
-
-import org.mindrot.jbcrypt.BCrypt;
 
 public class InsideOut extends Application {
 
@@ -495,10 +488,10 @@ public class InsideOut extends Application {
 
 
         confirmdebit.setOnAction(e -> {
-            if (overdue == true) {
-                Label overdueLoan = new Label("Clear Loan Repayment Before Making any Transaction");
-                popupMessage(overdueLoan);
-            } else {
+            ApplyLoan checkOverdue = new ApplyLoan();
+            checkOverdue.setUsername(Username);
+            boolean overdued = checkOverdue.findOverdue();
+            if (overdued == false) {
                 final String input = amountdebit.getText(); // Get the text entered by the user in amountdebit TextField
                 try {
                     int descriptiondlength = descriptiondstr[0].split("\\s+").length;
@@ -542,6 +535,9 @@ public class InsideOut extends Application {
                     popupMessage(wrongcashformat);
                     ex.printStackTrace();
                 }
+            } else {
+                Label lbl = new Label("Clear Loan Repayment Before Making other Transactions.");
+                popupMessage(lbl);
             }
         });
 
@@ -616,54 +612,58 @@ public class InsideOut extends Application {
         confirmcredit.setLayoutX(500);
         confirmcredit.setLayoutY(300);
 
-        if (overdue == true) {
-            Label overdueLoan = new Label("Clear Loan Repayment Before Making any Transaction");
-            popupMessage(overdueLoan);
-        } else {
             confirmcredit.setOnAction(e -> {
-                final String input = amountcredit.getText(); // Get the text entered by the user in amountdebit TextField
-                try {
-                    String categoryCredit = getCat();
-                    boolean descriptionword = false;
-                    boolean nodecriptionc = false;
-                    boolean nocategory = false;
+                ApplyLoan checkOverdue = new ApplyLoan();
+                checkOverdue.setUsername(Username);
+                boolean overdued = checkOverdue.findOverdue();
+                if (overdued == false) {
+                    final String input = amountcredit.getText(); // Get the text entered by the user in amountdebit TextField
+                    try {
+                        String categoryCredit = getCat();
+                        boolean descriptionword = false;
+                        boolean nodecriptionc = false;
+                        boolean nocategory = false;
 
-                    if (descriptioncstr[0].split("\\s+").length > 200) {
-                        descriptionword = true;
-                    } else if (descriptioncstr[0].isEmpty()) {
-                        nodecriptionc = true;
-                    }
-
-                    if (categoryCredit.equals("")) {
-                        nocategory = true;
-                    }
-
-                    if (descriptionword == false && nodecriptionc == false && nocategory == false) {
-                        if (descriptioncstr[0].contains(",")) {
-                            descriptioncstr[0] = formatCSV(descriptioncstr[0]);
+                        if (descriptioncstr[0].split("\\s+").length > 200) {
+                            descriptionword = true;
+                        } else if (descriptioncstr[0].isEmpty()) {
+                            nodecriptionc = true;
                         }
-                        double creditamount = Double.parseDouble(input);
-                        Credit(creditamount, descriptioncstr[0], "Credit", categoryCredit);
-                    } else if (descriptionword == true) {
-                        Label wordcount = new Label("Description need to be less than 200 word!");
-                        popupMessage(wordcount);
-                    } else if (nodecriptionc == true) {
-                        Label enterdes = new Label("Enter Description!");
-                        popupMessage(enterdes);
-                    } else if (nocategory == true) {
-                        Label selectCategory = new Label("Select Category");
-                        popupMessage(selectCategory);
+
+                        if (categoryCredit.equals("")) {
+                            nocategory = true;
+                        }
+
+                        if (descriptionword == false && nodecriptionc == false && nocategory == false) {
+                            if (descriptioncstr[0].contains(",")) {
+                                descriptioncstr[0] = formatCSV(descriptioncstr[0]);
+                            }
+                            double creditamount = Double.parseDouble(input);
+                            Credit(creditamount, descriptioncstr[0], "Credit", categoryCredit, overdue);
+                        } else if (descriptionword == true) {
+                            Label wordcount = new Label("Description need to be less than 200 word!");
+                            popupMessage(wordcount);
+                        } else if (nodecriptionc == true) {
+                            Label enterdes = new Label("Enter Description!");
+                            popupMessage(enterdes);
+                        } else if (nocategory == true) {
+                            Label selectCategory = new Label("Select Category");
+                            popupMessage(selectCategory);
+                        }
+
+                        clearAllNodes(clearNodes);
+
+                    } catch (Exception ex) {
+                        Label wrongcashformat = new Label("Wrong Cash Format eg.1000");
+                        popupMessage(wrongcashformat);
+                        ex.printStackTrace();
                     }
-
-                    clearAllNodes(clearNodes);
-
-                } catch (Exception ex) {
-                    Label wrongcashformat = new Label("Wrong Cash Format eg.1000");
-                    popupMessage(wrongcashformat);
-                    ex.printStackTrace();
+                } else {
+                    Label lbl = new Label("Clear Loan Repayment Before Making other Transactions.");
+                    popupMessage(lbl);
                 }
             });
-        }
+
         credit.getChildren().addAll(amountcredit, descriptionc, credittitle, amountinstruction, descriptioninstruction,
                 confirmcredit, categoryselectedcredit, selectcredit, moneyflyview, coincredit);
 
@@ -1915,10 +1915,9 @@ public class InsideOut extends Application {
         Debit debit = new Debit(Username, amount, description, type, category);
         Label message = debit.getLabel();
         popupMessage(message);
-
     }
 
-    public void Credit(double amount, String description, String type, String category) {
+    public void Credit(double amount, String description, String type, String category, boolean overdue) {
         Credit credit = new Credit(Username, amount, description, type, category);
         Label message = credit.getLabel();
         popupMessage(message);

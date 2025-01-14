@@ -10,7 +10,6 @@ import java.io.IOException;
 import static insideout.InsideOut.graphs;
 import javafx.scene.control.Label;
 
-
 public class SavingGrowth {
    private static Label lbl=new Label();
    private static String targetUsername;

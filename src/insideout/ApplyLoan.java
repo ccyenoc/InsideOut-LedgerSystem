@@ -127,6 +127,7 @@ public class ApplyLoan{
    public void updateCSV(){
       LoanID();
       StringBuilder str=new StringBuilder();
+       System.out.println("Month : " + month);
       str.append(username).append(",").append(LoanID).append(",").append(principal).append(",").
       append(annualInterest).append(",").append(String.format("%.2f,",totalRepaymentAmount)).append(String.format("%.2f,",totalRepaymentAmount)).
       append(month).append(",").append(paymentFrequency).append(",").append(currentDate).append(",").append(dueDate).append(",").append("Active").
@@ -219,6 +220,24 @@ public class ApplyLoan{
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean findOverdue() {
+        String str = "";
+        boolean overdueFound = false;
+        try (BufferedReader reader = new BufferedReader(new FileReader(applyFile))) {
+            while ((str = reader.readLine()) != null) {
+                String row[] = str.split(",");
+                if (row[0].equals(username) && row[10].equalsIgnoreCase("Overdue")) {
+                    overdueFound = true;
+                }
+
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+        return overdueFound;
     }
 
 
