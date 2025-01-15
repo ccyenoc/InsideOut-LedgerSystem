@@ -256,11 +256,11 @@ public class Savings {
         SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
         sdf.setTimeZone(TimeZone.getTimeZone("Asia/Kuala_Lumpur"));
         Calendar current = Calendar.getInstance(TimeZone.getTimeZone("Asia/Kuala_Lumpur"));
-        current.set(Calendar.DAY_OF_MONTH, current.getActualMaximum(Calendar.DAY_OF_MONTH)); // testing
+        /*current.set(Calendar.DAY_OF_MONTH, current.getActualMaximum(Calendar.DAY_OF_MONTH)); // testing
         current.set(Calendar.HOUR_OF_DAY, 0);
         current.set(Calendar.MINUTE, 0);
         current.set(Calendar.SECOND, 0);
-        current.set(Calendar.MILLISECOND, 0);
+        current.set(Calendar.MILLISECOND, 0);*/
         // this is to test the user login multiple times at the end of month logic : Fri Jan 31 15:55:51 GMT+08:00 2025
 
         //last day of moth at 00.00.00
@@ -445,7 +445,6 @@ public class Savings {
 
 
     public void endOfMonthUpdateCsv(double totalSavings,String today) {
-        System.out.println("End Of Month Csv Updated");
         getTotalSavingsPerMonth();
         double balance=0.0;
         String userLastInfo="";
