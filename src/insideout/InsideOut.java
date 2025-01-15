@@ -336,7 +336,7 @@ public class InsideOut extends Application {
         mainPage.setStyle("-fx-background-color: #a8c4f4;");
 
         tologinpage.setOnAction(e -> {
-            if (registeremail[0].split("").length > 8) {
+            if (registername[0].split("").length > 8) {
                 Label lbl = new Label("Username must less than 8 characters!");
                 popupMessage(lbl);
             } else {
@@ -510,7 +510,9 @@ public class InsideOut extends Application {
                     boolean nodescriptiond = false;
                     if (descriptiondlength > 200) {
                         descriptionword = true;
-                    } else if (descriptiondstr[0].isEmpty()) {
+                    }
+
+                    if (descriptiondstr[0].isEmpty()) {
                         nodescriptiond = true;
                     }
 
@@ -2353,7 +2355,7 @@ public class InsideOut extends Application {
         double predictedDeposit = deposit.getDeposit();
         double monthlyDeposit = deposit.getMonthlyDeposit();
         Label lbl = deposit.getlbl();
-        if (lbl != null) {
+        if (!lbl.getText().isEmpty()) {
             popupMessage(lbl);
         }
 
