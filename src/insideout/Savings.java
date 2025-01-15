@@ -578,7 +578,7 @@ public class Savings {
            
            
           int lastindex=findUser.size()-1;
-          if(lastindex<=0){
+           if (lastindex < 0) {
               saving=0.0;
           }      
           else{
