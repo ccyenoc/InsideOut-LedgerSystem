@@ -1,9 +1,28 @@
 package insideout;
 
 // more than 200 words:
-/*Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur Excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum Curabitur pretium tincidunt lacus Nulla gravida orci a odio Nullam varius turpis et commodo pharetra est facilisis erat Praesent viverra justo vitae neque Nullam eget nisl non erat tristique dapibus Sed scelerisque nisi vel tincidunt luctus augue nisl pellentesque justo at commodo ante felis a ligula Maecenas vestibulum mollis diam Pellentesque ut neque Quisque sagittis neque vel enim scelerisque feugiat Nulla facilisi Donec aliquet felis nec arcu Curabitur vel sem sit amet dolor ultrices scelerisque Vestibulum sagittis commodo eros In scelerisque sem at dolor Maecenas mattis sodales nisl
-Integer sit amet neque ipsum Praesent ornare tortor at libero varius sodales Mauris eleifend fermentum magna Maecenas augue arcu
-        tincidunt sed tempus quis efficitur sed Pellentesque facilisis efficitur purus.*/
+/*Achievement ambition adventure anticipation appreciation approach balance beauty belief
+bravery brilliance challenge change character clarity commitment community compassion
+confidence connection consistency creativity curiosity dedication determination discipline discovery
+diversity dream education empathy energy enthusiasm equality excellence exploration expression faith
+family fascination focus freedom friendship generosity grace gratitude growth happiness harmony
+health hope humility imagination improvement independence innovat,Achievement ambition adventure anticipation appreciation approach balance beauty belief
+bravery brilliance challenge change character clarity commitment community compassion
+confidence connection consistency creativity curiosity dedication determination discipline discovery
+diversity dream education empathy energy enthusiasm equality excellence exploration expression faith
+family fascination focus freedom friendship generosity grace gratitude growth happiness harmony
+health hope humility imagination improvement independence innovat,Achievement ambition adventure anticipation appreciation approach balance beauty belief
+bravery brilliance challenge change character clarity commitment community compassion
+confidence connection consistency creativity curiosity dedication determination discipline discovery
+diversity dream education empathy energy enthusiasm equality excellence exploration expression faith
+family fascination focus freedom friendship generosity grace gratitude growth happiness harmony
+health hope humility imagination improvement independence innovat,Achievement ambition adventure anticipation appreciation approach balance beauty belief
+bravery brilliance challenge change character clarity commitment community compassion
+confidence connection consistency creativity curiosity dedication determination discipline discovery
+diversity dream education empathy energy enthusiasm equality excellence exploration expression faith
+family fascination focus freedom friendship generosity grace gratitude growth happiness harmony
+health hope humility imagination improvement independence innovat
+ */
 import static insideout.InsideOut.getBalance;
 import static insideout.InsideOut.store;
 import static insideout.InsideOut.splitCSVLine;
