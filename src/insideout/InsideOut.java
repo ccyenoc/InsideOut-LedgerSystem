@@ -116,15 +116,12 @@ public class InsideOut extends Application {
 
         AnchorPane creditloan = new AnchorPane();
         Scene pagecreditloan = new Scene(creditloan, 700, 400);
-        StackPane spCreditLoan = new StackPane();
 
         AnchorPane applyLoan = new AnchorPane();
         Scene pageapplyLoan = new Scene(applyLoan, 700, 400);
-        StackPane spApply = new StackPane();
 
         AnchorPane repay = new AnchorPane();
         Scene pagerepay = new Scene(repay, 700, 400);
-        StackPane spRepay = new StackPane();
 
         AnchorPane predicteddeposit = new AnchorPane();
         Scene pagedeposit = new Scene(predicteddeposit, 700, 400);
@@ -137,7 +134,6 @@ public class InsideOut extends Application {
         Scene pageViewBalance = new Scene(viewBalance, 700, 400);
 
         AnchorPane viewLoanHistory = new AnchorPane();
-        Scene pageviewLoanHistory = new Scene(viewLoanHistory, 700, 400);
 
 // homepage (registration && login page)
 
@@ -225,9 +221,12 @@ public class InsideOut extends Application {
         backtoMain.setStyle("-fx-background-color:#FED760;-fx-text-fill:black;");
         backtoMain.setFont(Font.font("Anton", 17));
         backtoMain.setPrefSize(100, 15);
-        backtoMain.setOnAction(e -> primaryStage.setScene(pagehomepage));
+        backtoMain.setOnAction(e -> {
+            clearAllNodes(clearNodes);
+            primaryStage.setScene(pagehomepage);
+        });
 
-        // registration guidelines
+        //  guidelines
         yellowrec(registration);
 
         Button tologinpage = new Button("Confirm");
@@ -284,7 +283,10 @@ public class InsideOut extends Application {
         buttonfontsize(backtoMainPage);
         AnchorPane.setTopAnchor(backtoMainPage, 295.0);
         AnchorPane.setLeftAnchor(backtoMainPage, 480.0);
-        backtoMainPage.setOnAction(e -> primaryStage.setScene(pagehomepage));
+        backtoMainPage.setOnAction(e -> {
+            clearAllNodes(clearNodes);
+            primaryStage.setScene(pagehomepage);
+        });
 
         Image keyimg = new Image(key.toString());
         ImageView keyview = new ImageView(keyimg);
@@ -334,12 +336,18 @@ public class InsideOut extends Application {
         mainPage.setStyle("-fx-background-color: #a8c4f4;");
 
         tologinpage.setOnAction(e -> {
-            register(registername[0], registeremail[0], registerpassword[0]);
+            if (registeremail[0].split("").length > 8) {
+                Label lbl = new Label("Username must less than 8 characters!");
+                popupMessage(lbl);
+            } else {
+                register(registername[0], registeremail[0], registerpassword[0]);
             if (registrationValid == true) {
                 primaryStage.setScene(pagelogin);
                 Label lbl = new Label("Registration Succesful.");
                 popupMessage(lbl);
             }
+            }
+            clearAllNodes(clearNodes);
         }); // registration to log in page
 
         Label usernamelbl[] = new Label[1];

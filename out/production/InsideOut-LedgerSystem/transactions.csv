@@ -1,1 +1,17 @@
 Username,Transaction ID,Transaction Type,Amount,Description,Date,Balance,Category
+ccyenoc,TS000001,Debit,1000.00,2,Wed Jan 15 18:13:40 GMT+08:00 2025,1000.00,Food
+ccyenoc,TS000002,Debit,1000.00,living,Wed Jan 15 18:23:16 GMT+08:00 2025,1900.00,Food
+ccyenoc,TS000003,Debit,1000.00,living,Wed Jan 15 18:24:54 GMT+08:00 2025,2800.00,Food
+ccyenoc,TS000004,Savings,200.00,Savings,Wed Jan 15 19:58:30 GMT+08:00 2025,3000.00,Savings
+ccyenoc,TS000005,Debit,1000.00,living,Wed Jan 15 19:59:05 GMT+08:00 2025,3900.00,Food
+ccyenoc,TS000006,Savings,100.00,Savings,Wed Jan 15 19:59:45 GMT+08:00 2025,4000.00,Savings
+ccyenoc,TS000007,Savings,300.00,Savings,Wed Jan 15 20:05:43 GMT+08:00 2025,4300.00,Savings
+ccyenoc,TS000008,Debit,1000.00,living living,Wed Jan 15 20:06:43 GMT+08:00 2025,5200.00,Food
+ccyenoc,TS000009,Debit,1000.00,living living,Wed Jan 15 20:07:11 GMT+08:00 2025,6200.00,Food
+ccyenoc,TS000010,Savings,100.00,Savings,Wed Jan 15 20:07:30 GMT+08:00 2025,6300.00,Savings
+ccyenoc,TS000011,Savings,100.00,Savings,Wed Jan 15 20:41:52 GMT+08:00 2025,6400.00,Savings
+
+ccyenoc,TS000012,Repayment,33.35,Loan ID: AL000001,Wed Jan 15 21:13:35 GMT+08:00 2025,6366.65,Monthly Repayment
+ccyenoc,TS000013,Savings,100.00,Savings,Wed Jan 15 21:13:35 GMT+08:00 2025,6466.65,Savings
+
+ccyenoc,TS000014,Repayment,3344.45,Loan ID: AL000001,Wed Jan 15 21:14:37 GMT+08:00 2025,3122.20,Monthly Repayment

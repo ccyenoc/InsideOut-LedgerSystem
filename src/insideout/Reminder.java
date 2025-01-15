@@ -47,8 +47,8 @@ public class Reminder {
                 dateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Kuala_Lumpur"));
 
              String row[]=line.split(",");
-                // String current = "Sat Feb 08 18:41:16 GMT+08:00 2025"; // for testing
-                //  Date date=dateFormat.parse(current); // for testing
+                //  String current = "Sat Feb 15 18:42:07 GMT+08:00 2025"; // for testing
+                // Date date=dateFormat.parse(current); // for testing
 
                 Date date = new Date();
                 date = dateFormat.parse(String.valueOf(date));

@@ -1,1 +1,7 @@
 Username,Transaction ID,Transaction Type,Amount,Description,Date,Balance,Category,Deducted for Saving
+ccyenoc,DB000001,Debit,1000.00,2,Wed Jan 15 18:13:40 GMT+08:00 2025,1000.00,Food,No
+ccyenoc,DB000002,Debit,1000.00,living,Wed Jan 15 18:23:16 GMT+08:00 2025,1900.00,Food,Yes
+ccyenoc,DB000003,Debit,1000.00,living,Wed Jan 15 18:24:54 GMT+08:00 2025,2800.00,Food,Yes
+ccyenoc,DB000004,Debit,1000.00,living,Wed Jan 15 19:59:05 GMT+08:00 2025,3900.00,Food,Yes
+ccyenoc,DB000005,Debit,1000.00,living living,Wed Jan 15 20:06:43 GMT+08:00 2025,5200.00,Food,Yes
+ccyenoc,DB000006,Debit,1000.00,living living,Wed Jan 15 20:07:11 GMT+08:00 2025,6200.00,Food,No

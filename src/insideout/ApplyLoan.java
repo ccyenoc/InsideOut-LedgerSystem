@@ -1,6 +1,8 @@
 package insideout;
 
 import java.io.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -192,8 +194,8 @@ public class ApplyLoan{
      }catch(IOException ex){
        ex.printStackTrace();
      }
-
-   return String.valueOf(totaloutstandingbalance);
+       BigDecimal bigDecimalBalance = BigDecimal.valueOf(totaloutstandingbalance).setScale(2, RoundingMode.HALF_UP);
+       return String.valueOf(bigDecimalBalance);
    }
 
     public void appendFile(String filepath, String line) {
