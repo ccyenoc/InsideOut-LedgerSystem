@@ -501,8 +501,7 @@ public class InsideOut extends Application {
             if (overdued == false) {
                 final String input = amountdebit.getText(); // Get the text entered by the user in amountdebit TextField
                 try {
-                    descriptiondstr[0] = descriptiondstr[0].replace(",", " ").replace(".", " ").trim().replaceAll("\\s+", " ");
-                    int descriptiondlength = descriptiondstr[0].split("\\s+").length;
+                    int descriptiondlength = descriptiondstr[0].replace(",", " ").replace(".", " ").trim().replaceAll("\\s+", " ").split("\\s+").length;
                     String category = getCat();
 
                     boolean nocat = false;
@@ -633,8 +632,7 @@ public class InsideOut extends Application {
                         boolean nodecriptionc = false;
                         boolean nocategory = false;
 
-                        descriptioncstr[0] = descriptioncstr[0].replace(",", " ").replace(".", " ").trim().replaceAll("\\s+", " ");
-                        if (descriptioncstr[0].split("\\s+").length > 200) {
+                        if (descriptioncstr[0].replace(",", " ").replace(".", " ").trim().replaceAll("\\s+", " ").split("\\s+").length > 200) {
                             descriptionword = true;
                         } else if (descriptioncstr[0].isEmpty()) {
                             nodecriptionc = true;
