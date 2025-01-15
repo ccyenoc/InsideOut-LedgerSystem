@@ -56,6 +56,10 @@ public class Registration{
                 // when it is a new user and username is unique, check password and email format
                 String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{3,}$";
                 boolean validEmail = Pattern.matches(emailRegex, email);
+                if (validEmail == true) {
+                    registrationValid = true;
+                }
+
                 if (!validEmail) {
                     lbl = new Label("Invalid Email !");
                     break userFound;
@@ -69,9 +73,7 @@ public class Registration{
                     break userFound;
                 }
 
-
-                registrationValid = true;
-                if (registrationValid) {
+                if (registrationValid == true) {
                     // generate userID
                     int ID = 0;
                     if (lines.size() == 1) {
