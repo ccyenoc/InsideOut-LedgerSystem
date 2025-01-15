@@ -26,9 +26,8 @@ health hope humility imagination improvement independence innovat
 import static insideout.InsideOut.getBalance;
 import static insideout.InsideOut.store;
 import static insideout.InsideOut.splitCSVLine;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+
+import java.io.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
@@ -106,7 +105,7 @@ public class Credit {
                 transactioninfo = username + "," + transactionID + "," + type + "," + String.format("%.2f", amount) + "," + description + "," + date + "," + bd + "," + category;
                 transactioninfoCreditcsv = username + "," + creditID + "," + type + "," + String.format("%.2f", amount) + "," + description + "," + date + "," + bd + "," + category;
                 lbl = new Label("Succesfully Credited");
-                store(recordcredit, transactioninfoCreditcsv);
+                append(recordcredit, transactioninfoCreditcsv);
                 store(recorddebitandcredit, transactioninfo);
             }
 
@@ -174,6 +173,29 @@ public class Credit {
        e.printStackTrace();
     }
 }
+
+    public static void append(String file, String content) {
+        String line = "";
+        BufferedWriter bw = null;
+        try {
+            bw = new BufferedWriter(new FileWriter(file, true));
+            bw.newLine();
+            bw.write(content);
+            bw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+
+            try {
+                if (bw != null) {
+                    bw.close(); // Close BufferedWriter
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 
 }
     

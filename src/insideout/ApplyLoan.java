@@ -199,25 +199,11 @@ public class ApplyLoan{
    }
 
     public void appendFile(String filepath, String line) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
-            String lastLine = null;
-            String currentLine;
-
-            // Read through the file to get the last line
-            while ((currentLine = reader.readLine()) != null) {
-                lastLine = currentLine;  // Keep updating the lastLine until the end of the file
-            }
-
-            // Check if the last line contains the word "username"
-            boolean shouldAddNewline = lastLine == null || !lastLine.contains("Username");
-
             // Now append the line, but first check if newline is required
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(filepath, true))) {
-                if (shouldAddNewline) {
-                    writer.write("\n");  // Add a newline if last line doesn't contain "username"
-                }
                 writer.write(line);  // Write the new line to the file
-            }
+                writer.newLine();
+
 
         } catch (IOException e) {
             e.printStackTrace();

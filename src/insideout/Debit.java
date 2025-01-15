@@ -2,9 +2,8 @@ package insideout;
 
 import static insideout.InsideOut.splitCSVLine;
 import static insideout.InsideOut.store; // method to store in main class
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -96,7 +95,7 @@ public class Debit {
             SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
             lbl = new Label("Succesfully Debited");
             transactioninfoDebitcsv = username + "," + debitID + "," + type + "," + String.format("%.2f", amount) + "," + description + "," + String.valueOf(dateFormat.format(date)) + "," + bd + "," + category + "," + yesno;
-            store(recorddebit, transactioninfoDebitcsv); // record for debit csv
+            append(recorddebit, transactioninfoDebitcsv); // record for debit csv
             transactioninfo = username + "," + transactionID + "," + type + "," + String.format("%.2f", amount) + "," + description + "," + String.valueOf(dateFormat.format(date)) + "," + bd + "," + category;
             store(recorddebitandcredit, transactioninfo);
         }
@@ -166,6 +165,28 @@ public class Debit {
             e.printStackTrace();
         }
 
+    }
+
+    public static void append(String file, String content) {
+        String line = "";
+        BufferedWriter bw = null;
+        try {
+            bw = new BufferedWriter(new FileWriter(file, true));
+            bw.newLine();
+            bw.write(content);
+            bw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+
+            try {
+                if (bw != null) {
+                    bw.close(); // Close BufferedWriter
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }

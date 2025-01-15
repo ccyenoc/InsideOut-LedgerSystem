@@ -65,9 +65,9 @@ public class Repayment {
             String name = row[0];
             String status = row[10];
             String monthlyDeductionDate = row[11];
-            Date date = new Date();
-            //String dateString = "Tue Jul 15 15:31:22 GMT+08:00 2025";
-            //Date date = dateFormat.parse(dateString);
+            //Date date = new Date();
+            String dateString = "Thu May 15 23:58:45 GMT+08:00 2025";
+            Date date = dateFormat.parse(dateString);
             Date monthlypaymentDate = dateFormat.parse(monthlyDeductionDate);
 
             int compare = date.compareTo(monthlypaymentDate);
@@ -339,18 +339,16 @@ public void MonthlyDeduction(ArrayList<String> list, ArrayList<String> fileConte
 
     public void updateOutstandingBalance(ArrayList<String> lines) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(applyFile))) {
-            for (int i = 0; i < lines.size(); i++) {
-                writer.write(lines.get(i));
-                // Only add newline if it's not the last line
-                if (i < lines.size() - 1) {
-                    writer.newLine();
-                }
+            for (String content : lines) {
+                writer.write(content);
+                writer.newLine();
             }
         } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
-   public void readLastTransactionID() {
+
+    public void readLastTransactionID() {
     String line="";
     ArrayList<String> str=new ArrayList<>();
     try (BufferedReader reader = new BufferedReader(new FileReader(balanceFile))) {

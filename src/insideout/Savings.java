@@ -17,6 +17,8 @@ import java.util.TimeZone;
 import javafx.scene.control.Label;
 import java.math.RoundingMode;
 
+import static insideout.InsideOut.store;
+
 public class Savings {
     private String username="";
     private double percentage=0.0;
@@ -153,7 +155,7 @@ public class Savings {
                savingPerMonth = savings;
           }
 
-             BigDecimal monthlySaving=new BigDecimal(savingPerMonth);
+             BigDecimal monthlySaving = new BigDecimal(savingPerMonth);
         BigDecimal totalSaving=new BigDecimal(totalSavings);
         BigDecimal saving=new BigDecimal(savings);
         monthlySaving=monthlySaving.setScale(2,RoundingMode.HALF_UP);
@@ -254,11 +256,11 @@ public class Savings {
         SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
         sdf.setTimeZone(TimeZone.getTimeZone("Asia/Kuala_Lumpur"));
         Calendar current = Calendar.getInstance(TimeZone.getTimeZone("Asia/Kuala_Lumpur"));
-        /*current.set(Calendar.DAY_OF_MONTH, current.getActualMaximum(Calendar.DAY_OF_MONTH)); // testing
+        current.set(Calendar.DAY_OF_MONTH, current.getActualMaximum(Calendar.DAY_OF_MONTH)); // testing
         current.set(Calendar.HOUR_OF_DAY, 0);
         current.set(Calendar.MINUTE, 0);
         current.set(Calendar.SECOND, 0);
-        current.set(Calendar.MILLISECOND, 0);*/
+        current.set(Calendar.MILLISECOND, 0);
         // this is to test the user login multiple times at the end of month logic : Fri Jan 31 15:55:51 GMT+08:00 2025
 
         //last day of moth at 00.00.00
@@ -339,10 +341,8 @@ public class Savings {
                 }
 
                 int last = findUser2.size() - 1;
-                System.out.println("Last : " + last);
                 if (last >= 0) {
                     lastSavingStatus = findUser2.get(last);
-                    System.out.println("LastSavingStatus : " + lastSavingStatus);
                     if (!lastSavingStatus.contains("|")) {
                         if (lastTransaction.before(endOfLastMonth)) {
                             addSaving = true;
@@ -478,7 +478,7 @@ public class Savings {
            line.append(username).append(",").append(transactionID).append(",").append("Savings").append(",").append(String.format("%.2f",totalSavings)).append(",")
                    .append("Savings").append(",").append(date).append(",").append(roundedbd).append(",").append("Savings");
 
-            appendToFile(transaction, String.valueOf(line));
+            store(transaction, String.valueOf(line));
            
            String str="";
            boolean head=true;

@@ -356,7 +356,7 @@ public class InsideOut extends Application {
 
             removeLabelById(mainPage, "usernameLabel");
             removeLabelById(mainPage, "useridLabel");
-            Username = logIn(name[0], useremail[0], userpassword[0], mainPage);
+            this.Username = logIn(name[0], useremail[0], userpassword[0], mainPage);
             if (isUser == true) {
                 primaryStage.setScene(pagemainPage);
                 // send reminder if there is loan dueing
@@ -1899,25 +1899,14 @@ public class InsideOut extends Application {
     // record debit and credit
     public static void store(String file, String content) {
         String line = "";
-        BufferedWriter bw = null;
-        try {
-            bw = new BufferedWriter(new FileWriter(file, true));
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, true))) {
             bw.newLine();
             bw.write(content);
-            bw.close();
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-
-            try {
-                if (bw != null) {
-                    bw.close(); // Close BufferedWriter
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
+
 
     public static ArrayList<String> getBalance = new ArrayList<>();
 
@@ -2258,14 +2247,19 @@ public class InsideOut extends Application {
                 popupMessage(lbl);
             } else {
                 try {
-                    Repayment repayment = new Repayment(Username);
-                    repayment.deductLoan(id[0], Double.parseDouble(repayamount[0]));
-                    Label lbl = repayment.getLabel();
-                    Label repaySuccessful = new Label("Repayment Succesfull!");
-                    if (lbl != null) {
-                        popupMessage(lbl);
+                    if (repayamount[0].matches("\\d*\\.?\\d+")) {
+                        Repayment repayment = new Repayment(Username);
+                        repayment.deductLoan(id[0], Double.parseDouble(repayamount[0]));
+                        Label lbl = repayment.getLabel();
+                        Label repaySuccessful = new Label("Repayment Succesfull!");
+                        if (lbl != null) {
+                            popupMessage(lbl);
+                        } else {
+                            popupMessage(repaySuccessful);
+                        }
                     } else {
-                        popupMessage(repaySuccessful);
+                        Label lbl = new Label("Enter postive number!");
+                        popupMessage(lbl);
                     }
                 } catch (NumberFormatException ex) {
                     Label wrongcashformat = new Label("Wrong Cash Format eg.1000");
@@ -2273,6 +2267,7 @@ public class InsideOut extends Application {
                     ex.printStackTrace();
                 }
             }
+
             getID[0].setText("Repay LoanID...");
             clearAllNodes(clearNodes);
         });
@@ -2315,6 +2310,7 @@ public class InsideOut extends Application {
         enterPercentage.setPrefSize(150, 15);
         enterPercentage.setLayoutX(50);
         enterPercentage.setLayoutY(250);
+        clearNodes.add(enterPercentage);
         String[] savingPercentage = {""};
         enterPercentage.textProperty().addListener((observable, oldValue, newValue) -> {
             savingPercentage[0] = newValue.trim();
@@ -2329,14 +2325,15 @@ public class InsideOut extends Application {
         confirm.setLayoutX(220);
         confirm.setLayoutY(250);
         confirm.setOnAction(e -> {
-            if (savingPercentage[0].matches("\\d*\\.?\\d+")) { // only positive allowed
+            if (savingPercentage[0].matches("\\d*\\.?\\d+") && Double.parseDouble(savingPercentage[0]) <= 100) { // only positive allowed
                 Savings saving = new Savings(Username, savingPercentage[0]);
                 Label lbl = saving.getLabel();
                 popupMessage(lbl);
             } else {
-                Label lbl = new Label("Enter Number (integer/double)");
+                Label lbl = new Label("Enter positive number which less than 101");
                 popupMessage(lbl);
             }
+            clearAllNodes(clearNodes);
         });
 
 
