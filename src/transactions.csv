@@ -1,5 +1,1 @@
 Username,Transaction ID,Transaction Type,Amount,Description,Date,Balance,Category
-ccyenoc,TS000001,Debit,1000.00,happy,Sun Jan 12 11:04:30 GMT+08:00 2025,1000.00,Food
-ccyenoc,TS000002,Credit,10.00,"transportation, food",Sun Jan 12 11:05:00 GMT+08:00 2025,990.00,Food
-ccyenoc,TS000003,Debit,100.00,living,Sun Jan 12 11:10:23 GMT+08:00 2025,1080.00,Food
-ccyenoc,TS000004,Repayment,334.45,Loan ID: AL000001,Sun Jan 12 11:39:22 GMT+08:00 2025,745.55,Monthly Repayment

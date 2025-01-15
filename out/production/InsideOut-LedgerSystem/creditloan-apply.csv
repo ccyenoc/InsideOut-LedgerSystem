@@ -1,2 +1,4 @@
 Username,Loan ID,Principal,Annual Interest,Total Repayment Amount,Outstanding Balance,Repayment Period,Payment Frequency,Apply Time,Due Date,Status ,Next Payment Date,Monthly Payment
-ccyenoc,AL000001,1000.0,2.0,1003.35,1003.35,3,1,Sun Jan 12 11:10:42 GMT+08:00 2025,Sat Apr 12 11:10:42 GMT+08:00 2025,Active,Wed Feb 12 11:10:42 GMT+08:00 2025,334.45
+xiaopet,AL000001,100000.0,2.0,100333.53,0.00,3,1,Tue Jan 14 19:26:35 GMT+08:00 2025,Mon Apr 14 19:26:35 GMT+08:00 2025,Paid,Fri Feb 14 19:26:35 GMT+08:00 2025,33444.51
+xiaopet,AL000002,10000.0,2.0,10033.35,6688.900000000001,3,1,Tue Jan 14 19:45:10 GMT+08:00 2025,Mon Apr 14 19:45:10 GMT+08:00 2025,Overdue,Fri Aug 15 15:31:22 GMT+08:00 2025,3344.45
+xiaopet,AL000003,100000.0,2.0,101253.12,0.00,12,3,Wed Jan 15 15:31:22 GMT+08:00 2025,Thu Jan 15 15:31:22 GMT+08:00 2026,Paid,Wed Oct 15 15:31:22 GMT+08:00 2025,25313.28

@@ -89,7 +89,7 @@ public class Reminder {
             getUserEmail(username);
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(this.EMAIL_TO));
             message.setSubject("Remaining Payment");
-            message.setText("LoanID : "+ active.get(i)+" RM "+active.get(i+1)+ " is required to pay before " + active.get(i+2)+
+                message.setText("LoanID : " + active.get(i) + "\nRM " + active.get(i + 1) + " is required to pay before " + active.get(i + 2) +
                     "\nAutoDeduction from balance will be conducted.Please ensure there is sufficient amount of balance.");
             Transport.send(message);
         
@@ -104,9 +104,7 @@ public class Reminder {
             getUserEmail(username);
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(this.EMAIL_TO));
             message.setSubject("OverDue Payment");
-            message.setText("Overdue payment: " + "\n");
-            message.setText("You are not allowed to use the function of credit and debit.");
-            message.setText("LoanID : "+ overdue.get(i)+"RM" + overdue.get(i+1) + " required to pay ASAP.");
+                message.setText("Overdue payment:\n" + "LoanID : " + overdue.get(i) + "\nRM" + overdue.get(i + 1) + " required to pay ASAP.\nYou are not allowed to use the function of credit and debit.");
             Transport.send(message);
 
             }

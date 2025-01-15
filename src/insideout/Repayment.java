@@ -3,6 +3,8 @@ package insideout;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,14 +18,12 @@ import static insideout.InsideOut.store;
 // updatestatus first
 // then checkDecution
 
-
 public class Repayment {
     private String balanceFile = "src/transactions.csv";
     private String applyFile="src/creditloan-apply.csv";
     private String repaymentFile = "src/creditloan-repay.csv";
     private ArrayList<Integer> userIndex=new ArrayList<>();
     private ArrayList<String> findUser=new ArrayList<>();
-    private ArrayList<String> info=new ArrayList<>();
     private ArrayList<String> activeLoan=new ArrayList<>();
     private ArrayList<String> overdueLoan=new ArrayList<>();
     private int index=0;
@@ -37,6 +37,7 @@ public class Repayment {
     private double outstandingBalance=0.0;
     private double totalLoan=0.0;
     private ArrayList<String> rewriteApply=new ArrayList<>();
+    private int paymentFrequency = 0;
     
     private boolean overdue=false;
     
@@ -64,15 +65,14 @@ public class Repayment {
             String name = row[0];
             String status = row[10];
             String monthlyDeductionDate = row[11];
-
             Date date = new Date();
-            //String dateString = "Wed Feb 12 11:10:42 GMT+08:00 2025";
+            //String dateString = "Tue Jul 15 15:31:22 GMT+08:00 2025";
             //Date date = dateFormat.parse(dateString);
             Date monthlypaymentDate = dateFormat.parse(monthlyDeductionDate);
 
             int compare = date.compareTo(monthlypaymentDate);
 
-            if (name.equals(username) && (compare >= 0 && (status.equals("Active") || status.equals("Overdue")))) {
+            if (name.equals(username) && ((compare >= 0 && (status.equals("Active"))) || status.equals("Overdue"))) {
                 userIndex.add(fileContent.size() - 1); 
                 findUser.add(line);
             }
@@ -93,6 +93,7 @@ public void MonthlyDeduction(ArrayList<String> list, ArrayList<String> fileConte
         double monthlyPayment = Double.parseDouble(row[12]);
         double outstandingBalance = Double.parseDouble(row[5]);
         this.LoanID = row[1];
+        this.paymentFrequency = Integer.parseInt(row[7]);
         if(outstandingBalance<monthlyPayment){
           monthlyPayment=outstandingBalance; // condition where the outstanding Balance is less then monthly payment 
         } 
@@ -108,12 +109,24 @@ public void MonthlyDeduction(ArrayList<String> list, ArrayList<String> fileConte
         row[11]=nextMonthPaymentDate;
         if (balance>=0) { 
             double newOutstandingBalance = outstandingBalance-monthlyPayment;
-            row[5] = String.valueOf(newOutstandingBalance);
+            BigDecimal outstanding = BigDecimal.valueOf(newOutstandingBalance).setScale(2, RoundingMode.HALF_UP);
+            row[5] = outstanding.toString();
             if (Math.abs(newOutstandingBalance) < 0.01) {
+                row[5] = "0.00";
                 row[10] = "Paid";
             }
             String updatedLine = String.join(",", row);
             fileContent.set(userIndex.get(i), updatedLine);
+        } else {
+            try {
+                nextMonthPaymentDate = calculateNextPaymentDate(dateFormat.parse(row[11]));
+                row[11] = nextMonthPaymentDate;
+                String updatedLine = String.join(",", row);
+                fileContent.set(userIndex.get(i), updatedLine);
+                lbl = new Label("Balance Insufficient\nto carry out Auto Repayment!");
+            } catch (ParseException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 
@@ -261,9 +274,7 @@ public void MonthlyDeduction(ArrayList<String> list, ArrayList<String> fileConte
                         lines.set(i, String.join(",", data));
                     }
                     }
-                        else{
-                           continue; 
-                        }
+
                   }
                 }
 
@@ -524,6 +535,7 @@ public void MonthlyDeduction(ArrayList<String> list, ArrayList<String> fileConte
              double outstanding=Double.parseDouble(row[5])-repayment;
              if(Math.abs(outstanding)< 0.01){
                  row[10]="Paid";
+                 row[5] = "0.00";
              }
              else if(outstanding<0){
                lbl=new Label("Amount is greater than outstanding balance");
@@ -536,10 +548,6 @@ public void MonthlyDeduction(ArrayList<String> list, ArrayList<String> fileConte
              
              row[5]=String.format("%.2f",outstanding);
              totalLoan=row[4];
-               if (row[10].equalsIgnoreCase("Paid")) {
-                   date = row[11];
-                   date = calculateNextPaymentDate(date);
-               }
              for(int i=0;i<row.length;i++){
                  if(i==row.length-1){
                    builder.append(row[i]);
@@ -600,29 +608,10 @@ public void MonthlyDeduction(ArrayList<String> list, ArrayList<String> fileConte
     public String calculateNextPaymentDate(Date date) {
     Calendar calendar = Calendar.getInstance();
     calendar.setTime(date);
-    calendar.add(Calendar.MONTH, 1); // Add one month
+        calendar.add(Calendar.MONTH, this.paymentFrequency); // Add one month
     Date nextPayment = calendar.getTime();
     String nextPaymentDate = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").format(nextPayment);
         return String.valueOf(nextPaymentDate);
     }
-
-    public String calculateNextPaymentDate(String date) {
-        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
-        String nextPaymentDate = "";
-        try {
-            Date parsedDate = sdf.parse(date);
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(parsedDate);
-            calendar.add(Calendar.MONTH, 1);
-            Date nextPayment = calendar.getTime();
-            nextPaymentDate = String.valueOf(nextPayment);
-        } catch (ParseException ex) {
-            ex.printStackTrace();
-        }
-
-        return nextPaymentDate;
-    }
-
-
 
 }

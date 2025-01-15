@@ -35,8 +35,6 @@ public class InsideOut extends Application {
     public static String Username = "";
     public static double debitTotal = 0.0;
     public static double creditTotal = 0.0;
-    private static boolean debitcategorySelected = false;
-    private static boolean creditcategorySelected = false;
 
     private static TableView<Transaction> tableViewOverview = new TableView<>();
     private static TableView<Transaction> tableViewDebit = new TableView<>();
@@ -44,9 +42,6 @@ public class InsideOut extends Application {
     private static TableView<Transaction> tableViewLoanApplied = new TableView<>();
 
     private static ArrayList<Node> clearNodes = new ArrayList<>();
-    private static final double ASPECT_RATIO = 7 / 4;
-
-    protected static boolean userStatus = false;
     private boolean overdue = false;
 
     @Override
@@ -365,6 +360,10 @@ public class InsideOut extends Application {
                 if (overdue == true) {
                     alertMessage("OverdueLoan", "Overdue Loan Found", "Please make repayment now.\nDebit and Credit function will be disabled\nuntil the loan is fully paid!");
                 }
+                Label lbl = check.getLabel();
+                if (lbl != null) {
+                    popupMessage(lbl);
+                }
 
                 // add savings into balance when reaches end of month
                 Savings endmonth = new Savings(Username);
@@ -494,6 +493,7 @@ public class InsideOut extends Application {
             if (overdued == false) {
                 final String input = amountdebit.getText(); // Get the text entered by the user in amountdebit TextField
                 try {
+                    descriptiondstr[0] = descriptiondstr[0].replace(",", " ").replace(".", " ").trim().replaceAll("\\s+", " ");
                     int descriptiondlength = descriptiondstr[0].split("\\s+").length;
                     String category = getCat();
 
@@ -623,6 +623,7 @@ public class InsideOut extends Application {
                         boolean nodecriptionc = false;
                         boolean nocategory = false;
 
+                        descriptioncstr[0] = descriptioncstr[0].replace(",", " ").replace(".", " ").trim().replaceAll("\\s+", " ");
                         if (descriptioncstr[0].split("\\s+").length > 200) {
                             descriptionword = true;
                         } else if (descriptioncstr[0].isEmpty()) {
